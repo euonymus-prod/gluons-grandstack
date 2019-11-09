@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import "./UserList.css";
+import "../assets/styles/UserList.css";
 import { withStyles } from "@material-ui/core/styles";
 import {
   Table,
