@@ -51,10 +51,9 @@ const GET_USER = gql`
 
 function UserList(props) {
   const { classes } = props;
+
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("name");
-  // const [page, setPage] = React.useState(0);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page] = React.useState(0);
   const [rowsPerPage] = React.useState(10);
   const [filterState, setFilterState] = React.useState({ usernameFilter: "" });
@@ -136,7 +135,6 @@ function UserList(props) {
               <TableCell
                 key="avgStars"
                 sortDirection={orderBy === "avgStars" ? order : false}
-                numeric
               >
                 <Tooltip title="Sort" placement="bottom-end" enterDelay={300}>
                   <TableSortLabel
@@ -151,7 +149,6 @@ function UserList(props) {
               <TableCell
                 key="numReviews"
                 sortDirection={orderBy === "numReviews" ? order : false}
-                numeric
               >
                 <Tooltip title="Sort" placement="bottom-start" enterDelay={300}>
                   <TableSortLabel
@@ -172,10 +169,10 @@ function UserList(props) {
                   <TableCell component="th" scope="row">
                     {n.name}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell>
                     {n.avgStars ? n.avgStars.toFixed(2) : "-"}
                   </TableCell>
-                  <TableCell numeric>{n.numReviews}</TableCell>
+                  <TableCell>{n.numReviews}</TableCell>
                 </TableRow>
               );
             })}
