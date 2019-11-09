@@ -24,6 +24,7 @@ import {
 } from "@material-ui/icons";
 
 import UserList from "../components/UserList";
+import Logout from "../components/logout";
 import classNames from "classnames";
 
 const drawerWidth = 240;
@@ -200,6 +201,16 @@ class App extends Component {
                     <PeopleIcon />
                   </ListItemIcon>
                   <ListItemText primary="Users" />
+                </ListItem>
+
+                <ListItem button>
+                  <a href="/signup">Signup</a>
+                </ListItem>
+                <ListItem button>
+                  <a href="/login">Login</a>
+                </ListItem>
+                <ListItem button>
+                  <Logout />
                 </ListItem>
               </div>
             </List>

@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./assets/styles/index.css";
 import ProviderComposer from "./providers/provider-composer";
-import App from "./pages/App";
+import AppRoutes from "./routes";
+import "./assets/styles/index.css";
 
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <ProviderComposer>
-    <App />
+    <AppRoutes />
   </ProviderComposer>,
   document.getElementById("root")
 );
