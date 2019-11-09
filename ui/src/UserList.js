@@ -53,8 +53,10 @@ function UserList(props) {
   const { classes } = props;
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("name");
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  // const [page, setPage] = React.useState(0);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page] = React.useState(0);
+  const [rowsPerPage] = React.useState(10);
   const [filterState, setFilterState] = React.useState({ usernameFilter: "" });
 
   const getFilter = () => {
