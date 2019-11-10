@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { withAuthentication } from "./providers/session";
 import * as ROUTES from "./constants/routes";
+import Navbar from "./components/navbar";
 // pages
 import App from "./pages/App";
 // import Home           from './pages/home';
@@ -17,8 +18,9 @@ class AppRoutes extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path={ROUTES.HOME} exact component={App} />
+          <Navbar />
           {/*
+          <Route path={ROUTES.HOME} exact component={App} />
           <Route path={ROUTES.HOME} exact component={Home}/>
           <Route path={ROUTES.VOTE} component={Vote}/>
           <Route path={ROUTES.SCREEN} component={Screen}/>
