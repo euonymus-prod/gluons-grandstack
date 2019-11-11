@@ -15,7 +15,11 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 
+const navbarColor = "#e7e7e7";
 const useStyles = makeStyles(theme => ({
+  appBar: {
+    backgroundColor: navbarColor
+  },
   grow: {
     flexGrow: 1
   },
@@ -23,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   },
   title: {
-    display: "none",
+    // display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block"
     }
@@ -161,7 +165,7 @@ export default function PrimarySearchAppBar() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
