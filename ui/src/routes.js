@@ -17,10 +17,10 @@ class AppRoutes extends Component {
   render() {
     return (
       <BrowserRouter>
+        <Navbar />
         <Switch>
-          <Navbar />
-          {/*
           <Route path={ROUTES.HOME} exact component={App} />
+          {/*
           <Route path={ROUTES.HOME} exact component={Home}/>
           <Route path={ROUTES.VOTE} component={Vote}/>
           <Route path={ROUTES.SCREEN} component={Screen}/>
