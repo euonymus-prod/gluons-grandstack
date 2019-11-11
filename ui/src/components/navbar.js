@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { withAuthUser } from "../providers/session";
 import { withFirebase } from "../providers/firebase";
 import * as ROUTES from "../constants/routes";
@@ -218,7 +218,9 @@ export default withRouter(
           </IconButton>
 */}
               <Toolbar>
-                <img src={logo} className={classes.logo} alt="gluons" />
+                <Link to={ROUTES.HOME}>
+                  <img src={logo} className={classes.logo} alt="gluons" />
+                </Link>
               </Toolbar>
               <div className={classes.search}>
                 <div className={classes.searchIcon}>

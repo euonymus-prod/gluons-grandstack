@@ -4,6 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+.main-content {
+  margin-bottom: 100px;
+}
+
 a {
   text-decoration: none;
 }

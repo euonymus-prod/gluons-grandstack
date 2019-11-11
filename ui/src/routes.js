@@ -7,6 +7,8 @@ import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 // pages
 import App from "./pages/App";
+import Terms from "./pages/terms";
+import Privacy from "./pages/privacy";
 // import Home           from './pages/home';
 // // import Vote           from './pages/vote-tilt';
 // // import Vote           from './pages/vote-card.jsx';
@@ -22,15 +24,19 @@ class AppRoutes extends Component {
       <BrowserRouter>
         <CssBaseline />
         <Navbar />
-        <Switch>
-          <Route path={ROUTES.HOME} exact component={App} />
-          {/*
-          <Route path={ROUTES.HOME} exact component={Home}/>
-          <Route path={ROUTES.VOTE} component={Vote}/>
-          <Route path={ROUTES.SCREEN} component={Screen}/>
-*/}
-          <Route path="/" component={AuthRoutes} />
-        </Switch>
+        <div className="main-content">
+          <Switch>
+            <Route path={ROUTES.HOME} exact component={App} />
+            <Route path={ROUTES.TERMS} exact component={Terms} />
+            <Route path={ROUTES.PRIVACY} exact component={Privacy} />
+            {/*
+                <Route path={ROUTES.HOME} exact component={Home}/>
+                <Route path={ROUTES.VOTE} component={Vote}/>
+                <Route path={ROUTES.SCREEN} component={Screen}/>
+              */}
+            <Route path="/" component={AuthRoutes} />
+          </Switch>
+        </div>
         <Footer />
       </BrowserRouter>
     );
