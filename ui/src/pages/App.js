@@ -1,31 +1,9 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  CssBaseline,
-  Drawer,
-  List,
-  Divider,
-  ListItem,
-  ListItemIcon,
-  ListItemText
-} from "@material-ui/core";
-
-import {
-  Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
-  Dashboard as DashboardIcon,
-  EventNote as EventNoteIcon,
-  People as PeopleIcon
-} from "@material-ui/icons";
+import { Typography } from "@material-ui/core";
 
 import UserList from "../components/UserList";
-import Logout from "../components/logout";
-import classNames from "classnames";
 
 const drawerWidth = 240;
 
@@ -125,108 +103,18 @@ class App extends Component {
     const { classes } = this.props;
 
     return (
-      <React.Fragment>
-        <CssBaseline />
-        <div className={classes.root}>
-          <AppBar
-            position="absolute"
-            className={classNames(
-              classes.appBar,
-              this.state.open && classes.appBarShift
-            )}
-          >
-            <Toolbar
-              disableGutters={!this.state.open}
-              className={classes.toolbar}
-            >
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerOpen}
-                className={classNames(
-                  classes.menuButton,
-                  this.state.open && classes.menuButtonHidden
-                )}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                component="h1"
-                variant="h5"
-                color="inherit"
-                noWrap
-                className={classes.title}
-              >
-                Welcome To GRANDstack
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <Drawer
-            variant="permanent"
-            classes={{
-              paper: classNames(
-                classes.drawerPaper,
-                !this.state.open && classes.drawerPaperClose
-              )
-            }}
-            open={this.state.open}
-          >
-            <div className={classes.toolbarIcon}>
-              <IconButton onClick={this.handleDrawerClose}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
-            <Divider />
-            <List>
-              <div>
-                <ListItem button onClick={() => this.setSelectedView("Home")}>
-                  <ListItemIcon>
-                    <DashboardIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Home" />
-                </ListItem>
+      <div className={classes.root}>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
 
-                <ListItem
-                  button
-                  onClick={() => this.setSelectedView("Businesses")}
-                >
-                  <ListItemIcon>
-                    <EventNoteIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Businesses" />
-                </ListItem>
-
-                <ListItem button onClick={() => this.setSelectedView("Users")}>
-                  <ListItemIcon>
-                    <PeopleIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Users" />
-                </ListItem>
-
-                <ListItem button>
-                  <a href="/signup">Signup</a>
-                </ListItem>
-                <ListItem button>
-                  <a href="/login">Login</a>
-                </ListItem>
-                <ListItem button>
-                  <Logout />
-                </ListItem>
-              </div>
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-
-            {/* FIXME: Use proper routing here instead  */}
-            <Typography component="div" className={classes.chartContainer}>
-              {this.state.selectedView === "Home" ? <UserList /> : null}
-              {this.state.selectedView === "Businesses" ? <div /> : null}
-              {this.state.selectedView === "Users" ? <UserList /> : null}
-            </Typography>
-          </main>
-        </div>
-      </React.Fragment>
+          {/* FIXME: Use proper routing here instead  */}
+          <Typography component="div" className={classes.chartContainer}>
+            {this.state.selectedView === "Home" ? <UserList /> : null}
+            {this.state.selectedView === "Businesses" ? <div /> : null}
+            {this.state.selectedView === "Users" ? <UserList /> : null}
+          </Typography>
+        </main>
+      </div>
     );
   }
 }

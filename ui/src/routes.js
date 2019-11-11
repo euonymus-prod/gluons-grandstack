@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { withAuthentication } from "./providers/session";
 import * as ROUTES from "./constants/routes";
 import Navbar from "./components/navbar";
+import Footer from "./components/footer";
 // pages
 import App from "./pages/App";
 // import Home           from './pages/home';
@@ -13,10 +14,13 @@ import App from "./pages/App";
 // import Screen         from './templates/ncc_sf2019/screen';
 import AuthRoutes from "./auth-routes";
 
+import { CssBaseline } from "@material-ui/core";
+
 class AppRoutes extends Component {
   render() {
     return (
       <BrowserRouter>
+        <CssBaseline />
         <Navbar />
         <Switch>
           <Route path={ROUTES.HOME} exact component={App} />
@@ -27,6 +31,7 @@ class AppRoutes extends Component {
 */}
           <Route path="/" component={AuthRoutes} />
         </Switch>
+        <Footer />
       </BrowserRouter>
     );
   }
