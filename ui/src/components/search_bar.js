@@ -28,7 +28,7 @@ class SearchBar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.history.push(`/subjects/search/${this.state.value}`);
+    this.props.history.push(`/search/${this.state.value}`);
   };
 
   onInputChange(value) {

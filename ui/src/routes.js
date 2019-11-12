@@ -1,6 +1,6 @@
 // react
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { withAuthentication } from "./providers/session";
 import * as ROUTES from "./constants/routes";
 import Navbar from "./components/navbar";
@@ -8,6 +8,7 @@ import Footer from "./components/footer";
 // pages
 // import App from "./pages/App";
 import Home from "./pages/home";
+import Search from "./pages/search";
 import Terms from "./pages/terms";
 import Privacy from "./pages/privacy";
 // import Home           from './pages/home';
@@ -30,10 +31,20 @@ class AppRoutes extends Component {
           <div className="main-content">
             <Switch>
               <Route path={ROUTES.HOME} exact component={Home} />
-              <Route path={ROUTES.TERMS} exact component={Terms} />
-              <Route path={ROUTES.PRIVACY} exact component={Privacy} />
+              <Route path={ROUTES.TERMS} component={Terms} />
+              <Route path={ROUTES.PRIVACY} component={Privacy} />
+
+              <Route path={ROUTES.SEARCH} component={Search} />
+              <Route
+                path={ROUTES.LEGACY_SEARCH}
+                render={props => (
+                  <Redirect
+                    to={`${ROUTES.SEARCH_BASE}${props.match.params.query}`}
+                  />
+                )}
+              />
+
               {/*
-                <Route path={ROUTES.HOME} exact component={Home}/>
                 <Route path={ROUTES.VOTE} component={Vote}/>
                 <Route path={ROUTES.SCREEN} component={Screen}/>
               */}

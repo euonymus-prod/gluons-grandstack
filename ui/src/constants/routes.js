@@ -1,4 +1,10 @@
+export const LEGACY_SEARCH_BASE = "/subjects/search/";
+export const SEARCH_BASE = "/search/";
+
 export const HOME = "/";
+export const LEGACY_SEARCH = `${LEGACY_SEARCH_BASE}:query`;
+export const SEARCH = `${SEARCH_BASE}:query`;
+
 export const TERMS = "/terms";
 export const PRIVACY = "/privacy";
 export const SIGN_UP = "/signup";
