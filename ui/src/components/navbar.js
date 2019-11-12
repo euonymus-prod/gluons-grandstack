@@ -98,6 +98,7 @@ export default withRouter(
       const classes = useStyles();
       const [anchorEl, setAnchorEl] = React.useState(null);
       const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+      const [searchQuery, setSearchQuery] = React.useState("");
 
       const isMenuOpen = Boolean(anchorEl);
       const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -132,6 +133,15 @@ export default withRouter(
       const onSignup = () => {
         handleMenuClose();
         props.history.push(ROUTES.SIGN_UP);
+      };
+
+      const onSubmit = event => {
+        event.preventDefault();
+        props.history.push(`${ROUTES.SEARCH_BASE}${searchQuery}`);
+      };
+
+      const onInputChange = value => {
+        setSearchQuery(value);
       };
 
       const menuId = "primary-search-account-menu";
@@ -223,17 +233,21 @@ export default withRouter(
                 </Link>
               </Toolbar>
               <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <InputBase
-                  placeholder="Search…"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput
-                  }}
-                  inputProps={{ "aria-label": "search" }}
-                />
+                <form onSubmit={onSubmit}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <InputBase
+                    placeholder="Search…"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput
+                    }}
+                    inputProps={{ "aria-label": "search" }}
+                    value={searchQuery}
+                    onChange={event => onInputChange(event.target.value)}
+                  />
+                </form>
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>

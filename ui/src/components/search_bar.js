@@ -1,6 +1,8 @@
 // react
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import * as ROUTES from "../constants/routes";
+
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -26,9 +28,9 @@ class SearchBar extends Component {
     value: ""
   };
 
-  handleSubmit = event => {
+  onSubmit = event => {
     event.preventDefault();
-    this.props.history.push(`/search/${this.state.value}`);
+    this.props.history.push(`${ROUTES.SEARCH_BASE}${this.state.value}`);
   };
 
   onInputChange(value) {
@@ -42,7 +44,7 @@ class SearchBar extends Component {
         className={classes.container}
         noValidate
         autoComplete="off"
-        onSubmit={this.handleSubmit}
+        onSubmit={this.onSubmit}
       >
         <div>
           <TextField
@@ -50,6 +52,7 @@ class SearchBar extends Component {
             className={classes.textField}
             label="Type people, organization, product and so on"
             variant="outlined"
+            value={this.state.value}
             onChange={event => this.onInputChange(event.target.value)}
           />
         </div>
