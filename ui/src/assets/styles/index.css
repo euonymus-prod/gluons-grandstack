@@ -3,11 +3,24 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+a {
+  text-decoration: none;
+}
 
 .main-content {
   margin-bottom: 100px;
 }
-
-a {
-  text-decoration: none;
+.logo-top {
+  max-width: 500px;
+  margin: 20px auto 0 auto;
+  padding: 30px;
+}
+.logo-top img {
+  width: 100%;
+}
+.home {
+  font-size: large;
+  max-width: 900px;
+  margin: 20px auto 0 auto;
+  text-align: center;
 }
