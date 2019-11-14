@@ -26,7 +26,10 @@ const styles = theme => ({
     flex: "1 0 auto"
   },
   cover: {
-    width: 151
+    height: 100,
+    backgroundPosition: "50% 0%",
+    width: 151,
+    minWidth: 100
   }
 });
 
