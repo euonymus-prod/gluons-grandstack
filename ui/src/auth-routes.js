@@ -15,25 +15,15 @@ import NotFound from "./pages/not-found";
 class ConsoleRoutes extends Component {
   render() {
     return (
-      <div>
-        {/*
-        <Navbar />
-        */}
-        <div className="main-content">
-          <Switch>
-            <Route path={ROUTES.SIGN_UP} component={Signup} />
-            <Route path={ROUTES.LOGIN} component={Login} />
-            <Route path={ROUTES.NOT_AUTHORIZED} component={NotAuthorized} />
-            <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
-            <Route path={ROUTES.LOGGED_IN} component={LoggedIn} />
-            <Route path={ROUTES.EMAIL_VERIFIED} component={EmailVerified} />
-            <Route component={NotFound} />
-          </Switch>
-        </div>
-        {/*
-        <GlobalFooter />
-        */}
-      </div>
+      <Switch>
+        <Route path={ROUTES.SIGN_UP} component={Signup} />
+        <Route path={ROUTES.LOGIN} component={Login} />
+        <Route path={ROUTES.NOT_AUTHORIZED} component={NotAuthorized} />
+        <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
+        <Route path={ROUTES.LOGGED_IN} component={LoggedIn} />
+        <Route path={ROUTES.EMAIL_VERIFIED} component={EmailVerified} />
+        <Route component={NotFound} />
+      </Switch>
     );
   }
 }

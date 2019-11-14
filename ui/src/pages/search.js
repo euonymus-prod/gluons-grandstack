@@ -6,7 +6,6 @@ import gql from "graphql-tag";
 
 // component
 import QuarkInList from "../components/quark-in-list";
-import SearchQuarkDemo from "../components/search-quark-demo";
 
 const SEARCH_QUARKS = gql`
   query searchQuarks($first: Int, $keyword: String) {
@@ -40,7 +39,7 @@ function Search(props) {
         {data && !loading && !error && (
           <div>
             {data.searchQuarks.map(n => {
-              return <QuarkInList data={n} />;
+              return <QuarkInList key={n.id} data={n} />;
             })}
           </div>
         )}

@@ -2,25 +2,20 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { withAuthentication } from "./providers/session";
-import * as ROUTES from "./constants/routes";
+import ScrollToTop from "./components/scroll-to-top";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
+import AuthRoutes from "./auth-routes";
 // pages
-import ScrollToTop from "./components/scroll-to-top";
-// import App from "./pages/App";
 import Home from "./pages/home";
 import Search from "./pages/search";
 import Terms from "./pages/terms";
 import Privacy from "./pages/privacy";
-// import Home           from './pages/home';
-// // import Vote           from './pages/vote-tilt';
-// // import Vote           from './pages/vote-card.jsx';
-// import Vote           from './templates/ncc_sf2019/vote-card';
-// import Screen         from './templates/ncc_sf2019/screen';
-import AuthRoutes from "./auth-routes";
-
-import { CssBaseline } from "@material-ui/core";
+// constants
+import * as ROUTES from "./constants/routes";
+// material ui
 import Container from "@material-ui/core/Container";
+import { CssBaseline } from "@material-ui/core";
 
 class AppRoutes extends Component {
   render() {
@@ -45,11 +40,6 @@ class AppRoutes extends Component {
                   />
                 )}
               />
-
-              {/*
-                <Route path={ROUTES.VOTE} component={Vote}/>
-                <Route path={ROUTES.SCREEN} component={Screen}/>
-              */}
               <Route path="/" component={AuthRoutes} />
             </Switch>
           </div>
