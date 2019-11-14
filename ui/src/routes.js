@@ -6,6 +6,7 @@ import * as ROUTES from "./constants/routes";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 // pages
+import ScrollToTop from "./components/scroll-to-top";
 // import App from "./pages/App";
 import Home from "./pages/home";
 import Search from "./pages/search";
@@ -25,6 +26,7 @@ class AppRoutes extends Component {
   render() {
     return (
       <BrowserRouter>
+        <ScrollToTop />
         <Navbar />
         <Container maxWidth="lg">
           <CssBaseline />

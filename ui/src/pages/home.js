@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import logo from "../assets/images/logo.gif";
 
 // component
-import SearchBar from "../components/search_bar";
+import SearchBar from "../components/search-bar";
 // import TopPickups from '../containers/top_pickups';
 
 class Home extends Component {
