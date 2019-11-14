@@ -7,6 +7,7 @@ import gql from "graphql-tag";
 // component
 import QuarkInList from "../components/quark-in-list";
 
+const rowsPerPage = 100;
 const SEARCH_QUARKS = gql`
   query searchQuarks($first: Int, $keyword: String) {
     searchQuarks(first: $first, keyword: $keyword) {
@@ -19,17 +20,17 @@ const SEARCH_QUARKS = gql`
 `;
 
 function Search(props) {
-  document.title = `Search Result of ${props.match.params.keywords} -\ngluons`;
-  const [rowsPerPage] = React.useState(10);
+  const { query } = props.match.params;
+  document.title = `Search Result of ${query} -\ngluons`;
 
   const { loading, data, error } = useQuery(SEARCH_QUARKS, {
     variables: {
       first: rowsPerPage,
-      keyword: "徳川"
+      keyword: query
     }
   });
 
-  const quark_property_caption = "test caption";
+  const quark_property_caption = query;
   return (
     <div className="container">
       <h2>{quark_property_caption}</h2>
@@ -38,8 +39,8 @@ function Search(props) {
         {error && !loading && <p>Error</p>}
         {data && !loading && !error && (
           <div>
-            {data.searchQuarks.map(n => {
-              return <QuarkInList key={n.id} data={n} />;
+            {data.searchQuarks.map(quark => {
+              return <QuarkInList key={quark.id} data={quark} />;
             })}
           </div>
         )}
