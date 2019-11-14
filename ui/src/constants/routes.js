@@ -1,8 +1,12 @@
+export const GRAPH_BASE = "/graph/";
 export const SEARCH_BASE = "/search/";
+export const LEGACY_GRAPH_BASE = "/subjects/relations/";
 export const LEGACY_SEARCH_BASE = "/subjects/search/";
 
 export const HOME = "/";
+export const GRAPH = `${GRAPH_BASE}:quark_name`;
 export const SEARCH = `${SEARCH_BASE}:query`;
+export const LEGACY_GRAPH = `${LEGACY_GRAPH_BASE}:quark_name`;
 export const LEGACY_SEARCH = `${LEGACY_SEARCH_BASE}:query`;
 
 export const TERMS = "/terms";
