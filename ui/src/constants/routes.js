@@ -5,8 +5,10 @@ export const LEGACY_SEARCH_BASE = "/subjects/search/";
 
 export const HOME = "/";
 export const GRAPH = `${GRAPH_BASE}:quark_name`;
+export const LIST = "/list";
 export const SEARCH = `${SEARCH_BASE}:query`;
 export const LEGACY_GRAPH = `${LEGACY_GRAPH_BASE}:quark_name`;
+export const LEGACY_LIST = "/subjects";
 export const LEGACY_SEARCH = `${LEGACY_SEARCH_BASE}:query`;
 
 export const TERMS = "/terms";

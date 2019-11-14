@@ -9,6 +9,7 @@ import AuthRoutes from "./auth-routes";
 // pages
 import Home from "./pages/home";
 import Graph from "./pages/graph";
+import List from "./pages/list";
 import Search from "./pages/search";
 import Terms from "./pages/terms";
 import Privacy from "./pages/privacy";
@@ -33,6 +34,7 @@ class AppRoutes extends Component {
               <Route path={ROUTES.PRIVACY} component={Privacy} />
 
               <Route path={ROUTES.GRAPH} component={Graph} />
+              <Route path={ROUTES.LIST} component={List} />
               <Route path={ROUTES.SEARCH} component={Search} />
               <Route
                 path={ROUTES.LEGACY_GRAPH}
@@ -41,6 +43,11 @@ class AppRoutes extends Component {
                     to={`${ROUTES.GRAPH_BASE}${props.match.params.quark_name}`}
                   />
                 )}
+              />
+              <Route
+                path={ROUTES.LEGACY_LIST}
+                exact
+                render={props => <Redirect to={ROUTES.LIST} />}
               />
               <Route
                 path={ROUTES.LEGACY_SEARCH}

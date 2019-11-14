@@ -7,7 +7,7 @@ import noImage from "../assets/images/no_image.jpg";
 // constants
 import * as ROUTES from "../constants/routes";
 // material ui
-import { withStyles, withTheme } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -35,7 +35,7 @@ const styles = theme => ({
 
 class QuarkInList extends Component {
   render() {
-    const { classes, theme, data } = this.props;
+    const { classes, data } = this.props;
 
     let util = new Util();
     return (
@@ -43,7 +43,7 @@ class QuarkInList extends Component {
         <Card className={classes.card}>
           <CardMedia
             className={classes.cover}
-            image={data.image_path ? data.image_path : noImage}
+            image={data.image_path || noImage}
             title={data.name}
           />
           <div className={classes.details}>
@@ -69,12 +69,4 @@ QuarkInList.propTypes = {
     description: PropTypes.string
   })
 };
-QuarkInList.defaultProps = {
-  data: {
-    name: "name",
-    image_path: noImage,
-    description: "description",
-    start: "1999-12-31"
-  }
-};
-export default withTheme(withStyles(styles)(QuarkInList));
+export default withStyles(styles)(QuarkInList);

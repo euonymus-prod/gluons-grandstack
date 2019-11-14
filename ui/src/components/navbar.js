@@ -135,6 +135,11 @@ export default withRouter(
         props.history.push(ROUTES.SIGN_UP);
       };
 
+      const onListClick = () => {
+        handleMenuClose();
+        props.history.push(ROUTES.LIST);
+      };
+
       const onSubmit = event => {
         event.preventDefault();
         props.history.push(`${ROUTES.SEARCH_BASE}${searchQuery}`);
@@ -181,7 +186,7 @@ export default withRouter(
           open={isMobileMenuOpen}
           onClose={handleMobileMenuClose}
         >
-          <MenuItem>
+          <MenuItem onClick={onListClick}>
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={0} color="secondary">
                 <ViewListIcon />

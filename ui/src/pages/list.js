@@ -9,8 +9,8 @@ import Quarks from "../components/quarks";
 
 const rowsPerPage = 100;
 const SEARCH_QUARKS = gql`
-  query searchQuarks($first: Int, $keyword: String) {
-    searchQuarks(first: $first, keyword: $keyword) {
+  query quarks {
+    quarks {
       id
       name
       description
@@ -21,16 +21,12 @@ const SEARCH_QUARKS = gql`
 
 class Search extends Component {
   componentDidMount() {
-    document.title = `Search Result of ${this.props.match.query} -\ngluons`;
+    document.title = `Quark list -\ngluons`;
   }
 
   render() {
-    const { query } = this.props.match.params;
-    const variables = {
-      first: rowsPerPage,
-      keyword: query
-    };
-    const quark_property_caption = query;
+    const variables = {};
+    const quark_property_caption = "Quark List";
     return (
       <div className="container">
         <h2>{quark_property_caption}</h2>
