@@ -28,6 +28,7 @@ class Util {
     } else {
       format = "YYYY-MM-DD";
     }
+    // return moment(date.toString()).format(format)
     return moment(date).format(format);
   }
   fCamelToSnake(p) {

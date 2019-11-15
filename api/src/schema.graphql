@@ -91,7 +91,7 @@ type Category {
 }
 
 type Query {
-  baryon(name: String): Quark
+  graph(name: String): Quark
     @cypher(
       statement: "MATCH (node {name: $name}) RETURN node"
     )
