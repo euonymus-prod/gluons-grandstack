@@ -29,7 +29,7 @@ class Quarks extends Component {
   }
 }
 Quarks.propTypes = {
-  quark: PropTypes.string.isRequired,
+  query: PropTypes.string.isRequired,
   variables: PropTypes.object.isRequired
 };
 export default Quarks;

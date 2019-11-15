@@ -1,7 +1,6 @@
 // react
 import React, { Component } from "react";
 // GraphQL
-import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 // component
@@ -9,8 +8,8 @@ import Quarks from "../components/quarks";
 
 const rowsPerPage = 100;
 const SEARCH_QUARKS = gql`
-  query quarks {
-    quarks {
+  query quarks($first: Int) {
+    quarks(first: $first) {
       id
       name
       description
@@ -25,7 +24,9 @@ class Search extends Component {
   }
 
   render() {
-    const variables = {};
+    const variables = {
+      first: rowsPerPage
+    };
     const quark_property_caption = "Quark List";
     return (
       <div className="container">
