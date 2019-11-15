@@ -53,7 +53,7 @@ class AppRoutes extends Component {
                 path={ROUTES.LEGACY_SEARCH}
                 render={props => (
                   <Redirect
-                    to={`${ROUTES.SEARCH_BASE}${props.match.params.query}`}
+                    to={`${ROUTES.SEARCH_BASE}${props.match.params.keyword}`}
                   />
                 )}
               />

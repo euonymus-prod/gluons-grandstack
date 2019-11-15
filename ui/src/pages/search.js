@@ -20,16 +20,16 @@ const SEARCH_QUARKS = gql`
 
 class Search extends Component {
   componentDidMount() {
-    document.title = `Search Result of ${this.props.match.query} -\ngluons`;
+    document.title = `Search Result of ${this.props.match.keyword} -\ngluons`;
   }
 
   render() {
-    const { query } = this.props.match.params;
+    const { keyword } = this.props.match.params;
     const variables = {
       first: rowsPerPage,
-      keyword: query
+      keyword
     };
-    const quark_property_caption = query;
+    const quark_property_caption = keyword;
     return (
       <div className="container">
         <h2>{quark_property_caption}</h2>
