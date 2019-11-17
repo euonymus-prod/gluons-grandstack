@@ -4,11 +4,17 @@ import express from "express";
 import { v1 as neo4j } from "neo4j-driver";
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 import dotenv from "dotenv";
+import { properties } from './constants/properties'
 
 // set environment variables from ../.env
 dotenv.config();
 
 const app = express();
+
+const resolvers = {
+  Query: { quarkProperties: () => properties },
+}
+
 
 /*
  * Create an executable GraphQL schema object from GraphQL type definitions
@@ -19,7 +25,8 @@ const app = express();
  */
 
 const schema = makeAugmentedSchema({
-  typeDefs
+  typeDefs,
+  resolvers
 });
 
 /*

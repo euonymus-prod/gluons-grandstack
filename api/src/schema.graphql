@@ -50,6 +50,12 @@ type Gluon {
   modified: _Neo4jDateTime
 }
 
+type QuarkProperty {
+  id: ID!
+  caption: String
+  caption_ja: String
+}
+
 
 type User {
   id: ID!
@@ -107,4 +113,5 @@ type Query {
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node RETURN node"
     )
+  quarkProperties: [QuarkProperty]
 }
