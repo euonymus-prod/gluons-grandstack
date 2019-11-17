@@ -1,4 +1,4 @@
-export const properties = [
+export const quarkProperties = [
 { id: 1, caption: 'nationality', caption_ja: '国籍' },
 { id: 2, caption: 'spouse', caption_ja: '配偶者' },
 { id: 3, caption: 'parent', caption_ja: '親' },
