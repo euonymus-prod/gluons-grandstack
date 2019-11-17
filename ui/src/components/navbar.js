@@ -255,8 +255,8 @@ export default withRouter(
                 </form>
               </div>
               <div className={classes.grow} />
-              <div className={classes.sectionDesktop} onClick={onListClick}>
-                <IconButton aria-label="show 4 new mails">
+              <div className={classes.sectionDesktop}>
+                <IconButton aria-label="show 4 new mails" onClick={onListClick}>
                   <Badge badgeContent={0} color="secondary">
                     <ViewListIcon />
                   </Badge>
