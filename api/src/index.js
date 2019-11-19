@@ -5,6 +5,7 @@ import { v1 as neo4j } from "neo4j-driver";
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 import dotenv from "dotenv";
 import { quarkProperties } from './constants/quark-properties'
+import _ from 'lodash'
 
 // set environment variables from ../.env
 dotenv.config();
@@ -12,9 +13,13 @@ dotenv.config();
 const app = express();
 
 const resolvers = {
-  Query: { quarkProperties: () => quarkProperties },
+  Query: { quarkProperties: () => {
+    return _.map(quarkProperties, (data, key) => {
+      return {id: key, ...data}
+    })
+  }
+  },
 }
-
 
 /*
  * Create an executable GraphQL schema object from GraphQL type definitions
