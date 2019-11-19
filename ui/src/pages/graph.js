@@ -1,6 +1,5 @@
 // react
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 // GraphQL
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
@@ -8,7 +7,6 @@ import gql from "graphql-tag";
 import MainQuark from "../components/main-quark";
 
 // GraphQL
-const rowsPerPage = 100;
 const GRAPH_ON_QUARK = gql`
   query graph($name: String) {
     graph(name: $name) {
@@ -73,7 +71,4 @@ class Graph extends Component {
     );
   }
 }
-Graph.propTypes = {
-  quark_name: PropTypes.string.isRequired
-};
 export default Graph;
