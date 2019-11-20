@@ -13,11 +13,17 @@ dotenv.config();
 const app = express();
 
 const resolvers = {
-  Query: { quarkProperties: (__, {first}) => {
-    console.log(first)
-    return _.map(quarkProperties, (data, key) => {
-      return {id: key, ...data}
-    }).slice(0, first)
+  Query: { quarkProperties: (__, {ids}) => {
+    if (ids.length === 0) {
+      // return all
+      return _.map(quarkProperties, (data, key) => {
+        return {id: key, ...data}
+      })
+      // .slice(0, first)
+    }
+    return ids.map(id => {
+      return {id, ...quarkProperties[id]}
+    })
   }
   },
 }

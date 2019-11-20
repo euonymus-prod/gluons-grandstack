@@ -113,5 +113,5 @@ type Query {
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node RETURN node"
     )
-  quarkProperties(first: Int = 3): [QuarkProperty]
+  quarkProperties(ids: [Int] = []): [QuarkProperty]
 }
