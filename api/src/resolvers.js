@@ -18,6 +18,7 @@ const quarkProperties = (__, {ids}) => {
       return {id, ...quarkPropertiesData[id]}
     })
   }
+  selectedProperties.push(otherProperty)
   return selectedProperties
 }
 
