@@ -56,6 +56,13 @@ type QuarkProperty {
   caption_ja: String
 }
 
+type QpropertyGtype {
+  gluon_type: String!
+  direction: Int
+  caption: String
+  caption_ja: String
+}
+
 
 type User {
   id: ID!
@@ -114,4 +121,5 @@ type Query {
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node RETURN node"
     )
   quarkProperties(ids: [Int] = []): [QuarkProperty]
+  qpropertyGtypes(quarkPropertyId: Int = null, avoidQuarkPropertyIds: [Int] = []): [QpropertyGtype]
 }
