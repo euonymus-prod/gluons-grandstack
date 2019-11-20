@@ -14,18 +14,21 @@ const app = express();
 
 const resolvers = {
   Query: { quarkProperties: (__, {ids}) => {
+    const otherProperty = { id: false, caption: 'relations', caption_ja: '関係' }
+    let selectedProperties = []
     if (ids.length === 0) {
       // return all
-      return _.map(quarkProperties, (data, key) => {
+      selectedProperties = _.map(quarkProperties, (data, key) => {
         return {id: key, ...data}
       })
       // .slice(0, first)
+    } else {
+      selectedProperties = ids.map(id => {
+        return {id, ...quarkProperties[id]}
+      })
     }
-    return ids.map(id => {
-      return {id, ...quarkProperties[id]}
-    })
-  }
-  },
+    return selectedProperties
+  }},
 }
 
 /*
