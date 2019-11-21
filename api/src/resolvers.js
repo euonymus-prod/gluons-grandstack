@@ -4,7 +4,7 @@ import { gluonTypesData } from './constants/gluon-types'
 import { qpropertyGtypesData } from './constants/qproperty-gtypes'
 import * as DIRECTION from './constants/gluon-directions'
 
-const quarkProperties = (__, {ids}) => {
+const quarkProperties = (parent, {ids}, context, info) => {
   const otherProperty = { id: false, caption: 'relations', caption_ja: '関係' }
   let selectedProperties = []
   if (ids.length === 0) {
@@ -30,7 +30,7 @@ const revertDirection = (direction) => {
   }
   return false
 }
-const qpropertyGtypes = (__, {quarkPropertyId, avoidQuarkPropertyIds}) => {
+const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, context, info) => {
   let selectedGtypes = []
   if (quarkPropertyId === null) {
     const modifiedGtypes = {}
