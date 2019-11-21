@@ -6,10 +6,11 @@ import * as ID_TYPE from './constants/id-types'
 import * as DIRECTION from './constants/gluon-directions'
 
 /*
-sample CYPHER
-match (n {name:"眞弓聡"})-[r:SON_OF|DAUGHTER_OF]->(n2), (n)<-[r2:SON_OF|DAUGHTER_OF]-(n3) 
-with n, collect(distinct n2) + collect(distinct n3) as n4, collect(distinct r) + collect(distinct r2) as r3
-return n,n4, r3
+// sample CYPHER
+
+MATCH (subject {name:"眞弓聡"})-[r1:SON_OF|DAUGHTER_OF]->(n1), (subject)<-[r2:SON_OF|DAUGHTER_OF]-(n2) 
+WITH subject, collect(DISTINCT n1) + collect(DISTINCT n2) as object, collect(DISTINCT r1) + collect(DISTINCT r2) as relation
+RETURN subject, object, relation
 */
 
 const revertDirection = (direction) => {
