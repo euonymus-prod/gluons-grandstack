@@ -2,20 +2,22 @@ import _ from 'lodash'
 import { quarkPropertiesData } from './constants/quark-properties'
 import { gluonTypesData } from './constants/gluon-types'
 import { qpropertyGtypesData } from './constants/qproperty-gtypes'
+import * as ID_TYPE from './constants/id-types'
 import * as DIRECTION from './constants/gluon-directions'
 
 const quarkProperties = (parent, {ids}, context, info) => {
-  const otherProperty = { id: false, caption: 'relations', caption_ja: '関係' }
+  const otherProperty = { id: ID_TYPE.NONE, caption: 'relations', caption_ja: '関係' }
   let selectedProperties = []
   if (ids.length === 0) {
     // return all
-    selectedProperties = _.map(quarkProperties, (data, id) => {
-      return {id, ...data}
+    selectedProperties = _.map(quarkPropertiesData, (data, id) => {
+      const relatedQpropertyGtypes = getQpropertyGtypes(id)
+      return {id, qpropertyGtypes: relatedQpropertyGtypes, ...data}
     })
     // .slice(0, first)
   } else {
     selectedProperties = ids.map(id => {
-      const relatedQpropertyGtypes = (getQpropertyGtypes(id))
+      const relatedQpropertyGtypes = getQpropertyGtypes(id)
       return {id, qpropertyGtypes: relatedQpropertyGtypes, ...quarkPropertiesData[id]}
     })
   }
@@ -35,6 +37,7 @@ const revertDirection = (direction) => {
 
 const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
   let selectedGtypes = []
+  // for other relaiton
   if (quarkPropertyId === null) {
     const modifiedGtypes = {}
     avoidQuarkPropertyIds.forEach(quarkPropertyId => {
@@ -64,10 +67,14 @@ const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
       return {gluon_type, direction: DIRECTION.BOTH, ...data}
     }).filter(value => value)
     // .slice(0, first)
+  // for specific quark_property
   } else {
-    selectedGtypes = qpropertyGtypesData[quarkPropertyId].map(gtypes => {
-      return {gluon_type: gtypes.gluon_type, direction: gtypes.direction, ...gluonTypesData[gtypes.gluon_type]}
-    })
+    // because some quark_property_id doesn't exist on qproperty_gtypes table
+    if (qpropertyGtypesData[quarkPropertyId]) {
+      selectedGtypes = qpropertyGtypesData[quarkPropertyId].map(gtypes => {
+        return {gluon_type: gtypes.gluon_type, direction: gtypes.direction, ...gluonTypesData[gtypes.gluon_type]}
+      })
+    }
   }
   return selectedGtypes
 }
