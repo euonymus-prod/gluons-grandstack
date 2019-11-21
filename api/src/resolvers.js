@@ -5,7 +5,16 @@ import { qpropertyGtypesData } from './constants/qproperty-gtypes'
 import * as ID_TYPE from './constants/id-types'
 import * as DIRECTION from './constants/gluon-directions'
 
-const quarkProperties = (parent, {ids}, context, info) => {
+const revertDirection = (direction) => {
+  if (direction === DIRECTION.A2B) {
+    return DIRECTION.B2A
+  } else if (direction === DIRECTION.B2A) {
+    return DIRECTION.A2B
+  }
+  return false
+}
+
+const getQuarkProperties = (ids) => {
   const otherProperty = { id: ID_TYPE.NONE, caption: 'relations', caption_ja: '関係' }
   let selectedProperties = []
   if (ids.length === 0) {
@@ -24,15 +33,6 @@ const quarkProperties = (parent, {ids}, context, info) => {
   const relatedQpropertyGtypes = getQpropertyGtypes(null, ids)
   selectedProperties.push({ qpropertyGtypes: relatedQpropertyGtypes, ...otherProperty })
   return selectedProperties
-}
-
-const revertDirection = (direction) => {
-  if (direction === DIRECTION.A2B) {
-    return DIRECTION.B2A
-  } else if (direction === DIRECTION.B2A) {
-    return DIRECTION.A2B
-  }
-  return false
 }
 
 const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
@@ -79,6 +79,9 @@ const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
   return selectedGtypes
 }
 
+const quarkProperties = (parent, {ids}, context, info) => {
+  return getQuarkProperties(ids)
+}
 const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, context, info) => {
   return getQpropertyGtypes(quarkPropertyId, avoidQuarkPropertyIds)
 }
