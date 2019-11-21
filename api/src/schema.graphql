@@ -54,6 +54,7 @@ type QuarkProperty {
   id: ID!
   caption: String
   caption_ja: String
+  qpropertyGtypes: [QpropertyGtype]
 }
 
 type QpropertyGtype {

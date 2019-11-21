@@ -15,9 +15,11 @@ const quarkProperties = (parent, {ids}, context, info) => {
     // .slice(0, first)
   } else {
     selectedProperties = ids.map(id => {
+      console.log(qpropertyGtypes(parent, {quarkPropertyId: id}))
       return {id, ...quarkPropertiesData[id]}
     })
   }
+  console.log(qpropertyGtypes(parent, {quarkPropertyId: null, avoidQuarkPropertyIds: ids}))
   selectedProperties.push(otherProperty)
   return selectedProperties
 }
@@ -31,6 +33,9 @@ const revertDirection = (direction) => {
   return false
 }
 const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, context, info) => {
+  console.log('parent: ', parent)
+  console.log('context: ', context)
+  console.log('info: ', info)
   let selectedGtypes = []
   if (quarkPropertyId === null) {
     const modifiedGtypes = {}
