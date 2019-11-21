@@ -15,11 +15,11 @@ const quarkProperties = (parent, {ids}, context, info) => {
     // .slice(0, first)
   } else {
     selectedProperties = ids.map(id => {
-      const relatedQpropertyGtypes = (qpropertyGtypes(parent, {quarkPropertyId: id}))
+      const relatedQpropertyGtypes = (getQpropertyGtypes(id))
       return {id, qpropertyGtypes: relatedQpropertyGtypes, ...quarkPropertiesData[id]}
     })
   }
-  const relatedQpropertyGtypes = qpropertyGtypes(parent, {quarkPropertyId: null, avoidQuarkPropertyIds: ids})
+  const relatedQpropertyGtypes = getQpropertyGtypes(null, ids)
   selectedProperties.push({ qpropertyGtypes: relatedQpropertyGtypes, ...otherProperty })
   return selectedProperties
 }
@@ -32,7 +32,8 @@ const revertDirection = (direction) => {
   }
   return false
 }
-const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, context, info) => {
+
+const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
   let selectedGtypes = []
   if (quarkPropertyId === null) {
     const modifiedGtypes = {}
@@ -69,6 +70,10 @@ const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, conte
     })
   }
   return selectedGtypes
+}
+
+const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, context, info) => {
+  return getQpropertyGtypes(quarkPropertyId, avoidQuarkPropertyIds)
 }
 
 export const resolvers = {
