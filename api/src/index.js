@@ -56,7 +56,7 @@ const path = "/graphql";
 
 /*
 * Optionally, apply Express middleware for authentication, etc
-* This also also allows us to specify a path for the GraphQL endpoint
+* This also allows us to specify a path for the GraphQL endpoint
 */
 server.applyMiddleware({app, path});
 

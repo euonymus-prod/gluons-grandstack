@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { neo4jgraphql } from 'neo4j-graphql-js'
 import { quarkPropertiesData } from './constants/quark-properties'
 import { gluonTypesData } from './constants/gluon-types'
 import { qpropertyGtypesData } from './constants/qproperty-gtypes'
@@ -97,6 +98,23 @@ const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
   return selectedGtypes
 }
 
+const Quark = (parent, {name}, context, info) => {
+  console.log('jjj')
+  // console.log(parent)
+  // console.log(name)
+  // console.log(context)
+  // console.log(info)
+  // return { name: 'hoge'}
+  const quark = neo4jgraphql(parent, {name, quark_type_id: 8}, context, info);
+  // quark.then(quark => {
+  //   console.log(quark)
+  // })
+  return quark
+}
+const QuarkProperty = (parent, {ids}, context, info) => {
+  console.log('hhh')
+  return { caption: 'hoge' }
+}
 const quarkProperties = (parent, {ids}, context, info) => {
   return getQuarkProperties(ids)
 }
@@ -105,5 +123,43 @@ const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, conte
 }
 
 export const resolvers = {
-  Query: { quarkProperties, qpropertyGtypes },
+  Quark: {
+    properties: (parent, params, context, info) => {
+      console.log('ssss')
+      params['quark_property_id'] = 8
+      return [{caption:'hoge'}]
+    }
+  },
+  Query: { Quark, QuarkProperty, quarkProperties, qpropertyGtypes },
 }
+
+// 
+// 
+// 
+// export const resolvers = {
+// 
+//   Tag : {
+//     elements : (object, params, ctx, resolveInfo) => {
+//       params["username"] = ctx.user.name;
+// 
+//     }
+//   },
+// 
+//   Query: {
+//     User(object, params, ctx, resolveInfo) {
+//       return neo4jgraphql(object, params, ctx, resolveInfo);
+//     },
+//     Element(object, params, ctx, resolveInfo) {
+//       return neo4jgraphql(object, params, ctx, resolveInfo);
+//     },
+// 
+//     Tag(object, params, ctx, resolveInfo) {
+//       if(!ctx.user){
+//        throw Error("Wrong request");
+//       }
+//       params["username"] = ctx.user.name;
+//       return neo4jgraphql(object, params, ctx, resolveInfo); 
+//     },
+// 
+//   }
+// };
