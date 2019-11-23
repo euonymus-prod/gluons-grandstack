@@ -57,6 +57,10 @@ type QuarkProperty {
   caption: String
   caption_ja: String
   qpropertyGtypes: [QpropertyGtype]
+  gluons(subject: String): [Gluon]
+    @cypher(
+      statement: "MATCH (subject { name: $subject })-[gluon]-(object) RETURN gluon, object ORDER BY (CASE gluon.start WHEN null THEN {} ELSE gluon.start END) DESC, (CASE object.start WHEN null THEN {} ELSE object.start END) DESC"
+    )
 }
 
 type QpropertyGtype {

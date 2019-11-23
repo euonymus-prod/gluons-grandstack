@@ -126,6 +126,18 @@ export const resolvers = {
       // return [{caption:'hoge'}]
     }
   },
+  QuarkProperty: {
+    gluons: (parent, {subject}, context, info) => {
+      console.log(parent)
+      console.log(subject)
+      /*
+CALL apoc.cypher.run('MATCH (subject {name:"眞弓聡"})-[gluon:SON_OF|DAUGHTER_OF]->(object) RETURN subject, object, gluon UNION MATCH (subject {name: "眞弓聡"})<-[gluon:SON_OF|DAUGHTER_OF]-(object) RETURN subject, object, gluon', NULL) YIELD value
+RETURN value.subject as subject, value.object as object, value.gluon as gluon
+      ORDER BY (CASE gluon.start WHEN null THEN {} ELSE gluon.start END) DESC, (CASE object.start WHEN null THEN {} ELSE object.start END) DESC
+      */
+      return []
+    }
+  },
   Query: { qpropertyGtypes },
 }
 
