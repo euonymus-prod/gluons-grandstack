@@ -1,21 +1,6 @@
-
-
-
-type Tag {
-  name: String!
-  elements(username:String): [Element] @cypher(statement: "MATCH (this)-[:TAGGED]-(e:Element)-[:OWNER]-(u:User) WHERE u.name=$username RETURN e")
-}
-
-type Element {
-  uuid: String!
-  name: String
-  users: [User] @relation(name:"OWNER", direction:"IN")
-  tags: [Tag] @relation(name:"TAGGED", direction:"IN")
-  responses: [Element] @relation(name:"RESPONSE", direction:"OUT")
-}
-
 type Quark {
   id: ID!
+  labels: [String]
   name: String
   en_name: String
   image_path: String
@@ -36,7 +21,7 @@ type Quark {
   quark_type_id: Int
   created: _Neo4jDateTime
   modified: _Neo4jDateTime
-  properties: [QuarkProperty]
+  properties: [QuarkProperty] @neo4j_ignore
   gluons: [Gluon]
     @cypher(
       statement: "MATCH (this)-[gluon]-(object) RETURN gluon, object ORDER BY (CASE gluon.start WHEN null THEN {} ELSE gluon.start END) DESC, (CASE object.start WHEN null THEN {} ELSE object.start END) DESC"
@@ -121,11 +106,13 @@ type Category {
   businesses: [Business] @relation(name: "IN_CATEGORY", direction: "IN")
 }
 
-type Query {
+type Mutation {
   Quark(name: String): Quark
     @cypher(
-      statement: "MATCH (node {name: $name}) RETURN node"
+      statement: "MATCH (node {name: $name}) SET node.labels = labels(node) RETURN node"
     )
+}
+type Query {
   quarks(first: Int = 100): [Quark]
     @cypher(
       statement: "MATCH (node) RETURN node ORDER BY (CASE node.created WHEN null THEN {} ELSE node.created END) DESC"
