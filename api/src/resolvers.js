@@ -97,7 +97,13 @@ const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
   return selectedGtypes
 }
 
+const QuarkProperty = (parent, {ids}, context, info) => {
+  console.log('in')
+  return [{id:1}]
+}
 const quarkProperties = (parent, {ids}, context, info) => {
+  console.log('in')
+  return [{id:1}]
   return getQuarkProperties(ids)
 }
 const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, context, info) => {
@@ -105,5 +111,5 @@ const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, conte
 }
 
 export const resolvers = {
-  Query: { quarkProperties, qpropertyGtypes },
+  Query: { quarkProperties, qpropertyGtypes, QuarkProperty },
 }
