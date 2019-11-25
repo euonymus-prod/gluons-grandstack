@@ -1,4 +1,6 @@
 import _ from 'lodash'
+// import { neo4jgraphql } from 'neo4j-graphql-js'
+import { qtypePropertiesData } from './constants/qtype-properties'
 import { quarkPropertiesData } from './constants/quark-properties'
 import { gluonTypesData } from './constants/gluon-types'
 import { qpropertyGtypesData } from './constants/qproperty-gtypes'
@@ -32,7 +34,11 @@ const revertDirection = (direction) => {
   return false
 }
 
-const getQuarkProperties = (ids) => {
+const getQuarkProperties = (labels) => {
+  const property_ids = _.map(qtypePropertiesData[labels[0]], 'property_id')
+  return getQuarkPropertiesByIds(property_ids)
+}
+const getQuarkPropertiesByIds = (ids) => {
   const otherProperty = { id: ID_TYPE.NONE, caption: 'relations', caption_ja: '関係' }
   let selectedProperties = []
   if (ids.length === 0) {
@@ -97,19 +103,71 @@ const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
   return selectedGtypes
 }
 
-const QuarkProperty = (parent, {ids}, context, info) => {
-  console.log('in')
-  return [{id:1}]
-}
-const quarkProperties = (parent, {ids}, context, info) => {
-  console.log('in')
-  return [{id:1}]
-  return getQuarkProperties(ids)
-}
+// const Quark = (parent, {name}, context, info) => {
+//   return neo4jgraphql(parent, {name}, context, info);
+// }
+// const QuarkProperty = (parent, {ids}, context, info) => {
+//   return { caption: 'hoge' }
+// }
+// const quarkProperties = (parent, {ids}, context, info) => {
+//   return getQuarkProperties(ids)
+// }
 const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, context, info) => {
   return getQpropertyGtypes(quarkPropertyId, avoidQuarkPropertyIds)
 }
 
 export const resolvers = {
-  Query: { quarkProperties, qpropertyGtypes, QuarkProperty },
+  Quark: {
+    properties: (parent, params, context, info) => {
+      if (!parent.labels || parent.labels.length === 0) {
+        throw Error("Wrong request");
+      }
+      return getQuarkProperties(parent.labels)
+      // return [{caption:'hoge'}]
+    }
+  },
+  QuarkProperty: {
+    gluons: (parent, {subject}, context, info) => {
+      console.log(parent)
+      console.log(subject)
+      /*
+CALL apoc.cypher.run('MATCH (subject {name:"眞弓聡"})-[gluon:SON_OF|DAUGHTER_OF]->(object) RETURN subject, object, gluon UNION MATCH (subject {name: "眞弓聡"})<-[gluon:SON_OF|DAUGHTER_OF]-(object) RETURN subject, object, gluon', NULL) YIELD value
+RETURN value.subject as subject, value.object as object, value.gluon as gluon
+      ORDER BY (CASE gluon.start WHEN null THEN {} ELSE gluon.start END) DESC, (CASE object.start WHEN null THEN {} ELSE object.start END) DESC
+      */
+      return []
+    }
+  },
+  Query: { qpropertyGtypes },
 }
+
+// 
+// 
+// 
+// export const resolvers = {
+// 
+//   Tag : {
+//     elements : (object, params, ctx, resolveInfo) => {
+//       params["username"] = ctx.user.name;
+// 
+//     }
+//   },
+// 
+//   Query: {
+//     User(object, params, ctx, resolveInfo) {
+//       return neo4jgraphql(object, params, ctx, resolveInfo);
+//     },
+//     Element(object, params, ctx, resolveInfo) {
+//       return neo4jgraphql(object, params, ctx, resolveInfo);
+//     },
+// 
+//     Tag(object, params, ctx, resolveInfo) {
+//       if(!ctx.user){
+//        throw Error("Wrong request");
+//       }
+//       params["username"] = ctx.user.name;
+//       return neo4jgraphql(object, params, ctx, resolveInfo); 
+//     },
+// 
+//   }
+// };
