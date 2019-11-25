@@ -122,14 +122,42 @@ export const resolvers = {
       if (!parent.labels || parent.labels.length === 0) {
         throw Error("Wrong request");
       }
-      return getQuarkProperties(parent.labels)
+      return getQuarkProperties(parent.labels).map(property => {
+        return {...property, gluons: parent.gluons, subject_id: parent.id}
+      })
       // return [{caption:'hoge'}]
     }
   },
   QuarkProperty: {
     gluons: (parent, {subject}, context, info) => {
       console.log(parent)
-      console.log(subject)
+      // console.log(subject)
+      // console.log(context)
+
+      parent.gluons.filter(gluon => {
+        let result = false
+        parent.qpropertyGtypes.some(gtype => {
+          // TODO: gluon_type has to be gluon_type_id
+          if (gluon.gluon_type_id !== gtype.gluon_type) {
+            return false
+          }
+          if (gtype.direction === DIRECTION.A2B) {
+            if (parent.subject_id === gluon.active_id) {
+              result = true
+            }
+          } else if (gtype.direction === DIRECTION.B2A) {
+            if (parent.subject_id === gluon.passive_id) {
+              result = true
+            }
+          } else {
+            result = true
+          }
+          if (result) {
+            return true
+          }
+        })
+        return result
+      })
       /*
 CALL apoc.cypher.run('MATCH (subject {name:"眞弓聡"})-[gluon:SON_OF|DAUGHTER_OF]->(object) RETURN subject, object, gluon UNION MATCH (subject {name: "眞弓聡"})<-[gluon:SON_OF|DAUGHTER_OF]-(object) RETURN subject, object, gluon', NULL) YIELD value
 RETURN value.subject as subject, value.object as object, value.gluon as gluon
