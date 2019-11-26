@@ -1,8 +1,8 @@
 import _ from 'lodash'
 // import { neo4jgraphql } from 'neo4j-graphql-js'
-import { qtypePropertiesData } from './constants/qtype-properties'
-import { quarkPropertiesData } from './constants/quark-properties'
 import { gluonTypesData } from './constants/gluon-types'
+import { quarkPropertiesData } from './constants/quark-properties'
+import { qtypePropertiesData } from './constants/qtype-properties'
 import { qpropertyGtypesData } from './constants/qproperty-gtypes'
 import * as ID_TYPE from './constants/id-types'
 import * as DIRECTION from './constants/gluon-directions'
@@ -67,28 +67,28 @@ const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
     avoidQuarkPropertyIds.forEach(quarkPropertyId => {
       qpropertyGtypesData[quarkPropertyId].forEach(gtypes => {
         const direction = revertDirection(gtypes.direction)
-        if (direction && (modifiedGtypes[gtypes.gluon_type] !== false)) {
-          if (modifiedGtypes[gtypes.gluon_type]) {
-            if (modifiedGtypes[gtypes.gluon_type].direction === gtypes.direction) {
-              modifiedGtypes[gtypes.gluon_type] = false
+        if (direction && (modifiedGtypes[gtypes.gluon_type_id] !== false)) {
+          if (modifiedGtypes[gtypes.gluon_type_id]) {
+            if (modifiedGtypes[gtypes.gluon_type_id].direction === gtypes.direction) {
+              modifiedGtypes[gtypes.gluon_type_id] = false
             }
           } else {
-            modifiedGtypes[gtypes.gluon_type] = { ...gtypes, direction }
+            modifiedGtypes[gtypes.gluon_type_id] = { ...gtypes, direction }
           }
         } else {
-          modifiedGtypes[gtypes.gluon_type] = false
+          modifiedGtypes[gtypes.gluon_type_id] = false
         }
       })
     })
 
     // return all
-    selectedGtypes = _.map(gluonTypesData, (data, gluon_type) => {
-      if (modifiedGtypes[gluon_type]) {
-        return {gluon_type: modifiedGtypes[gluon_type].gluon_type, direction: modifiedGtypes[gluon_type].direction, ...data}
-      } else if (modifiedGtypes[gluon_type] === false) {
+    selectedGtypes = _.map(gluonTypesData, (data, gluon_type_id) => {
+      if (modifiedGtypes[gluon_type_id]) {
+        return {gluon_type_id: modifiedGtypes[gluon_type_id].gluon_type_id, direction: modifiedGtypes[gluon_type_id].direction, ...data}
+      } else if (modifiedGtypes[gluon_type_id] === false) {
         return false
       }
-      return {gluon_type, direction: DIRECTION.BOTH, ...data}
+      return {gluon_type_id, direction: DIRECTION.BOTH, ...data}
     }).filter(value => value)
     // .slice(0, first)
   // for specific quark_property
@@ -96,7 +96,7 @@ const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
     // because some quark_property_id doesn't exist on qproperty_gtypes table
     if (qpropertyGtypesData[quarkPropertyId]) {
       selectedGtypes = qpropertyGtypesData[quarkPropertyId].map(gtypes => {
-        return {gluon_type: gtypes.gluon_type, direction: gtypes.direction, ...gluonTypesData[gtypes.gluon_type]}
+        return {gluon_type_id: gtypes.gluon_type_id, direction: gtypes.direction, ...gluonTypesData[gtypes.gluon_type_id]}
       })
     }
   }
@@ -137,8 +137,7 @@ export const resolvers = {
       parent.gluons.filter(gluon => {
         let result = false
         parent.qpropertyGtypes.some(gtype => {
-          // TODO: gluon_type has to be gluon_type_id
-          if (gluon.gluon_type_id !== gtype.gluon_type) {
+          if (gluon.gluon_type_id !== gtype.gluon_type_id) {
             return false
           }
           if (gtype.direction === DIRECTION.A2B) {
