@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Util from "../utils/common";
-// import SecondGluons from './second-gluons'
+import SecondGluons from "./second-gluons";
 import { LANGTYPE_ENG_LIKE, LANGTYPE_JP_LIKE } from "../constants/langtypes";
 import * as ROUTES from "../constants/routes";
 // Material UI
@@ -98,18 +98,20 @@ const Gluon = props => {
             secondary={util.period2str(gluon)}
           />
         </ListItem>
-        {/*
-        { (hasSecondLevel && (seconds.length !== 0)) && (
+        {hasSecondLevel && object.gluons.length !== 0 && (
           <Fragment>
             <ListItem>
               <h3>Secondary Relationships</h3>
             </ListItem>
             <ListItem>
-              <SecondGluons gluons={seconds} />
+              <SecondGluons
+                subject={object}
+                objects={object.objects}
+                gluons={object.gluons}
+              />
             </ListItem>
           </Fragment>
-          )}
-          */}
+        )}
       </Card>
     </div>
   );

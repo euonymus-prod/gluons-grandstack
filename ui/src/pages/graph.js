@@ -88,7 +88,9 @@ const GRAPH_ON_QUARK = gql`
           is_momentary
         }
         objects {
+          id
           name
+          image_path
         }
       }
       properties {
@@ -133,7 +135,7 @@ class Graph extends Component {
           return (
             <div className="baryon-body">
               <MainQuark subject={data.Quark} />
-              <Gluons parentQuark={data.Quark} />
+              <Gluons parentQuark={data.Quark} hasSecondLevel={true} />
             </div>
           );
         }}
