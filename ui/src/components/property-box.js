@@ -40,7 +40,7 @@ const PropertyBox = props => {
   }
   return (
     <div>
-      <h2>{propertyResource.caption}</h2>
+      <h2>{propertyResource.caption_ja}</h2>
       <Card className={classes.card}>
         <List className={classes.root}>{gluonsList}</List>
       </Card>

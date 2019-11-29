@@ -97,6 +97,7 @@ const GRAPH_ON_QUARK = gql`
         caption
         caption_ja
         qpropertyGtypes {
+          caption
           caption_ja
         }
         gluons {
