@@ -5,12 +5,14 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 // component
 import MainQuark from "../components/main-quark";
+import Gluons from "../components/gluons";
 
 // GraphQL
 const GRAPH_ON_QUARK = gql`
-  query graph($name: String) {
-    graph(name: $name) {
+  query Quark($name: String) {
+    Quark(name: $name) {
       id
+      quark_type_id
       name
       description
       image_path
@@ -31,6 +33,7 @@ const GRAPH_ON_QUARK = gql`
       is_exclusive
       user_id
       gluons {
+        gluon_type_id
         active_id
         passive_id
         relation
@@ -48,6 +51,72 @@ const GRAPH_ON_QUARK = gql`
         end_accuracy
         is_momentary
       }
+      objects {
+        id
+        name
+        description
+        image_path
+        start {
+          year
+          month
+          day
+        }
+        end {
+          year
+          month
+          day
+        }
+        start_accuracy
+        end_accuracy
+        is_momentary
+        gluons {
+          relation
+          active_id
+          passive_id
+          start {
+            year
+            month
+            day
+          }
+          end {
+            year
+            month
+            day
+          }
+          start_accuracy
+          end_accuracy
+          is_momentary
+        }
+        objects {
+          name
+        }
+      }
+      properties {
+        caption
+        caption_ja
+        qpropertyGtypes {
+          caption_ja
+        }
+        gluons {
+          active_id
+          passive_id
+          object_id
+          relation
+          start {
+            year
+            month
+            day
+          }
+          end {
+            year
+            month
+            day
+          }
+          start_accuracy
+          end_accuracy
+          is_momentary
+        }
+      }
     }
   }
 `;
@@ -63,7 +132,8 @@ class Graph extends Component {
           if (error) return `Error! ${error.message}`;
           return (
             <div className="baryon-body">
-              <MainQuark subject={data.graph} />
+              <MainQuark subject={data.Quark} />
+              <Gluons parentQuark={data.Quark} />
             </div>
           );
         }}

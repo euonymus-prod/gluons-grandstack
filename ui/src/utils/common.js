@@ -17,7 +17,8 @@ class Util {
     return ret;
   }
   date2str(date, accuracy) {
-    if (!date) return "";
+    if (!date || date.year === null || date.month === null || date.day === null)
+      return "";
     let format = "";
     if (accuracy === "year") {
       format = "YYYY";
