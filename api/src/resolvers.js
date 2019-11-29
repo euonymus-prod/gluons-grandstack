@@ -120,7 +120,7 @@ export const resolvers = {
   Quark: {
     properties: (parent, params, context, info) => {
       if (!parent.labels || parent.labels.length === 0) {
-        throw Error("Wrong request");
+        throw Error("Quark.labels are required in the parent query");
       }
       return getQuarkProperties(parent.labels).map(property => {
         return {...property, gluons: parent.gluons, subject_id: parent.id}
@@ -130,11 +130,17 @@ export const resolvers = {
   },
   QuarkProperty: {
     gluons: (parent, {subject}, context, info) => {
-      console.log(parent)
+      if (!parent.gluons || parent.gluons.length === 0) {
+        throw Error("QuarkProperty.gluons are required in the parent query");
+      }
       // console.log(subject)
       // console.log(context)
-
-      parent.gluons.filter(gluon => {
+      return parent.gluons.filter(gluon => {
+        if (parent.subject_id === gluon.active_id) {
+          gluon.object = gluon.passive
+        } else if (parent.subject_id === gluon.passive_id) {
+          gluon.object = gluon.active
+        }
         let result = false
         parent.qpropertyGtypes.some(gtype => {
           if (gluon.gluon_type_id !== gtype.gluon_type_id) {
