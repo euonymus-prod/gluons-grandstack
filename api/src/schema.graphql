@@ -1,6 +1,5 @@
 type Quark {
   id: ID!
-  labels: [String]
   name: String
   en_name: String
   image_path: String
@@ -111,13 +110,11 @@ type Category {
   businesses: [Business] @relation(name: "IN_CATEGORY", direction: "IN")
 }
 
-type Mutation {
+type Query {
   Quark(name: String): Quark
     @cypher(
-      statement: "MATCH (node {name: $name}) SET node.labels = labels(node) RETURN node"
+      statement: "MATCH (node {name: $name}) RETURN node"
     )
-}
-type Query {
   quarks(first: Int = 100): [Quark]
     @cypher(
       statement: "MATCH (node) RETURN node ORDER BY (CASE node.created WHEN null THEN {} ELSE node.created END) DESC"

@@ -1,5 +1,5 @@
 # NOTE: gluons.active_id, gluons.passive_id are required to get properties.gluons.object_id
-mutation{
+query{
   Quark(name:"眞弓聡"){
     id
     name
