@@ -137,9 +137,9 @@ export const resolvers = {
       // console.log(context)
       return parent.gluons.filter(gluon => {
         if (parent.subject_id === gluon.active_id) {
-          gluon.object = gluon.passive
+          gluon.object_id = gluon.passive_id
         } else if (parent.subject_id === gluon.passive_id) {
-          gluon.object = gluon.active
+          gluon.object_id = gluon.active_id
         }
         let result = false
         parent.qpropertyGtypes.some(gtype => {

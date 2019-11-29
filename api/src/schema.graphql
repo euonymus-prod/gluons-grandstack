@@ -50,15 +50,7 @@ type Gluon {
   gluon_type_id: Int
   created: _Neo4jDateTime
   modified: _Neo4jDateTime
-  active: Quark
-    @cypher(
-      statement: "MATCH (active)-[this]-(passive) RETURN active"
-    )
-  passive: Quark
-    @cypher(
-      statement: "MATCH (active)-[this]-(passive) RETURN passive"
-    )
-  object: Quark
+  object_id: ID
 }
 
 type QuarkProperty {

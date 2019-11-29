@@ -1,0 +1,39 @@
+# NOTE: gluons.active_id, gluons.passive_id are required to get properties.gluons.object_id
+mutation{
+  Quark(name:"眞弓聡"){
+    id
+    name
+    start {
+      year
+    }
+    labels
+    gluons {
+      relation
+      active_id
+      passive_id
+      gluon_type_id
+    }
+    objects {
+      id
+      name
+      gluons {
+        relation
+        active_id
+        passive_id
+      }
+      objects {
+        name
+      }
+    }
+    properties {
+      caption_ja
+      qpropertyGtypes {
+        caption_ja
+      }
+      gluons {
+        object_id
+        relation
+      }
+    }
+  }
+}
