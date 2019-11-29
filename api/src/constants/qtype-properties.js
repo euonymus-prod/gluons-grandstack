@@ -1,5 +1,5 @@
 export const qtypePropertiesData = {
-  Person :[
+  2 :[
     { property_id: 1 , is_required: false }, 
     { property_id: 2 , is_required: false }, 
     { property_id: 3 , is_required: false }, 
@@ -18,7 +18,7 @@ export const qtypePropertiesData = {
     { property_id: 48 , is_required: false }, 
     { property_id: 50 , is_required: false }, 
   ],
-  CreativeWork :[
+  3 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -28,7 +28,7 @@ export const qtypePropertiesData = {
     { property_id: 21 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  WebSite :[
+  4 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -38,7 +38,7 @@ export const qtypePropertiesData = {
     { property_id: 21 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  Book :[
+  5 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -48,7 +48,7 @@ export const qtypePropertiesData = {
     { property_id: 21 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  PublicationIssue :[
+  6 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -58,7 +58,7 @@ export const qtypePropertiesData = {
     { property_id: 21 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  Article :[
+  7 :[
     { property_id: 16 , is_required: true }, 
     { property_id: 17 , is_required: false }, 
     { property_id: 18 , is_required: true }, 
@@ -67,7 +67,7 @@ export const qtypePropertiesData = {
     { property_id: 21 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  SoftwareApplication :[
+  8 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -77,7 +77,7 @@ export const qtypePropertiesData = {
     { property_id: 21 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  Game :[
+  9 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -87,7 +87,7 @@ export const qtypePropertiesData = {
     { property_id: 21 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  Movie :[
+  10 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -101,7 +101,7 @@ export const qtypePropertiesData = {
     { property_id: 25 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  Painting :[
+  11 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -111,7 +111,7 @@ export const qtypePropertiesData = {
     { property_id: 21 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  Photograph :[
+  12 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -121,7 +121,7 @@ export const qtypePropertiesData = {
     { property_id: 21 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  MusicPlaylist :[
+  13 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -132,7 +132,7 @@ export const qtypePropertiesData = {
     { property_id: 26 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  MusicAlbum :[
+  14 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -144,7 +144,7 @@ export const qtypePropertiesData = {
     { property_id: 27 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  MusicRecording :[
+  15 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -156,7 +156,7 @@ export const qtypePropertiesData = {
     { property_id: 28 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  CreativeWorkSeries :[
+  16 :[
     { property_id: 15 , is_required: false }, 
     { property_id: 16 , is_required: false }, 
     { property_id: 17 , is_required: false }, 
@@ -166,7 +166,7 @@ export const qtypePropertiesData = {
     { property_id: 21 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  Event :[
+  17 :[
     { property_id: 16 , is_required: false }, 
     { property_id: 22 , is_required: false }, 
     { property_id: 29 , is_required: false }, 
@@ -175,7 +175,7 @@ export const qtypePropertiesData = {
     { property_id: 32 , is_required: false }, 
     { property_id: 39 , is_required: false }, 
   ],
-  Organization :[
+  22 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -190,7 +190,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  Corporation :[
+  23 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -205,7 +205,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  EducationalOrganization :[
+  24 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -220,7 +220,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  CollegeOrUniversity :[
+  25 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -235,7 +235,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  ElementarySchool :[
+  26 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -250,7 +250,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  HighSchool :[
+  27 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -265,7 +265,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  MiddleSchool :[
+  28 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -280,7 +280,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  Preschool :[
+  29 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -295,7 +295,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  School :[
+  30 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -310,7 +310,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  GovernmentOrganization :[
+  31 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -325,7 +325,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  LocalBusiness :[
+  32 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -340,7 +340,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  Store :[
+  33 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -355,7 +355,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  MedicalOrganization :[
+  34 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -370,7 +370,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  Hospital :[
+  35 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -385,7 +385,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  NGO :[
+  36 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -400,7 +400,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  PerformingGroup :[
+  37 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -415,7 +415,7 @@ export const qtypePropertiesData = {
     { property_id: 42 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  MusicGroup :[
+  38 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 26 , is_required: false }, 
@@ -432,7 +432,7 @@ export const qtypePropertiesData = {
     { property_id: 43 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  SportsOrganization :[
+  39 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -448,7 +448,7 @@ export const qtypePropertiesData = {
     { property_id: 44 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  SportsTeam :[
+  40 :[
     { property_id: 11 , is_required: false }, 
     { property_id: 13 , is_required: false }, 
     { property_id: 33 , is_required: false }, 
@@ -466,40 +466,40 @@ export const qtypePropertiesData = {
     { property_id: 46 , is_required: false }, 
     { property_id: 49 , is_required: false }, 
   ],
-  Place :[
+  41 :[
     { property_id: 37 , is_required: false }, 
   ],
-  Accommodation :[
+  42 :[
     { property_id: 37 , is_required: false }, 
   ],
-  AdministrativeArea :[
+  43 :[
     { property_id: 37 , is_required: false }, 
   ],
-  City :[
+  44 :[
     { property_id: 37 , is_required: false }, 
   ],
-  Country :[
+  45 :[
     { property_id: 37 , is_required: false }, 
   ],
-  State :[
+  46 :[
     { property_id: 37 , is_required: false }, 
   ],
-  CivicStructure :[
+  47 :[
     { property_id: 37 , is_required: false }, 
   ],
-  Landform :[
+  48 :[
     { property_id: 37 , is_required: false }, 
   ],
-  LandmarksOrHistoricalBuildings :[
+  49 :[
     { property_id: 37 , is_required: false }, 
   ],
-  Residence :[
+  50 :[
     { property_id: 37 , is_required: false }, 
   ],
-  TouristAttrcaction :[
+  51 :[
     { property_id: 37 , is_required: false }, 
   ],
-  Product :[
+  52 :[
     { property_id: 34 , is_required: false }, 
     { property_id: 47 , is_required: false },
   ]

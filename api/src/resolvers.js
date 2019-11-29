@@ -1,5 +1,6 @@
 import _ from 'lodash'
 // import { neo4jgraphql } from 'neo4j-graphql-js'
+import { quarkLabelsData } from './constants/quark-labels'
 import { gluonTypesData } from './constants/gluon-types'
 import { quarkPropertiesData } from './constants/quark-properties'
 import { qtypePropertiesData } from './constants/qtype-properties'
@@ -34,8 +35,8 @@ const revertDirection = (direction) => {
   return false
 }
 
-const getQuarkProperties = (labels) => {
-  const property_ids = _.map(qtypePropertiesData[labels[0]], 'property_id')
+const getQuarkProperties = (quark_type_id) => {
+  const property_ids = _.map(qtypePropertiesData[quark_type_id], 'property_id')
   return getQuarkPropertiesByIds(property_ids)
 }
 const getQuarkPropertiesByIds = (ids) => {
@@ -119,10 +120,10 @@ const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, conte
 export const resolvers = {
   Quark: {
     properties: (parent, params, context, info) => {
-      if (!parent.labels || parent.labels.length === 0) {
-        throw Error("Quark.labels are required in the parent query");
+      if (!parent.quark_type_id) {
+        throw Error("Quark.quark_type_id are required in the parent query");
       }
-      return getQuarkProperties(parent.labels).map(property => {
+      return getQuarkProperties(parent.quark_type_id).map(property => {
         return {...property, gluons: parent.gluons, subject_id: parent.id}
       })
       // return [{caption:'hoge'}]

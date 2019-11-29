@@ -6,13 +6,7 @@ mutation{
     start {
       year
     }
-    labels
-    gluons {
-      relation
-      active_id
-      passive_id
-      gluon_type_id
-    }
+    quark_type_id
     objects {
       id
       name
@@ -24,6 +18,12 @@ mutation{
       objects {
         name
       }
+    }
+    gluons {
+      relation
+      active_id
+      passive_id
+      gluon_type_id
     }
     properties {
       caption_ja
