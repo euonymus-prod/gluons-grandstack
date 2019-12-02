@@ -64,7 +64,7 @@ type QuarkProperty {
 }
 
 type QpropertyGtype {
-  gluon_type: String!
+  gluon_type_id: String!
   direction: Int
   caption: String
   caption_ja: String
