@@ -21,6 +21,11 @@ const app = express();
 
 const schema = makeAugmentedSchema({
   typeDefs,
+  config: {
+    auth: {
+      isAuthenticated: true
+    }
+  },
   resolvers
 });
 
