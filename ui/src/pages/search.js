@@ -1,5 +1,6 @@
 // react
 import React, { Component } from "react";
+import { withAuthUser } from "../providers/session";
 // GraphQL
 import gql from "graphql-tag";
 
@@ -37,6 +38,9 @@ class Search extends Component {
   }
 
   render() {
+    if (this.props.authUser) {
+      console.log(this.props.authUser["idToken"]);
+    }
     const { keyword } = this.props.match.params;
     const variables = {
       first: rowsPerPage,
@@ -51,4 +55,4 @@ class Search extends Component {
     );
   }
 }
-export default Search;
+export default withAuthUser(Search);

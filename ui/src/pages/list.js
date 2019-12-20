@@ -38,7 +38,7 @@ class Search extends Component {
   }
 
   render() {
-    console.log(this.props.authUser);
+    // console.log(this.props.authUser);
     const variables = {
       first: rowsPerPage
     };
