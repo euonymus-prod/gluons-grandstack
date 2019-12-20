@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import { withLastLocation } from "react-router-last-location";
 import { withFirebase } from "../providers/firebase";
 // Material UI
 import TextField from "@material-ui/core/TextField";
@@ -28,7 +29,16 @@ class LoginFormBase extends React.Component {
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push("/logged-in");
+        const { lastLocation } = this.props;
+        let redirectLocation = "/";
+        if (
+          lastLocation &&
+          lastLocation.pathname !== "/signup" &&
+          lastLocation.pathname !== "/login"
+        ) {
+          redirectLocation = lastLocation;
+        }
+        this.props.history.push(redirectLocation);
       })
       .catch(error => {
         this.setState({ error });
@@ -78,7 +88,7 @@ class LoginFormBase extends React.Component {
   }
 }
 
-const LoginForm = withRouter(withFirebase(LoginFormBase));
+const LoginForm = withRouter(withFirebase(withLastLocation(LoginFormBase)));
 
 export default Login;
 

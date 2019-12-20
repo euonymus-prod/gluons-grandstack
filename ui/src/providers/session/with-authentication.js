@@ -7,12 +7,18 @@ const withAuthentication = Component => {
   class WithAuthentication extends React.Component {
     state = {
       // authUser: null
-      authUser: JSON.parse(localStorage.getItem(LOCALSTORAGE.AUTH_USER))
+      authUser: JSON.parse(localStorage.getItem(LOCALSTORAGE.AUTH_USER)),
+      firebaseIdToken: null
     };
 
     componentDidMount() {
       this.listener = this.props.firebase.onAuthUserListener(
         authUser => {
+          // Get Firebase ID Token
+          this.props.firebase.doGetIdToken().then(idToken => {
+            this.setState({ firebaseIdToken: idToken });
+          });
+
           // NOTE: Bool flag authUser.isAnonymous is automatically set by firebase authentication
           if (!authUser.isAnonymous) {
             // Note: Important!
@@ -39,6 +45,7 @@ const withAuthentication = Component => {
     }
 
     render() {
+      // console.log(this.state.firebaseIdToken)
       return (
         <AuthUserContext.Provider value={this.state.authUser}>
           <Component {...this.props} />
