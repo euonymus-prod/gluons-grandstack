@@ -5,6 +5,8 @@ import express from "express";
 import { v1 as neo4j } from "neo4j-driver";
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 import dotenv from "dotenv";
+// import our custom directive classes
+import { IsAuthenticatedDirective } from "./directives";
 
 // set environment variables from ../.env
 dotenv.config();
@@ -26,6 +28,10 @@ const schema = makeAugmentedSchema({
   //     isAuthenticated: true
   //   }
   // },
+  // pass our custom directive classes when we create the GraphQL schema
+  schemaDirectives: {
+    isAuthenticated: IsAuthenticatedDirective,
+  },
   resolvers
 });
 
@@ -49,7 +55,12 @@ const driver = neo4j.driver(
  * generated resolvers to connect to the database.
  */
 const server = new ApolloServer({
-  context: { driver },
+  context: ({req}) => {
+    return {
+      headers: req.headers,
+      driver
+    }
+  },
   schema: schema,
   introspection: true,
   playground: true
