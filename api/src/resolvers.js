@@ -40,7 +40,7 @@ const getQuarkProperties = (quark_type_id) => {
   return getQuarkPropertiesByIds(property_ids)
 }
 const getQuarkPropertiesByIds = (ids) => {
-  const otherProperty = { id: ID_TYPE.NONE, caption: 'relations', caption_ja: '関係' }
+  const otherProperty = getOtherQuarkProperties()
   let selectedProperties = []
   if (ids.length === 0) {
     // return all
@@ -59,27 +59,32 @@ const getQuarkPropertiesByIds = (ids) => {
   selectedProperties.push({ qpropertyGtypes: relatedQpropertyGtypes, ...otherProperty })
   return selectedProperties
 }
+const getOtherQuarkProperties = () => {
+  return { id: ID_TYPE.NONE, caption: 'relations', caption_ja: '関係' }
+}
 
-const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds) => {
+const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds = []) => {
   let selectedGtypes = []
   // for other relaiton
   if (quarkPropertyId === null) {
     const modifiedGtypes = {}
     avoidQuarkPropertyIds.forEach(quarkPropertyId => {
-      qpropertyGtypesData[quarkPropertyId].forEach(gtypes => {
-        const direction = revertDirection(gtypes.direction)
-        if (direction && (modifiedGtypes[gtypes.gluon_type_id] !== false)) {
-          if (modifiedGtypes[gtypes.gluon_type_id]) {
-            if (modifiedGtypes[gtypes.gluon_type_id].direction === gtypes.direction) {
-              modifiedGtypes[gtypes.gluon_type_id] = false
+      if (qpropertyGtypesData[quarkPropertyId]) {
+        qpropertyGtypesData[quarkPropertyId].forEach(gtypes => {
+          const direction = revertDirection(gtypes.direction)
+          if (direction && (modifiedGtypes[gtypes.gluon_type_id] !== false)) {
+            if (modifiedGtypes[gtypes.gluon_type_id]) {
+              if (modifiedGtypes[gtypes.gluon_type_id].direction === gtypes.direction) {
+                modifiedGtypes[gtypes.gluon_type_id] = false
+              }
+            } else {
+              modifiedGtypes[gtypes.gluon_type_id] = { ...gtypes, direction }
             }
           } else {
-            modifiedGtypes[gtypes.gluon_type_id] = { ...gtypes, direction }
+            modifiedGtypes[gtypes.gluon_type_id] = false
           }
-        } else {
-          modifiedGtypes[gtypes.gluon_type_id] = false
-        }
-      })
+        })
+      }
     })
 
     // return all
@@ -137,14 +142,19 @@ export const resolvers = {
       // console.log(subject)
       // console.log(context)
       return parent.gluons.filter(gluon => {
+if (parent.id === ID_TYPE.NONE) { console.log('gluon: ', gluon) }
         if (parent.subject_id === gluon.active_id) {
           gluon.object_id = gluon.passive_id
         } else if (parent.subject_id === gluon.passive_id) {
           gluon.object_id = gluon.active_id
         }
+      if (parent.id === ID_TYPE.NONE) {
+      }
         let result = false
         parent.qpropertyGtypes.some(gtype => {
           if (gluon.gluon_type_id !== gtype.gluon_type_id) {
+if (parent.id === ID_TYPE.NONE) { console.log('gluon.gluon_type_id: ', gluon.gluon_type_id) }
+if (parent.id === ID_TYPE.NONE) { console.log('gtype.gluon_type_id: ', gtype.gluon_type_id) }
             return false
           }
           if (gtype.direction === DIRECTION.A2B) {
