@@ -1,5 +1,6 @@
 // react
 import React, { Component } from "react";
+import { withAuthUser } from "../providers/session";
 // GraphQL
 import gql from "graphql-tag";
 
@@ -37,6 +38,7 @@ class Search extends Component {
   }
 
   render() {
+    console.log(this.props.authUser);
     const variables = {
       first: rowsPerPage
     };
@@ -49,4 +51,4 @@ class Search extends Component {
     );
   }
 }
-export default Search;
+export default withAuthUser(Search);
