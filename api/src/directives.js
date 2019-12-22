@@ -1,6 +1,6 @@
 import { SchemaDirectiveVisitor } from "graphql-tools";
-import { GraphQLDirective } from "graphql";
-import { AuthorizationError, DirectiveLocation } from 'apollo-errors';
+import { GraphQLDirective, DirectiveLocation } from "graphql";
+import { AuthorizationError } from 'apollo-errors';
 
 export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
 
