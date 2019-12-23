@@ -8,7 +8,8 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
   static getDirectiveDeclaration(directiveName, schema) {
     return new GraphQLDirective({
       name: "isAuthenticated",
-      locations: [DirectiveLocation.FIELD_DEFINITION, DirectiveLocation.OBJECT]
+      // locations: [DirectiveLocation.FIELD_DEFINITION, DirectiveLocation.OBJECT]
+      locations: [DirectiveLocation.FIELD_DEFINITION]
     });
   }
   

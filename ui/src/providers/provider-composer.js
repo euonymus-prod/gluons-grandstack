@@ -25,11 +25,11 @@ const httpLink = createHttpLink({
 
 // create an Apollo Link to add our auth token to each request
 const authLink = setContext((_, { headers }) => {
-  const token = JSON.parse(localStorage.getItem(LOCALSTORAGE.AUTH_USER));
+  const authUser = JSON.parse(localStorage.getItem(LOCALSTORAGE.AUTH_USER));
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : ""
+      authorization: authUser ? `Bearer ${authUser["idToken"]}` : ""
     }
   };
 });
