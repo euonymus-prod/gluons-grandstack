@@ -1,3 +1,5 @@
+directive @isAuthenticated on OBJECT | FIELD_DEFINITION
+
 type Quark {
   id: ID!
   name: String
@@ -115,7 +117,7 @@ type Query {
     @cypher(
       statement: "MATCH (node {name: $name}) RETURN node"
     )
-  quarks(first: Int = 100): [Quark]
+  quarks(first: Int = 100): [Quark] @isAuthenticated
     @cypher(
       statement: "MATCH (node) RETURN node ORDER BY (CASE node.created WHEN null THEN {} ELSE node.created END) DESC"
     )

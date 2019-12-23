@@ -142,7 +142,7 @@ export const resolvers = {
       // console.log(subject)
       // console.log(context)
       return parent.gluons.filter(gluon => {
-if (parent.id === ID_TYPE.NONE) { console.log('gluon: ', gluon) }
+// if (parent.id === ID_TYPE.NONE) { console.log('gluon: ', gluon) }
         if (parent.subject_id === gluon.active_id) {
           gluon.object_id = gluon.passive_id
         } else if (parent.subject_id === gluon.passive_id) {
@@ -153,8 +153,8 @@ if (parent.id === ID_TYPE.NONE) { console.log('gluon: ', gluon) }
         let result = false
         parent.qpropertyGtypes.some(gtype => {
           if (gluon.gluon_type_id !== gtype.gluon_type_id) {
-if (parent.id === ID_TYPE.NONE) { console.log('gluon.gluon_type_id: ', gluon.gluon_type_id) }
-if (parent.id === ID_TYPE.NONE) { console.log('gtype.gluon_type_id: ', gtype.gluon_type_id) }
+// if (parent.id === ID_TYPE.NONE) { console.log('gluon.gluon_type_id: ', gluon.gluon_type_id) }
+// if (parent.id === ID_TYPE.NONE) { console.log('gtype.gluon_type_id: ', gtype.gluon_type_id) }
             return false
           }
           if (gtype.direction === DIRECTION.A2B) {
