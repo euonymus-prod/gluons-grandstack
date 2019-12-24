@@ -182,7 +182,9 @@ RETURN value.subject as subject, value.object as object, value.gluon as gluon
       return []
     }
   },
-  Query: { qpropertyGtypes },
+  Query: {
+    qpropertyGtypes
+  },
 }
 
 // 
