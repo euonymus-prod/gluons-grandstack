@@ -1,4 +1,5 @@
 directive @isAuthenticated on OBJECT | FIELD_DEFINITION
+directive @hasRole(roles: [String]) on OBJECT | FIELD_DEFINITION
 
 type Quark {
   id: ID!
@@ -112,6 +113,12 @@ type Category {
   businesses: [Business] @relation(name: "IN_CATEGORY", direction: "IN")
 }
 
+enum Role {
+  reader
+  user
+  admin
+}
+
 type Query {
   Quark(name: String): Quark
     @cypher(
@@ -125,7 +132,7 @@ type Query {
     @cypher(
       statement: "MATCH (node) WHERE node.name CONTAINS $substring RETURN node ORDER BY (CASE node.created WHEN null THEN {} ELSE node.created END) DESC"
     )
-  searchQuarks(first: Int = 100, keyword: String): [Quark]
+  searchQuarks(first: Int = 100, keyword: String): [Quark] @hasRole(roles:[admin, user])
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node RETURN node"
     )
