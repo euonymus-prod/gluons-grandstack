@@ -120,7 +120,7 @@ enum Role {
 }
 
 type Query {
-  Quark(name: String): Quark
+  Quark(name: String): Quark @hasRole(roles:[admin, user, reader])
     @cypher(
       statement: "MATCH (node {name: $name}) RETURN node"
     )
@@ -132,7 +132,7 @@ type Query {
     @cypher(
       statement: "MATCH (node) WHERE node.name CONTAINS $substring RETURN node ORDER BY (CASE node.created WHEN null THEN {} ELSE node.created END) DESC"
     )
-  searchQuarks(first: Int = 100, keyword: String): [Quark] @hasRole(roles:[admin, user])
+  searchQuarks(first: Int = 100, keyword: String): [Quark]
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node RETURN node"
     )

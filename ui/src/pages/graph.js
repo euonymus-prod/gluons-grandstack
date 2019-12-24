@@ -31,6 +31,7 @@ const GRAPH_ON_QUARK = gql`
       is_momentary
       url
       is_exclusive
+      is_private
       user_id
       gluons {
         gluon_type_id
@@ -69,6 +70,7 @@ const GRAPH_ON_QUARK = gql`
         start_accuracy
         end_accuracy
         is_momentary
+        is_private
         gluons {
           relation
           active_id

@@ -36,7 +36,7 @@ class Firebase {
       return false
     }
     const user = await this.db.collection('users').doc(decoded.uid).get()
-    return user.data()
+    return { ...decoded, ...user.data() }
   }
 
   isInitialized() {
