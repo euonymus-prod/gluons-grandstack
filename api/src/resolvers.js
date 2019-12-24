@@ -125,7 +125,9 @@ const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, conte
 export const resolvers = {
   Quark: {
     properties: (parent, params, context, info) => {
-      if (!parent.quark_type_id) {
+      if (parent.quark_type_id === null) {
+        return [{...getOtherQuarkProperties(), gluons: parent.gluons, subject_id: parent.id, qpropertyGtypes: null}]
+      } else if (!parent.quark_type_id) {
         throw Error("Quark.quark_type_id are required in the parent query");
       }
       return getQuarkProperties(parent.quark_type_id).map(property => {
@@ -139,39 +141,38 @@ export const resolvers = {
       if (!parent.gluons || parent.gluons.length === 0) {
         throw Error("QuarkProperty.gluons are required in the parent query");
       }
-      // console.log(subject)
-      // console.log(context)
       return parent.gluons.filter(gluon => {
-// if (parent.id === ID_TYPE.NONE) { console.log('gluon: ', gluon) }
         if (parent.subject_id === gluon.active_id) {
           gluon.object_id = gluon.passive_id
         } else if (parent.subject_id === gluon.passive_id) {
           gluon.object_id = gluon.active_id
         }
-      if (parent.id === ID_TYPE.NONE) {
-      }
         let result = false
-        parent.qpropertyGtypes.some(gtype => {
-          if (gluon.gluon_type_id !== gtype.gluon_type_id) {
-// if (parent.id === ID_TYPE.NONE) { console.log('gluon.gluon_type_id: ', gluon.gluon_type_id) }
-// if (parent.id === ID_TYPE.NONE) { console.log('gtype.gluon_type_id: ', gtype.gluon_type_id) }
-            return false
-          }
-          if (gtype.direction === DIRECTION.A2B) {
-            if (parent.subject_id === gluon.active_id) {
+        if (parent.qpropertyGtypes === null) {
+          result = true
+        } else {
+          parent.qpropertyGtypes.some(gtype => {
+            if ( (parent.id === ID_TYPE.NONE) && (gluon.gluon_type_id === null) ) {
+              result = true
+            } else if (gluon.gluon_type_id !== gtype.gluon_type_id) {
+              return false
+            }
+            if (gtype.direction === DIRECTION.A2B) {
+              if (parent.subject_id === gluon.active_id) {
+                result = true
+              }
+            } else if (gtype.direction === DIRECTION.B2A) {
+              if (parent.subject_id === gluon.passive_id) {
+                result = true
+              }
+            } else {
               result = true
             }
-          } else if (gtype.direction === DIRECTION.B2A) {
-            if (parent.subject_id === gluon.passive_id) {
-              result = true
+            if (result) {
+              return true
             }
-          } else {
-            result = true
-          }
-          if (result) {
-            return true
-          }
-        })
+          })
+        }
         return result
       })
       /*
