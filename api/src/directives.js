@@ -2,7 +2,7 @@ import { SchemaDirectiveVisitor } from "graphql-tools";
 import { GraphQLDirective, DirectiveLocation, defaultFieldResolver } from "graphql";
 import { AuthenticationError } from 'apollo-server';
 // import * as admin from 'firebase-admin';
-import * as Firebase from './firebase';
+import firebaseInstance from './firebase';
 
 
 // const serviceAccount = require("../SAKey4dev.json");
@@ -38,15 +38,18 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
         //   credential: admin.credential.cert(serviceAccount),
         //   databaseURL: process.env.FIREBASE_DATABASE_URL
         // });
-        const decoded = Firebase.verifyIdToken(idToken)
+        const decoded = firebaseInstance.verifyIdToken(idToken).catch( error => {
+          // Handle error
+          throw error
+        })
         // const decoded = await admin.auth().verifyIdToken(idToken).catch( error => {
         //   // Handle error
         //   throw new AuthenticationError("ID TOKEN is not valid" );
         // })
         // console.log(decoded.uid)
         return resolve.apply(this, args);
-      } catch (err) {
-        throw err
+      } catch (error) {
+        throw error
       }
     };
   }

@@ -1,8 +1,8 @@
 import * as admin from 'firebase-admin';
 const serviceAccount = require("../SAKey4dev.json");
 
+// NOTE: This class is using Singleton Pattern
 class Firebase {
-
   constructor() {
     this._data = {
       isVelified: null
@@ -18,7 +18,6 @@ class Firebase {
       const decoded = await admin.auth().verifyIdToken(idToken).catch( error => {
         // Handle error
         this._data['isVelified'] = false
-        throw new AuthenticationError("ID TOKEN is not valid" );
       })
       this._data['isVelified'] = true
     }
