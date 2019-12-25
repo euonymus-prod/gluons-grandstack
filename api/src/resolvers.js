@@ -122,19 +122,26 @@ const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, conte
   return getQpropertyGtypes(quarkPropertyId, avoidQuarkPropertyIds)
 }
 
+const quarkProertiesResolver = (parent, params, context, info) => {
+  if (parent.quark_type_id === null) {
+    return [{...getOtherQuarkProperties(), gluons: parent.gluons, subject_id: parent.id, qpropertyGtypes: null}]
+  } else if (!parent.quark_type_id) {
+    throw Error("Quark.quark_type_id are required in the parent query");
+  }
+  return getQuarkProperties(parent.quark_type_id).map(property => {
+    return {...property, gluons: parent.gluons, subject_id: parent.id}
+  })
+  // return [{caption:'hoge'}]
+}
 export const resolvers = {
   Quark: {
-    properties: (parent, params, context, info) => {
-      if (parent.quark_type_id === null) {
-        return [{...getOtherQuarkProperties(), gluons: parent.gluons, subject_id: parent.id, qpropertyGtypes: null}]
-      } else if (!parent.quark_type_id) {
-        throw Error("Quark.quark_type_id are required in the parent query");
-      }
-      return getQuarkProperties(parent.quark_type_id).map(property => {
-        return {...property, gluons: parent.gluons, subject_id: parent.id}
-      })
-      // return [{caption:'hoge'}]
-    }
+    properties: quarkProertiesResolver
+  },
+  PublicQuark: {
+    properties: quarkProertiesResolver
+  },
+  LoggedInQuark: {
+    properties: quarkProertiesResolver
   },
   QuarkProperty: {
     gluons: (parent, {subject}, context, info) => {

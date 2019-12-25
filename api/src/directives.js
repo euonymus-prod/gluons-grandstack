@@ -97,6 +97,9 @@ function hasPermission(result, userRoles, fb_uid = false) {
   if (userRoles === ROLES.ADMIN) {
     return true
   }
+  if (!result) {
+    return true
+  }
   if (!result.is_private) {
     return true
   }
