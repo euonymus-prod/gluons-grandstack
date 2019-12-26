@@ -143,6 +143,9 @@ export const resolvers = {
   LoggedInQuark: {
     properties: quarkProertiesResolver
   },
+  AdminQuark: {
+    properties: quarkProertiesResolver
+  },
   QuarkProperty: {
     gluons: (parent, {subject}, context, info) => {
       if (!parent.gluons || parent.gluons.length === 0) {
