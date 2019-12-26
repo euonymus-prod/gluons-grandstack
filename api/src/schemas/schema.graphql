@@ -70,29 +70,45 @@ enum Role {
 }
 
 type Query {
-  Quark(name: String): PublicQuark @hasRole(roles:[admin, user, reader])
+  quark(name: String): PublicQuark
     @cypher(
       statement: "MATCH (node {name: $name}) WHERE <%= cypherWherePublic %> RETURN node"
     )
-  LoggedInQuark(name: String, user_id: Int): LoggedInQuark @hasRole(roles:[admin, user])
+  loggedInQuark(name: String, user_id: Int): LoggedInQuark @hasRole(roles:[admin, user])
     @cypher(
       statement: "MATCH (node {name: $name}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
     )
-  AdminQuark(name: String, user_id: Int): AdminQuark @hasRole(roles:[admin])
+  adminQuark(name: String): AdminQuark @hasRole(roles:[admin])
     @cypher(
       statement: "MATCH (node {name: $name}) RETURN node"
     )
-  quarks(first: Int = 100): [Quark] @isAuthenticated
+  quarks(first: Int = 100): [PublicQuark]
     @cypher(
-      statement: "MATCH (node) RETURN node ORDER BY (CASE node.created WHEN null THEN {} ELSE node.created END) DESC"
+      statement: "MATCH (node) WHERE <%= cypherWherePublic %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
+    )
+  loggedInQuarks(first: Int = 100, user_id: Int): [LoggedInQuark] @hasRole(roles:[admin, user])
+    @cypher(
+      statement: "MATCH (node) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
+    )
+  adminQuarks(first: Int = 100): [AdminQuark] @hasRole(roles:[admin])
+    @cypher(
+      statement: "MATCH (node) RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
+    )
+  searchQuarks(first: Int = 100, keyword: String): [PublicQuark]
+    @cypher(
+      statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node WHERE <%= cypherWherePublic %> RETURN node"
+    )
+  loggedInSearchQuarks(first: Int = 100, keyword: String, user_id: Int): [LoggedInQuark] @hasRole(roles:[admin, user])
+    @cypher(
+      statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
+    )
+  adminSearchQuarks(first: Int = 100, keyword: String): [AdminQuark] @hasRole(roles:[admin])
+    @cypher(
+      statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node RETURN node"
     )
   quarksBySubstring(first: Int = 100, substring: String): [Quark]
     @cypher(
-      statement: "MATCH (node) WHERE node.name CONTAINS $substring RETURN node ORDER BY (CASE node.created WHEN null THEN {} ELSE node.created END) DESC"
-    )
-  searchQuarks(first: Int = 100, keyword: String): [Quark]
-    @cypher(
-      statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node RETURN node"
+      statement: "MATCH (node) WHERE node.name CONTAINS $substring RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
   quarkProperties(ids: [Int] = []): [QuarkProperty]
   qpropertyGtypes(quarkPropertyId: Int = null, avoidQuarkPropertyIds: [Int] = []): [QpropertyGtype]

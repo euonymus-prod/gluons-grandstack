@@ -11,4 +11,7 @@ export class CypherBuilder {
   orderByStartDesc(relation = 'relation', object = 'object') {
     return `(CASE ${relation}.start WHEN null THEN {} ELSE ${relation}.start END) DESC, (CASE ${object}.start WHEN null THEN {} ELSE ${object}.start END) DESC`
   }
+  orderByCreatedDesc(node = 'node') {
+    return `(CASE ${node}.created WHEN null THEN {} ELSE ${node}.created END) DESC`
+  }
 }
