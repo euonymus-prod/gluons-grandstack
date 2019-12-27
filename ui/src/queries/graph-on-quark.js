@@ -69,7 +69,7 @@ const queryQuarkCompiled = _.template(`
     }
   }
 `);
-class QueryQuark {
+class GraphOnQuark {
   constructor(queryName, user_id = null) {
     let onlyUserIdParam = "";
     let addingUserIdParam = "";
@@ -83,4 +83,4 @@ class QueryQuark {
     );
   }
 }
-export default QueryQuark;
+export default GraphOnQuark;

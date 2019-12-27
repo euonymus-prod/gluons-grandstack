@@ -3,7 +3,7 @@ import React, { Component } from "react";
 // GraphQL
 import { Query } from "react-apollo";
 import { withAuthUser } from "../providers/session";
-import QueryQuark from "../queries/graph-on-quark";
+import GraphOnQuark from "../queries/graph-on-quark";
 // component
 import MainQuark from "../components/main-quark";
 import Gluons from "../components/gluons";
@@ -33,7 +33,7 @@ class Graph extends Component {
     const variables = {
       name: this.props.match.params.quark_name
     };
-    const GRAPH_ON_QUARK = new QueryQuark(queryName, user_id);
+    const GRAPH_ON_QUARK = new GraphOnQuark(queryName, user_id);
     return (
       <Query query={GRAPH_ON_QUARK} variables={variables}>
         {({ loading, error, data }) => {
