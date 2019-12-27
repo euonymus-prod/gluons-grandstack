@@ -59,7 +59,7 @@ a {
 .baryon-grid {
   float: left;
 }
-@media (max-width: 1080px) {
+@media (max-width: 970px) {
   .baryon-grid {
     float: none;
   }
@@ -67,26 +67,42 @@ a {
     margin-top: 20px;
   }
 }
-@media (min-width: 1080px) {
+@media (min-width: 970px) {
   .baryon-body {
     padding: 20px;
-  }
-  .baryon-grid {
-    min-width: 350px;
   }
   .baryon-subject {
     margin-right: 20px;
   }
   .baryon-subject {
-    width: 350px;
+    width: 200px;
   }
   .baryon-properties {
-    width: 600px;
+    width: 630px;
   }
 }
-@media (min-width: 1230px) {
+@media (min-width: 1080px) {
+  .baryon-subject {
+    width: 250px;
+  }
+  .baryon-properties {
+    width: 700px;
+  }
+}
+@media (min-width: 1150px) {
+  .baryon-subject {
+    width: 250px;
+  }
   .baryon-properties {
     width: 750px;
+  }
+}
+@media (min-width: 1240px) {
+  .baryon-subject {
+    width: 300px;
+  }
+  .baryon-properties {
+    width: 800px;
   }
 }
 

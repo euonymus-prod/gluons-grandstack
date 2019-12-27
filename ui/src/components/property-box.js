@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   root: {
     // backgroundColor: theme.palette.background.paper,
     // backgroundColor: '#e6e6f5'
-    backgroundColor: "#666666"
+    backgroundColor: "#e1e1e1"
   }
 });
 
