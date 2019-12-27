@@ -66,6 +66,9 @@ a {
   .baryon-properties {
     margin-top: 20px;
   }
+  .baryon-properties h2 {
+    padding-left: 16px;
+  }
 }
 @media (min-width: 970px) {
   .baryon-body {
@@ -75,34 +78,34 @@ a {
     margin-right: 20px;
   }
   .baryon-subject {
-    width: 200px;
+    width: 216px;
   }
   .baryon-properties {
-    width: 630px;
+    width: 646px;
   }
 }
 @media (min-width: 1080px) {
   .baryon-subject {
-    width: 250px;
+    width: 266px;
   }
   .baryon-properties {
-    width: 700px;
+    width: 716px;
   }
 }
 @media (min-width: 1150px) {
   .baryon-subject {
-    width: 250px;
+    width: 266px;
   }
   .baryon-properties {
-    width: 750px;
+    width: 766px;
   }
 }
 @media (min-width: 1240px) {
   .baryon-subject {
-    width: 300px;
+    width: 316px;
   }
   .baryon-properties {
-    width: 800px;
+    width: 816px;
   }
 }
 

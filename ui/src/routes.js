@@ -27,7 +27,7 @@ class AppRoutes extends Component {
         <LastLocationProvider>
           <ScrollToTop />
           <Navbar />
-          <Container maxWidth="lg">
+          <Container maxWidth="lg" disableGutters={true}>
             <CssBaseline />
             <div className="main-content">
               <Switch>
