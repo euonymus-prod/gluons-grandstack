@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { withAuthUser } from "../providers/session";
 // GraphQL
-import { Query } from "react-apollo";
 import QuarkList from "../queries/quark-list";
 import { querySelector } from "../utils/auth-util";
 // component
@@ -31,17 +30,12 @@ class Search extends Component {
     const quark_property_caption = "Quark List";
     const GRAPHQL_QUERY = new QuarkList(queryName, user_id);
     return (
-      <div className="container">
-        <h2>{quark_property_caption}</h2>
-        <Query query={GRAPHQL_QUERY} variables={variables}>
-          {({ loading, error, data }) => {
-            if (loading) return "Loading...";
-            if (error) return `Error! ${error.message}`;
-            const quarks = data[queryName];
-            return <Quarks quarks={quarks} />;
-          }}
-        </Query>
-      </div>
+      <Quarks
+        quark_property_caption={quark_property_caption}
+        graphqlQuery={GRAPHQL_QUERY}
+        variables={variables}
+        queryName={queryName}
+      />
     );
   }
 }
