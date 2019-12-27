@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import { withAuthUser } from "../providers/session";
 import GraphOnQuark from "../queries/graph-on-quark";
+import { querySelector } from "../utils/auth-util";
 // component
 import MainQuark from "../components/main-quark";
 import Gluons from "../components/gluons";
@@ -14,22 +15,13 @@ import * as QUERY_NAME from "../constants/query-names";
 class Graph extends Component {
   render() {
     const { authUser } = this.props;
-    let queryName = QUERY_NAME.READER_QUARK;
-    let user_id = null;
-    if (authUser) {
-      if (authUser.is_admin) {
-        queryName = QUERY_NAME.ADMIN_QUARK;
-      } else {
-        queryName = QUERY_NAME.USER_QUARK;
-        user_id = authUser.uid;
+    const [queryName, user_id] = querySelector(
+      authUser,
+      QUERY_NAME.READER_QUARK,
+      QUERY_NAME.USER_QUARK,
+      QUERY_NAME.ADMIN_QUARK
+    );
 
-        // TODO: ------------------------------
-        if (user_id === "qV183nzQ79MPRBidNFTCbUxCv1H2") {
-          user_id = 2;
-        }
-        // ------------------------------------
-      }
-    }
     const variables = {
       name: this.props.match.params.quark_name
     };

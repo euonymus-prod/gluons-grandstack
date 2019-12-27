@@ -4,6 +4,7 @@ import { withAuthUser } from "../providers/session";
 // GraphQL
 import { Query } from "react-apollo";
 import QuarkListSearched from "../queries/quark-list-searched";
+import { querySelector } from "../utils/auth-util";
 // component
 import Quarks from "../components/quarks";
 // constancts
@@ -17,33 +18,24 @@ class Search extends Component {
 
   render() {
     const { authUser } = this.props;
-    let queryName = QUERY_NAME.READER_SEARCH_QUARKS;
-    let user_id = null;
-    if (authUser) {
-      if (authUser.is_admin) {
-        queryName = QUERY_NAME.ADMIN_SEARCH_QUARKS;
-      } else {
-        queryName = QUERY_NAME.USER_SEARCH_QUARKS;
-        user_id = authUser.uid;
+    const [queryName, user_id] = querySelector(
+      authUser,
+      QUERY_NAME.READER_SEARCH_QUARKS,
+      QUERY_NAME.USER_SEARCH_QUARKS,
+      QUERY_NAME.ADMIN_SEARCH_QUARKS
+    );
 
-        // TODO: ------------------------------
-        if (user_id === "qV183nzQ79MPRBidNFTCbUxCv1H2") {
-          user_id = 2;
-        }
-        // ------------------------------------
-      }
-    }
     const { keyword } = this.props.match.params;
     const variables = {
       first: rowsPerPage,
       keyword
     };
     const quark_property_caption = keyword;
-    const QUARK_LIST_SEARCHED = new QuarkListSearched(queryName, user_id);
+    const GRAPHQL_QUERY = new QuarkListSearched(queryName, user_id);
     return (
       <div className="container">
         <h2>{quark_property_caption}</h2>
-        <Query query={QUARK_LIST_SEARCHED} variables={variables}>
+        <Query query={GRAPHQL_QUERY} variables={variables}>
           {({ loading, error, data }) => {
             if (loading) return "Loading...";
             if (error) return `Error! ${error.message}`;

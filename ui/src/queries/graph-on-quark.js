@@ -73,7 +73,7 @@ class GraphOnQuark {
   constructor(queryName, user_id = null) {
     let onlyUserIdParam = "";
     let addingUserIdParam = "";
-    if (queryName == QUERY_NAME.USER_QUARK) {
+    if (queryName === QUERY_NAME.USER_QUARK) {
       const userIdParam = `user_id: ${user_id}`;
       onlyUserIdParam = `(${userIdParam})`;
       addingUserIdParam = `, ${userIdParam}`;
