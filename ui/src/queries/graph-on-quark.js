@@ -1,4 +1,7 @@
+import _ from "lodash";
 import gql from "graphql-tag";
+import * as QUERY_NAME from "../constants/query-names";
+
 const fieldsPeriod = `
   start {
     year
@@ -36,19 +39,19 @@ const fieldsGluon = `
   gluon_type_id
 `;
 
-const queryQuark = `
+const queryQuarkCompiled = _.template(`
   query Quark($name: String) {
-    quark(name: $name) {
+    <%= queryName %>(name: $name<%= addingUserIdParam %>) {
       ${fieldsQuark}
-      gluons {
+      gluons<%= onlyUserIdParam %> {
         ${fieldsGluon}
       }
-      objects {
+      objects<%= onlyUserIdParam %> {
         ${fieldsQuark}
-        gluons {
+        gluons<%= onlyUserIdParam %> {
           ${fieldsGluon}
         }
-        objects {
+        objects<%= onlyUserIdParam %> {
           ${fieldsQuark}
         }
       }
@@ -65,5 +68,19 @@ const queryQuark = `
       }
     }
   }
-`;
-export const GRAPH_ON_QUARK = gql(queryQuark);
+`);
+class QueryQuark {
+  constructor(queryName, user_id = null) {
+    let onlyUserIdParam = "";
+    let addingUserIdParam = "";
+    if (queryName == QUERY_NAME.USER_QUARK) {
+      const userIdParam = `user_id: ${user_id}`;
+      onlyUserIdParam = `(${userIdParam})`;
+      addingUserIdParam = `, ${userIdParam}`;
+    }
+    return gql(
+      queryQuarkCompiled({ queryName, onlyUserIdParam, addingUserIdParam })
+    );
+  }
+}
+export default QueryQuark;
