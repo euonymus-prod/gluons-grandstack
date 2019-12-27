@@ -149,7 +149,8 @@ export const resolvers = {
   QuarkProperty: {
     gluons: (parent, {subject}, context, info) => {
       if (!parent.gluons || parent.gluons.length === 0) {
-        throw Error("QuarkProperty.gluons are required in the parent query");
+        // throw Error("QuarkProperty.gluons are required in the parent query");
+        return []
       }
       return parent.gluons.filter(gluon => {
         if (parent.subject_id === gluon.active_id) {
