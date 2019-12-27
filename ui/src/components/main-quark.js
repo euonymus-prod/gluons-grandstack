@@ -21,9 +21,13 @@ const useStyles = makeStyles({
 });
 
 const MainQuark = props => {
-  const { subject } = props;
-
   const classes = useStyles();
+
+  const { subject } = props;
+  if (!subject) {
+    return <div className="baryon-subject baryon-grid">Not Found</div>;
+  }
+
   return (
     <div className="baryon-subject baryon-grid">
       <Card className={classes.card}>

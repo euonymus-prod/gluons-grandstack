@@ -7,7 +7,6 @@ import { GRAPH_ON_QUARK } from "../queries/graph-on-quark";
 import MainQuark from "../components/main-quark";
 import Gluons from "../components/gluons";
 
-console.log(GRAPH_ON_QUARK);
 // GraphQL
 class Graph extends Component {
   render() {

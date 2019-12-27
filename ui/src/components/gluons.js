@@ -5,6 +5,10 @@ import PropertyBox from "./property-box";
 const Gluons = props => {
   const { parentQuark, hasSecondLevel } = props;
 
+  if (!parentQuark) {
+    return null;
+  }
+
   const subject = {
     id: parentQuark.id,
     name: parentQuark.name

@@ -1,89 +1,55 @@
 import gql from "graphql-tag";
-export const GRAPH_ON_QUARK = gql`
+const fieldsPeriod = `
+  start {
+    year
+    month
+    day
+  }
+  end {
+    year
+    month
+    day
+  }
+  start_accuracy
+  end_accuracy
+  is_momentary
+`;
+const fieldsQuark = `
+  id
+  name
+  description
+  image_path
+  ${fieldsPeriod}
+  url
+  is_private
+  user_id
+  is_exclusive
+  quark_type_id
+`;
+const fieldsGluon = `
+  id
+  relation
+  active_id
+  passive_id
+  ${fieldsPeriod}
+  object_id
+  gluon_type_id
+`;
+
+const queryQuark = `
   query Quark($name: String) {
     quark(name: $name) {
-      id
-      quark_type_id
-      name
-      description
-      image_path
-      start {
-        year
-        month
-        day
-      }
-      end {
-        year
-        month
-        day
-      }
-      start_accuracy
-      end_accuracy
-      is_momentary
-      url
-      is_exclusive
-      is_private
-      user_id
+      ${fieldsQuark}
       gluons {
-        gluon_type_id
-        active_id
-        passive_id
-        relation
-        start {
-          year
-          month
-          day
-        }
-        end {
-          year
-          month
-          day
-        }
-        start_accuracy
-        end_accuracy
-        is_momentary
+        ${fieldsGluon}
       }
       objects {
-        id
-        name
-        description
-        image_path
-        start {
-          year
-          month
-          day
-        }
-        end {
-          year
-          month
-          day
-        }
-        start_accuracy
-        end_accuracy
-        is_momentary
-        is_private
+        ${fieldsQuark}
         gluons {
-          relation
-          active_id
-          passive_id
-          start {
-            year
-            month
-            day
-          }
-          end {
-            year
-            month
-            day
-          }
-          start_accuracy
-          end_accuracy
-          is_momentary
+          ${fieldsGluon}
         }
         objects {
-          id
-          name
-          image_path
+          ${fieldsQuark}
         }
       }
       properties {
@@ -94,25 +60,10 @@ export const GRAPH_ON_QUARK = gql`
           caption_ja
         }
         gluons {
-          active_id
-          passive_id
-          object_id
-          relation
-          start {
-            year
-            month
-            day
-          }
-          end {
-            year
-            month
-            day
-          }
-          start_accuracy
-          end_accuracy
-          is_momentary
+          ${fieldsGluon}
         }
       }
     }
   }
 `;
+export const GRAPH_ON_QUARK = gql(queryQuark);
