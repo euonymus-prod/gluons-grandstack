@@ -2,129 +2,13 @@
 import React, { Component } from "react";
 // GraphQL
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import { GRAPH_ON_QUARK } from "../queries/graph-on-quark";
 // component
 import MainQuark from "../components/main-quark";
 import Gluons from "../components/gluons";
 
+console.log(GRAPH_ON_QUARK);
 // GraphQL
-const GRAPH_ON_QUARK = gql`
-  query Quark($name: String) {
-    Quark(name: $name) {
-      id
-      quark_type_id
-      name
-      description
-      image_path
-      start {
-        year
-        month
-        day
-      }
-      end {
-        year
-        month
-        day
-      }
-      start_accuracy
-      end_accuracy
-      is_momentary
-      url
-      is_exclusive
-      is_private
-      user_id
-      gluons {
-        gluon_type_id
-        active_id
-        passive_id
-        relation
-        start {
-          year
-          month
-          day
-        }
-        end {
-          year
-          month
-          day
-        }
-        start_accuracy
-        end_accuracy
-        is_momentary
-      }
-      objects {
-        id
-        name
-        description
-        image_path
-        start {
-          year
-          month
-          day
-        }
-        end {
-          year
-          month
-          day
-        }
-        start_accuracy
-        end_accuracy
-        is_momentary
-        is_private
-        gluons {
-          relation
-          active_id
-          passive_id
-          start {
-            year
-            month
-            day
-          }
-          end {
-            year
-            month
-            day
-          }
-          start_accuracy
-          end_accuracy
-          is_momentary
-        }
-        objects {
-          id
-          name
-          image_path
-        }
-      }
-      properties {
-        caption
-        caption_ja
-        qpropertyGtypes {
-          caption
-          caption_ja
-        }
-        gluons {
-          active_id
-          passive_id
-          object_id
-          relation
-          start {
-            year
-            month
-            day
-          }
-          end {
-            year
-            month
-            day
-          }
-          start_accuracy
-          end_accuracy
-          is_momentary
-        }
-      }
-    }
-  }
-`;
 class Graph extends Component {
   render() {
     const variables = {
@@ -137,8 +21,8 @@ class Graph extends Component {
           if (error) return `Error! ${error.message}`;
           return (
             <div className="baryon-body">
-              <MainQuark subject={data.Quark} />
-              <Gluons parentQuark={data.Quark} hasSecondLevel={true} />
+              <MainQuark subject={data.quark} />
+              <Gluons parentQuark={data.quark} hasSecondLevel={true} />
             </div>
           );
         }}
