@@ -26,15 +26,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const onLinkClick = name => {
+  const link = `${ROUTES.GRAPH_BASE}${name}`;
+  console.log(link);
+};
 const SecondGluon = props => {
   const classes = useStyles();
 
   const { subject, object, gluon } = props;
   const actionIcon = (
-    <IconButton aria-label={`star ${object.name}`}>
+    <IconButton
+      aria-label={`star ${object.name}`}
+      onClick={() => {
+        onLinkClick(object.name);
+      }}
+    >
       <OpenInBrowserIcon className={classes.title} />
     </IconButton>
   );
+
   return (
     <GridListTile classes={{ imgFullHeight: classes.imgFullHeight }}>
       <img src={object.image_path} alt={object.name} />
@@ -44,9 +54,7 @@ const SecondGluon = props => {
           root: classes.titleBar,
           title: classes.title
         }}
-        actionIcon={
-          <Link to={`${ROUTES.GRAPH_BASE}${object.name}`}>{object.name}</Link>
-        }
+        actionIcon={actionIcon}
       />
     </GridListTile>
   );
