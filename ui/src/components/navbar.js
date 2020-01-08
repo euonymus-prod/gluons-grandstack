@@ -4,7 +4,6 @@ import { withAuthUser } from "../providers/session";
 import { withFirebase } from "../providers/firebase";
 import * as ROUTES from "../constants/routes";
 // Material UI
-import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -21,76 +20,8 @@ import ViewListIcon from "@material-ui/icons/ViewList";
 // import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import logo from "../assets/images/logo.gif";
-
-const navbarColor = "#f8f8f8";
-const useStyles = makeStyles(theme => ({
-  appBar: {
-    backgroundColor: navbarColor
-  },
-  logo: {
-    width: "60px"
-  },
-  grow: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  // title: {
-  //   display: "none",
-  //   [theme.breakpoints.up("sm")]: {
-  //     display: "block"
-  //   }
-  // },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.9),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 1)
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto"
-    }
-  },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#777777"
-  },
-  // inputRoot: {
-  //   color: "inherit"
-  // },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: 200
-    }
-  },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex"
-    }
-  },
-  sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none"
-    }
-  }
-}));
+// Styles
+import { useStyles } from "../assets/styles/navbar";
 
 export default withRouter(
   withAuthUser(
