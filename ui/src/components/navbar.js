@@ -17,6 +17,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 // import MailIcon from "@material-ui/icons/Mail";
 import ViewListIcon from "@material-ui/icons/ViewList";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 // import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import logo from "../assets/images/logo.gif";
@@ -66,6 +67,10 @@ export default withRouter(
         props.history.push(ROUTES.SIGN_UP);
       };
 
+      const onAddQuarkClick = () => {
+        handleMenuClose();
+        props.history.push(ROUTES.ADD_QUARK);
+      };
       const onListClick = () => {
         handleMenuClose();
         props.history.push(ROUTES.LIST);
@@ -187,6 +192,14 @@ export default withRouter(
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
+                <IconButton
+                  aria-label="show 4 new mails"
+                  onClick={onAddQuarkClick}
+                >
+                  <Badge badgeContent={0} color="secondary">
+                    <AddCircleOutlineIcon />
+                  </Badge>
+                </IconButton>
                 <IconButton aria-label="show 4 new mails" onClick={onListClick}>
                   <Badge badgeContent={0} color="secondary">
                     <ViewListIcon />

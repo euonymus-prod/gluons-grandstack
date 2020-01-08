@@ -12,6 +12,7 @@ import Home from "./pages/home";
 import Graph from "./pages/graph";
 import List from "./pages/list";
 import Search from "./pages/search";
+import AddQuark from "./pages/add-quark";
 import Terms from "./pages/terms";
 import Privacy from "./pages/privacy";
 // constants
@@ -38,6 +39,7 @@ class AppRoutes extends Component {
                 <Route path={ROUTES.GRAPH} component={Graph} />
                 <Route path={ROUTES.LIST} component={List} />
                 <Route path={ROUTES.SEARCH} component={Search} />
+                <Route path={ROUTES.ADD_QUARK} component={AddQuark} />
                 <Route
                   path={ROUTES.LEGACY_GRAPH}
                   render={props => (
