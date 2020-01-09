@@ -14,9 +14,21 @@ const AddNewQuark = () => (
 );
 
 const INITIAL_STATE = {
-  email: "",
-  password: "",
-  error: null
+  error: null,
+  name: "",
+  image_path: "",
+  description: "",
+  start: "",
+  end: "",
+  start_accuracy: "",
+  end_accuracy: "",
+  is_momentary: false,
+  url: "",
+  affiliate: "",
+  is_private: false,
+  is_exclusive: true,
+  quark_type_id: "",
+  auto_fill: true
 };
 
 class AddNewQuarkFormBase extends React.Component {
@@ -25,24 +37,24 @@ class AddNewQuarkFormBase extends React.Component {
   onSubmit = event => {
     const { email, password } = this.state;
 
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        const { lastLocation } = this.props;
-        let redirectLocation = "/";
-        if (
-          lastLocation &&
-          lastLocation.pathname !== "/signup" &&
-          lastLocation.pathname !== "/login"
-        ) {
-          redirectLocation = lastLocation;
-        }
-        this.props.history.push(redirectLocation);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
+    // this.props.firebase
+    //   .doSignInWithEmailAndPassword(email, password)
+    //   .then(() => {
+    //     this.setState({ ...INITIAL_STATE });
+    //     const { lastLocation } = this.props;
+    //     let redirectLocation = "/";
+    //     if (
+    //       lastLocation &&
+    //       lastLocation.pathname !== "/signup" &&
+    //       lastLocation.pathname !== "/login"
+    //     ) {
+    //       redirectLocation = lastLocation;
+    //     }
+    //     this.props.history.push(redirectLocation);
+    //   })
+    //   .catch(error => {
+    //     this.setState({ error });
+    //   });
 
     event.preventDefault();
   };
@@ -52,29 +64,34 @@ class AddNewQuarkFormBase extends React.Component {
   };
 
   render() {
-    const { email, password, error } = this.state;
-    const isInvalid = password === "" || email === "";
+    const {
+      error,
+      name,
+      image_path,
+      description,
+      start,
+      end,
+      start_accuracy,
+      end_accuracy,
+      is_momentary,
+      url,
+      affiliate,
+      is_private,
+      is_exclusive,
+      quark_type_id,
+      auto_fill
+    } = this.state;
+    const isInvalid = name === "";
 
     return (
       <form onSubmit={this.onSubmit}>
         <TextField
-          id="outlined-email"
-          name="email"
-          label="Email"
-          value={email}
+          id="outlined-name"
+          name="name"
+          label="Name"
+          value={name}
           onChange={this.onChange}
           variant="outlined"
-        />
-        <br />
-        <br />
-        <TextField
-          id="outlined-password"
-          name="password"
-          label="Password"
-          value={password}
-          onChange={this.onChange}
-          variant="outlined"
-          type="password"
         />
         <br />
         <br />
