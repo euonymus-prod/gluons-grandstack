@@ -7,6 +7,7 @@ import { qtypePropertiesData } from './constants/qtype-properties'
 import { qpropertyGtypesData } from './constants/qproperty-gtypes'
 import * as ID_TYPE from './constants/id-types'
 import * as DIRECTION from './constants/gluon-directions'
+import Util from "./utils/common";
 
 /*
 // sample CYPHER
@@ -145,6 +146,54 @@ const quarkProertiesResolver = (parent, params, context, info) => {
   })
   // return [{caption:'hoge'}]
 }
+
+// { hoge: foo, hage: bar } will become cypher snippet of ", hoge: $hoge, hage: $hage"
+const generateCypherParams = params => {
+  const reservedParams = ['Label', 'id', 'name']
+  return _.keys(params).filter(param => !reservedParams.includes(param)).map(param => `, ${param}: $${param}`).join('')
+}
+const generateDatetimeParams = params => {
+  const util = new Util();
+  const modifiedDate = { ...params.start, month: params.start.month -1}
+  const dateString = util.date2str(modifiedDate)
+  const modifiedParams = { ...params, start:`${dateString}T00:00:00+0900` }
+  const settingParams = `
+  node.start = CASE node.start
+    WHEN 'NULL' THEN null
+    WHEN '0000-00-00 00:00:00' THEN null
+    ELSE datetime(node.start)
+    END
+  `
+  const cypherParams = ", start: $start"
+
+  return {cypherParams, settingParams, modifiedParams}
+}
+// Note: if you don't create resolver specifically, auto generated resolver will call cypher automatically, and generate node
+//       but, the problem is, it can't modify Label by param, and start datetime modification also needed
+const createQuarkResolver = async (parent, params, context, info) => {
+  let existingParams = generateCypherParams(params)
+  const Label = `:${params.Label}`
+
+  const {cypherParams, settingParams, modifiedParams} = generateDatetimeParams(params)
+
+  const cypher = `CREATE (node:Quark${Label} { id: $id, name: $name${existingParams}${cypherParams} }) SET node.created = datetime(), node.modified = datetime(), ${settingParams} RETURN node`
+
+  const session = context.driver.session()
+  const result = await session.run(cypher, modifiedParams)
+
+  const { properties } = result.records[0].get('node')
+  // TODO ==============================
+  const start = {
+    year:properties.start.year.toString(),
+    month:properties.start.month.toString(),
+    day:properties.start.day.toString()
+  }
+  // ===================================
+
+  const ret = {...properties, start}
+  return ret
+  // return result.records[0].get('node').properties
+}
 export const resolvers = {
   Quark: {
     properties: quarkProertiesResolver
@@ -211,6 +260,9 @@ RETURN value.subject as subject, value.object as object, value.gluon as gluon
     quarkLabels,
     gluonTypes
   },
+  Mutation: {
+    CreateQuark: createQuarkResolver
+  }
 }
 
 // 

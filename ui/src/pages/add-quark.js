@@ -40,31 +40,6 @@ const INITIAL_STATE = {
 class AddNewQuarkFormBase extends React.Component {
   state = { ...INITIAL_STATE };
 
-  // onSubmit = event => {
-  //   const { email, password } = this.state;
-  //
-  //   // this.props.firebase
-  //   //   .doSignInWithEmailAndPassword(email, password)
-  //   //   .then(() => {
-  //   //     this.setState({ ...INITIAL_STATE });
-  //   //     const { lastLocation } = this.props;
-  //   //     let redirectLocation = "/";
-  //   //     if (
-  //   //       lastLocation &&
-  //   //       lastLocation.pathname !== "/signup" &&
-  //   //       lastLocation.pathname !== "/login"
-  //   //     ) {
-  //   //       redirectLocation = lastLocation;
-  //   //     }
-  //   //     this.props.history.push(redirectLocation);
-  //   //   })
-  //   //   .catch(error => {
-  //   //     this.setState({ error });
-  //   //   });
-  //
-  //   event.preventDefault();
-  // };
-
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };

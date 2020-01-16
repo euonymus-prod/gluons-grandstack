@@ -131,15 +131,16 @@ type Query {
 }
 
 type Mutation {
-  CreateLoggedInQuark(
+  CreateQuark(
+    Label: String!
     id: ID!,
     name: String!,
     en_name: String,
     image_path: String,
     description: String,
     en_description: String,
-    start: _Neo4jDateTime,
-    end: _Neo4jDateTime,
+    start: _Neo4jDateTimeInput,
+    end: String,
     start_accuracy: String,
     end_accuracy: String,
     is_momentary: Boolean,
@@ -150,10 +151,7 @@ type Mutation {
     is_exclusive: Boolean,
     user_id: Int,
     last_modified_user: Int,
-    quark_type_id: Int,
-    created: _Neo4jDateTime,
-    modified: _Neo4jDateTime
-  ): LoggedInQuark @hasRole(roles:[admin, user])
+    quark_type_id: Int
+  ): LoggedInQuark
 }
-
 
