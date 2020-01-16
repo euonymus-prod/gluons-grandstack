@@ -34,7 +34,6 @@ export const POST_MUTATION = gql`
     $is_private: Boolean!
     $is_exclusive: Boolean!
     $quark_type_id: Int!
-    $auto_fill: Boolean!
   ) {
     createQuark(
       name: $name

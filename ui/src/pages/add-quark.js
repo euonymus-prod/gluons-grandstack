@@ -34,8 +34,7 @@ const INITIAL_STATE = {
   affiliate: "",
   is_private: false,
   is_exclusive: true,
-  quark_type_id: "",
-  auto_fill: true
+  quark_type_id: ""
 };
 
 class AddNewQuarkFormBase extends React.Component {
@@ -69,6 +68,9 @@ class AddNewQuarkFormBase extends React.Component {
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
+  onChangeCheckbox = event => {
+    this.setState({ [event.target.name]: !this.state[event.target.name] });
+  };
 
   render() {
     const {
@@ -85,8 +87,7 @@ class AddNewQuarkFormBase extends React.Component {
       affiliate,
       is_private,
       is_exclusive,
-      quark_type_id,
-      auto_fill
+      quark_type_id
     } = this.state;
 
     const isInvalid = name === "";
@@ -100,7 +101,8 @@ class AddNewQuarkFormBase extends React.Component {
               <label>Name</label>
               <input
                 value={name}
-                onChange={e => this.setState({ name: e.target.value })}
+                name="name"
+                onChange={this.onChange}
                 type="text"
                 placeholder="Name"
                 className="form-control"
@@ -108,28 +110,20 @@ class AddNewQuarkFormBase extends React.Component {
               <label>Image Path</label>
               <input
                 value={image_path}
-                onChange={e => this.setState({ image_path: e.target.value })}
+                name="image_path"
+                onChange={this.onChange}
                 type="text"
                 placeholder="Image Path"
                 className="form-control"
               />
-              <div className="input checkbox">
-                <label htmlFor="is-exclusive">
-                  <input
-                    onChange={e => this.setState({ auto_fill: !auto_fill })}
-                    type="checkbox"
-                    checked={auto_fill}
-                  />
-                  Auto Fill
-                </label>
-              </div>
             </div>
             <div className="form-group">
               <h4>optional</h4>
               <label>Description</label>
               <input
                 value={description}
-                onChange={e => this.setState({ description: e.target.value })}
+                name="description"
+                onChange={this.onChange}
                 type="text"
                 placeholder="Description"
                 className="form-control"
@@ -137,23 +131,24 @@ class AddNewQuarkFormBase extends React.Component {
               <label>Start</label>
               <input
                 value={start}
-                onChange={e => this.setState({ start: e.target.value })}
+                name="start"
+                onChange={this.onChange}
                 type="date"
                 className="form-control date"
               />
               <label>End</label>
               <input
                 value={end}
-                onChange={e => this.setState({ end: e.target.value })}
+                name="end"
+                onChange={this.onChange}
                 type="date"
                 className="form-control date"
               />
               <label>Start Accuracy</label>
               <input
                 value={start_accuracy}
-                onChange={e =>
-                  this.setState({ start_accuracy: e.target.value })
-                }
+                name="start_accuracy"
+                onChange={this.onChange}
                 type="text"
                 placeholder="Start Accuracy"
                 className="form-control"
@@ -161,7 +156,8 @@ class AddNewQuarkFormBase extends React.Component {
               <label>End Accuracy</label>
               <input
                 value={end_accuracy}
-                onChange={e => this.setState({ end_accuracy: e.target.value })}
+                name="end_accuracy"
+                onChange={this.onChange}
                 type="text"
                 placeholder="End Accuracy"
                 className="form-control"
@@ -169,9 +165,8 @@ class AddNewQuarkFormBase extends React.Component {
               <div className="input checkbox">
                 <label htmlFor="is-momentary">
                   <input
-                    onChange={e =>
-                      this.setState({ is_momentary: !is_momentary })
-                    }
+                    name="is_momentary"
+                    onChange={this.onChangeCheckbox}
                     type="checkbox"
                     checked={is_momentary}
                   />
@@ -182,7 +177,8 @@ class AddNewQuarkFormBase extends React.Component {
               <label>URL</label>
               <input
                 value={url}
-                onChange={e => this.setState({ url: e.target.value })}
+                name="url"
+                onChange={this.onChange}
                 type="text"
                 placeholder="URL"
                 className="form-control"
@@ -190,7 +186,8 @@ class AddNewQuarkFormBase extends React.Component {
               <label>Affiliate</label>
               <input
                 value={affiliate}
-                onChange={e => this.setState({ affiliate: e.target.value })}
+                name="affiliate"
+                onChange={this.onChange}
                 type="text"
                 placeholder="Affiliate URL"
                 className="form-control"
@@ -203,7 +200,8 @@ class AddNewQuarkFormBase extends React.Component {
               <div className="input checkbox">
                 <label htmlFor="is-private">
                   <input
-                    onChange={e => this.setState({ is_private: !is_private })}
+                    name="is_private"
+                    onChange={this.onChangeCheckbox}
                     type="checkbox"
                     checked={is_private}
                   />
@@ -213,9 +211,8 @@ class AddNewQuarkFormBase extends React.Component {
               <div className="input checkbox">
                 <label htmlFor="is-exclusive">
                   <input
-                    onChange={e =>
-                      this.setState({ is_exclusive: !is_exclusive })
-                    }
+                    name="is_exclusive"
+                    onChange={this.onChangeCheckbox}
                     type="checkbox"
                     checked={is_exclusive}
                   />
@@ -240,16 +237,16 @@ class AddNewQuarkFormBase extends React.Component {
               affiliate,
               is_private,
               is_exclusive,
-              quark_type_id,
-              auto_fill
+              quark_type_id
             }}
             onCompleted={data =>
               this.props.history.push(`/${data.createQuark.name}`)
             }
             update={(store, { data: { createQuark } }) => {
+              console.log(1);
               const first = QUARKS_PER_PAGE;
               const skip = 0;
-              const orderBy = "created_at";
+              const orderBy = "created";
 
               // Note: you need try catch, so error doesn't happen even if QUARKS_QUERY is not yet provided.
               try {
