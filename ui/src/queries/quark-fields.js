@@ -20,12 +20,12 @@ export const queryFields = `
 `;
 
 export const POST_MUTATION = gql`
-  mutation PostMutation(
+  mutation CreateLoggedInQuark(
     $name: String!
     $image_path: String
     $description: String
-    $start: String
-    $end: String
+    $start: _Neo4jDateTime
+    $end: _Neo4jDateTime
     $start_accuracy: String
     $end_accuracy: String
     $is_momentary: Boolean!
@@ -35,7 +35,7 @@ export const POST_MUTATION = gql`
     $is_exclusive: Boolean!
     $quark_type_id: Int!
   ) {
-    createQuark(
+    CreateLoggedInQuark(
       name: $name
       image_path: $image_path
       description: $description

@@ -130,3 +130,30 @@ type Query {
   gluonTypes: [GluonType]
 }
 
+type Mutation {
+  CreateLoggedInQuark(
+    id: ID!,
+    name: String!,
+    en_name: String,
+    image_path: String,
+    description: String,
+    en_description: String,
+    start: _Neo4jDateTime,
+    end: _Neo4jDateTime,
+    start_accuracy: String,
+    end_accuracy: String,
+    is_momentary: Boolean,
+    url: String,
+    affiliate: String,
+    gender: Int,
+    is_private: Boolean,
+    is_exclusive: Boolean,
+    user_id: Int,
+    last_modified_user: Int,
+    quark_type_id: Int,
+    created: _Neo4jDateTime,
+    modified: _Neo4jDateTime
+  ): LoggedInQuark @hasRole(roles:[admin, user])
+}
+
+

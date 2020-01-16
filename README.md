@@ -1,5 +1,22 @@
 [![Deploy to now](https://deploy.now.sh/static/button.svg)](https://deploy.now.sh/?repo=https://github.com/grand-stack/grand-stack-starter&env=NEO4J_USER&env=NEO4J_URI&env=NEO4J_PASSWORD)
 
+# Gluons
+
+## Setting Constraints
+Once you setup Neo4j Database, you need to create constraints on Quark Label to have uniqueness
+
+```
+CREATE CONSTRAINT ON (node:Quark) ASSERT node.id IS UNIQUE
+CREATE CONSTRAINT ON (node:Quark) ASSERT node.name IS UNIQUE
+```
+
+Check the constraints
+
+```
+call db.constraints
+```
+
+
 # GRANDstack Starter
 
 This project is a starter for building a [GRANDstack](https://grandstack.io) (GraphQL, React, Apollo, Neo4j Database) application. There are two components to the starter, the UI application (a React app) and the API app (GraphQL server).
