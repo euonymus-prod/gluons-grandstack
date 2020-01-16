@@ -45,6 +45,20 @@ type Gluon {
 <%= gluonFields %>
 }
 
+type QuarkLabel {
+  id: ID!
+  label: String
+  image_path: String
+  sort: Int
+}
+
+type GluonType {
+  id: ID!
+  type: String
+  caption: String
+  caption_ja: String
+}
+
 type QuarkProperty {
   id: ID!
   caption: String
@@ -112,5 +126,7 @@ type Query {
     )
   quarkProperties(ids: [Int] = []): [QuarkProperty]
   qpropertyGtypes(quarkPropertyId: Int = null, avoidQuarkPropertyIds: [Int] = []): [QpropertyGtype]
+  quarkLabels: [QuarkLabel]
+  gluonTypes: [GluonType]
 }
 

@@ -121,6 +121,18 @@ const getQpropertyGtypes = (quarkPropertyId, avoidQuarkPropertyIds = []) => {
 const qpropertyGtypes = (parent, {quarkPropertyId, avoidQuarkPropertyIds}, context, info) => {
   return getQpropertyGtypes(quarkPropertyId, avoidQuarkPropertyIds)
 }
+const quarkLabels = (parent, {}, context, info) => {
+  // return all
+  return _.map(quarkLabelsData, (data, quark_label_id) => {
+    return { id: quark_label_id, ...data }
+  })
+}
+const gluonTypes = (parent, {}, context, info) => {
+  // return all
+  return _.map(gluonTypesData, (data, gluon_type_id) => {
+    return { id: gluon_type_id, ...data }
+  })
+}
 
 const quarkProertiesResolver = (parent, params, context, info) => {
   if (parent.quark_type_id === null) {
@@ -195,7 +207,9 @@ RETURN value.subject as subject, value.object as object, value.gluon as gluon
     }
   },
   Query: {
-    qpropertyGtypes
+    qpropertyGtypes,
+    quarkLabels,
+    gluonTypes
   },
 }
 
