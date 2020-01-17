@@ -246,7 +246,11 @@ const generateUpdatingParams = params => {
   targets.modified = {formatted:''}
   return _.keys(targets).map(paramKey => {
     if (DATETIME_PROPERTIES.includes(paramKey)) {
-      return `${paramKey}: datetime(${targets[paramKey].formatted})`
+      if (paramKey === 'modified') {
+        return `${paramKey}: datetime(${targets[paramKey].formatted})`
+      } else {
+        return `${paramKey}: datetime("${targets[paramKey].formatted}T00:00:00+0900")`
+      }
     } else if (QUARK_BOOL_PROPERTIES.includes(paramKey)) {
       return `${paramKey}: ${targets[paramKey] ? 'TRUE': 'FALSE'}`
     } else if (QUARK_INT_PROPERTIES.includes(paramKey)) {
