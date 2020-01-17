@@ -133,7 +133,6 @@ type Query {
 type Mutation {
   CreateQuark(
     quark_type_id: Int!
-    id: ID!
     name: String!
     en_name: String
     image_path: String

@@ -21,11 +21,12 @@ export const queryFields = `
 
 export const POST_MUTATION = gql`
   mutation CreateQuark(
+    $quark_type_id: Int!
     $name: String!
     $image_path: String
     $description: String
-    $start: String
-    $end: String
+    $start: _Neo4jDateTimeInput
+    $end: _Neo4jDateTimeInput
     $start_accuracy: String
     $end_accuracy: String
     $is_momentary: Boolean!
@@ -33,7 +34,6 @@ export const POST_MUTATION = gql`
     $affiliate: String
     $is_private: Boolean!
     $is_exclusive: Boolean!
-    $quark_type_id: Int!
   ) {
     CreateQuark(
       name: $name

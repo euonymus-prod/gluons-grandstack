@@ -148,8 +148,7 @@ const quarkProertiesResolver = (parent, params, context, info) => {
 
 // { hoge: foo, hage: bar } will become cypher snippet of ", hoge: $hoge, hage: $hage"
 const generateCypherParams = params => {
-  const reservedParams = ['id', 'name']
-  return _.keys(params).filter(paramKey => !reservedParams.includes(paramKey)).map(paramKey => {
+  return _.keys(params).map(paramKey => {
     return `, ${paramKey}: $${paramKey}`
   }).join('')
 }
@@ -184,11 +183,11 @@ const generateDatetimeReturn = properties => {
 // Note: if you don't create resolver specifically, auto generated resolver will call cypher automatically, and generate node
 //       but, the problem is, it can't modify Label by param, and start datetime modification also needed
 const createQuarkResolver = async (parent, params, context, info) => {
-  let existingParams = generateCypherParams(params)
   const Label = `:${quarkLabelsData[params.quark_type_id].label}`
-
+  let existingParams = generateCypherParams(params)
   const {datetimeSetter, paramsReady} = generateDatetimeParams(params)
-  const cypher = `CREATE (node:Quark${Label} { id: $id, name: $name${existingParams} }) SET node.created = datetime(), node.modified = datetime()${datetimeSetter} RETURN node`
+  
+  const cypher = `CREATE (node:Quark${Label} { id: apoc.create.uuid()${existingParams} }) SET node.created = datetime(), node.modified = datetime()${datetimeSetter} RETURN node`
 
   const session = context.driver.session()
   const result = await session.run(cypher, paramsReady)
