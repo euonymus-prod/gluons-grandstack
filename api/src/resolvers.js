@@ -27,6 +27,17 @@ MATCH (subject {name: "眞弓聡"})<-[r:SON_OF|DAUGHTER_OF]-(object)
 RETURN subject, object, r
 */
 
+const DATETIME_PROPERTIES = ['start', 'end', 'modified', 'created'];
+
+const QUARK_BOOL_PROPERTIES = ['is_momentary', 'is_private', 'is_exclusive'];
+const QUARK_INT_PROPERTIES = ['quark_type_id', 'user_id', 'last_modified_user'];
+const QUARK_STR_PROPERTIES = ['id', 'name', 'en_name', 'image_path', 'description', 'en_description',
+                              'start_accuracy', 'end_accuracy','url', 'affiliate'];
+
+const GLUON_BOOL_PROPERTIES = ['is_momentary', 'is_exclusive'];
+const GLUON_INT_PROPERTIES = ['gluon_type_id', 'user_id', 'last_modified_user'];
+const GLUON_STR_PROPERTIES = ['id', 'relation', 'prefix', 'suffix', 'start_accuracy', 'end_accuracy'];
+
 const revertDirection = (direction) => {
   if (direction === DIRECTION.A2B) {
     return DIRECTION.B2A
@@ -135,7 +146,7 @@ const gluonTypes = (parent, {}, context, info) => {
   })
 }
 
-const quarkProertiesResolver = (parent, params, context, info) => {
+const quarkPropertiesResolver= (parent, params, context, info) => {
   if (parent.quark_type_id === null) {
     return [{...getOtherQuarkProperties(), gluons: parent.gluons, subject_id: parent.id, qpropertyGtypes: null}]
   } else if (!parent.quark_type_id) {
@@ -147,15 +158,67 @@ const quarkProertiesResolver = (parent, params, context, info) => {
   // return [{caption:'hoge'}]
 }
 
+// Note: if you don't create resolver specifically, auto generated resolver will call cypher automatically, and generate node
+//       but, the problem is, it can't modify Label by param, and start datetime modification also needed
+const createQuarkResolver = async (parent, params, context, info) => {
+  const user = await getUser(context)
+  // TODO: Before fix this, data updating is required
+  //const user_id = user.user_id
+  const user_id = firebaseInstance.temporalUserId(user.user_id)
+
+  const Label = `:${quarkLabelsData[params.quark_type_id].label}`
+  let existingParams = generateCypherParams(params)
+  const {datetimeSetter, paramsReady} = generateDatetimeParams(params)
+  
+  const cypher = `CREATE (node:Quark${Label} { id: apoc.create.uuid()${existingParams}, user_id: ${user_id}, last_modified_user: ${user_id} }) SET node.created = datetime(), node.modified = datetime()${datetimeSetter} RETURN node`
+
+  const records = await execCypher(context, cypher, paramsReady)
+  return cypherRecord2Props(records[0])
+}
+const updateQuarkResolver = async (parent, params, context, info) => {
+  // TODO
+  const user = await getUser(context)
+  // TODO: Before fix this, data updating is required
+  //const last_modified_user = user.user_id
+  const last_modified_user = firebaseInstance.temporalUserId(user.user_id)
+
+  const last_modified_user = 8
+  const readCypher = `MATCH (node:Quark { id: "${params.id}" }) RETURN node`
+  // const readCypher = `MATCH (node:Quark { id: "hhhh" }) RETURN node`
+  const existingRecords = await execCypher(context, readCypher)
+  if (existingRecords.length === 0) {
+    throw Error("No node found");
+  }
+  const existingProps = cypherRecord2Props(existingRecords[0])
+
+  let updateLabelPre = '';        
+  let updateLabelPost = '';        
+  if (params.quark_type_id && (Number(params.quark_type_id) !== Number(existingProps.quark_type_id))) {
+    if (!quarkLabelsData[params.quark_type_id]) {
+      throw Error("Invalidate quark_type_id");
+    }
+    const label = quarkLabelsData[params.quark_type_id].label
+    const old_label = quarkLabelsData[existingProps.quark_type_id].label
+    updateLabelPre = ` REMOVE node:${old_label}`
+    updateLabelPost = `, node:${label}`
+  }
+
+  const paramSetter = generateUpdatingParams({...params, last_modified_user})
+  const cypher = `MATCH (node:Quark { id: "${params.id}" }) ${updateLabelPre} SET node += { ${paramSetter} } ${updateLabelPost} RETURN node`
+  
+  const records = await execCypher(context, cypher)
+  return cypherRecord2Props(records[0])
+}
+
 // { hoge: foo, hage: bar } will become cypher snippet of ", hoge: $hoge, hage: $hage"
 const generateCypherParams = params => {
   return _.keys(params).map(paramKey => {
     return `, ${paramKey}: $${paramKey}`
   }).join('')
 }
-const datetimeParams = ['start', 'end']
+
 const generateDatetimeParams = params => {
-  const existingDatetimeParams = _.keys(params).filter(paramKey => datetimeParams.includes(paramKey))
+  const existingDatetimeParams = _.keys(params).filter(paramKey => DATETIME_PROPERTIES.includes(paramKey))
   const datetimeSetter = existingDatetimeParams.map(paramKey => {
     return `, node.${paramKey} = CASE node.${paramKey}
                                    WHEN 'NULL' THEN null
@@ -174,10 +237,52 @@ const generateDatetimeParams = params => {
   })
   return {datetimeSetter, paramsReady}
 }
-const generateDatetimeReturn = properties => {
+const generateUpdatingParams = params => {
+  const avoids = ['id']
+  const targets = {}
+  _.keys(params).filter(paramKey => !avoids.includes(paramKey)).forEach(paramKey => {
+    targets[paramKey] = params[paramKey]
+  })
+  targets.modified = {formatted:''}
+  return _.keys(targets).map(paramKey => {
+    if (DATETIME_PROPERTIES.includes(paramKey)) {
+      return `${paramKey}: datetime(${targets[paramKey].formatted})`
+    } else if (QUARK_BOOL_PROPERTIES.includes(paramKey)) {
+      return `${paramKey}: ${targets[paramKey] ? 'TRUE': 'FALSE'}`
+    } else if (QUARK_INT_PROPERTIES.includes(paramKey)) {
+      return `${paramKey}: ${targets[paramKey]}`
+    } else if (QUARK_STR_PROPERTIES.includes(paramKey)) {
+      return `${paramKey}: "${targets[paramKey]}"`
+    }
+    return ''
+  }).join()
+}
 
+const getUser = async context => {
+  const idToken = getAuthorizationHeader(context);
+  const user = await firebaseInstance.getLoggedIn(idToken)
+  if (!user) {
+    throw Error("The user must be logged in");
+  }
+  return user
+}
+const execCypher = async (context, cypher, params = {}) => {
+  const session = context.driver.session()
+  const result = await session.run(cypher, params)
+  session.close()
+  return result.records
+}
+const cypherRecord2Props = record => {
+  const { properties } = record.get('node')
+  return generateReturn(properties)
+}
+const generateReturn = properties => {
   const ret = properties
-  datetimeParams.forEach(paramKey => {
+  QUARK_INT_PROPERTIES.forEach(paramKey => {
+    ret[paramKey] = properties[paramKey].toString()
+  })
+
+  DATETIME_PROPERTIES.forEach(paramKey => {
     let year = null
     let month = null
     let day = null
@@ -190,44 +295,19 @@ const generateDatetimeReturn = properties => {
   })
   return ret
 }
-// Note: if you don't create resolver specifically, auto generated resolver will call cypher automatically, and generate node
-//       but, the problem is, it can't modify Label by param, and start datetime modification also needed
-const createQuarkResolver = async (parent, params, context, info) => {
-  const idToken = getAuthorizationHeader(context);
-  const user = await firebaseInstance.getLoggedIn(idToken)
-  if (!user) {
-    throw Error("The user must be logged in");
-  }
-  //const user_id = user.user_id
-  const user_id = firebaseInstance.temporalUserId(user.user_id)
 
-
-
-  const Label = `:${quarkLabelsData[params.quark_type_id].label}`
-  let existingParams = generateCypherParams(params)
-  const {datetimeSetter, paramsReady} = generateDatetimeParams(params)
-  
-  const cypher = `CREATE (node:Quark${Label} { id: apoc.create.uuid()${existingParams}, user_id: ${user_id}, last_modified_user: ${user_id} }) SET node.created = datetime(), node.modified = datetime()${datetimeSetter} RETURN node`
-
-  const session = context.driver.session()
-  const result = await session.run(cypher, paramsReady)
-
-  const { properties } = result.records[0].get('node')
-  const ret = generateDatetimeReturn(properties)
-  return ret
-}
 export const resolvers = {
   Quark: {
-    properties: quarkProertiesResolver
+    properties: quarkPropertiesResolver
   },
   PublicQuark: {
-    properties: quarkProertiesResolver
+    properties: quarkPropertiesResolver
   },
   LoggedInQuark: {
-    properties: quarkProertiesResolver
+    properties: quarkPropertiesResolver
   },
   AdminQuark: {
-    properties: quarkProertiesResolver
+    properties: quarkPropertiesResolver
   },
   QuarkProperty: {
     gluons: (parent, {subject}, context, info) => {
@@ -283,7 +363,8 @@ RETURN value.subject as subject, value.object as object, value.gluon as gluon
     gluonTypes
   },
   Mutation: {
-    CreateQuark: createQuarkResolver
+    CreateQuark: createQuarkResolver,
+    UpdateQuark: updateQuarkResolver
   }
 }
 

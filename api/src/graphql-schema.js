@@ -22,6 +22,7 @@ const readText = (filename) => {
 // read graphql schema parts
 const quarkFields = readText('schema.quarkFields');
 const gluonFields = readText('schema.gluonFields');
+const quarkMutateFields = readText('schema.quarkMutateFields');
 // read cypher parts
 const cypher = new CypherBuilder()
 const cypherMatchNeighbor = cypher.matchNeighbor('this', 'gluon', 'object');
@@ -40,6 +41,7 @@ const schemaCompiled = _.template(readText('schema.graphql'));
 export const typeDefs = schemaCompiled({
   quarkFields,
   gluonFields,
+  quarkMutateFields,
   cypherMatchNeighbor,
   cypherWherePublic,
   cypherWherePublicObject,
