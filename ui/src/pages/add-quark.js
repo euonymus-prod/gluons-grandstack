@@ -203,8 +203,8 @@ class AddNewQuarkFormBase extends React.Component {
               name,
               image_path,
               description,
-              start,
-              end,
+              start: { formatted: start },
+              end: { formatted: end },
               start_accuracy,
               end_accuracy,
               is_momentary,
@@ -215,9 +215,9 @@ class AddNewQuarkFormBase extends React.Component {
               quark_type_id
             }}
             onCompleted={data =>
-              this.props.history.push(`/${data.createQuark.name}`)
+              this.props.history.push(`/graph/${data.CreateQuark.name}`)
             }
-            update={(store, { data: { createQuark } }) => {
+            update={(store, { data: { CreateQuark } }) => {
               console.log(1);
               const first = QUARKS_PER_PAGE;
               const skip = 0;
@@ -229,7 +229,7 @@ class AddNewQuarkFormBase extends React.Component {
                   query: QUARKS_QUERY,
                   variables: { first, skip, orderBy }
                 });
-                data.quarks.unshift(createQuark);
+                data.quarks.unshift(CreateQuark);
                 store.writeQuery({
                   query: QUARKS_QUERY,
                   data,

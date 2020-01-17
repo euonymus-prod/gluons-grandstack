@@ -165,18 +165,27 @@ const generateDatetimeParams = params => {
 
   const paramsReady = params
   existingDatetimeParams.forEach(paramKey => {
-    paramsReady[paramKey] = `${params[paramKey].formatted}T00:00:00+0900`
+    if (params[paramKey] && params[paramKey].formatted) {
+      paramsReady[paramKey] = `${params[paramKey].formatted}T00:00:00+0900`
+    } else {
+      paramsReady[paramKey] = null
+    }
   })
   return {datetimeSetter, paramsReady}
 }
 const generateDatetimeReturn = properties => {
+
   const ret = properties
-  _.keys(properties).filter(paramKey => datetimeParams.includes(paramKey)).forEach(paramKey => {
-    ret[paramKey] = {
-      year:  properties[paramKey].year.toString(),
-      month: properties[paramKey].month.toString(),
-      day:   properties[paramKey].day.toString()
+  datetimeParams.forEach(paramKey => {
+    let year = null
+    let month = null
+    let day = null
+    if (properties[paramKey]) {
+      year = properties[paramKey].year.toString()
+      month = properties[paramKey].month.toString()
+      day =   properties[paramKey].day.toString()
     }
+    ret[paramKey] = { year, month, day }
   })
   return ret
 }

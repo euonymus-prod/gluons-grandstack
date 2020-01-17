@@ -54,8 +54,16 @@ export const POST_MUTATION = gql`
       name
       image_path
       description
-      start
-      end
+      start {
+        year
+        month
+        day
+      }
+      end {
+        year
+        month
+        day
+      }
       start_accuracy
       end_accuracy
       is_momentary
