@@ -212,7 +212,7 @@ class AddNewQuarkFormBase extends React.Component {
               affiliate,
               is_private,
               is_exclusive,
-              quark_type_id
+              quark_type_id: Number(quark_type_id)
             }}
             onCompleted={data =>
               this.props.history.push(`/graph/${data.CreateQuark.name}`)
