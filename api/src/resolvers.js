@@ -182,7 +182,7 @@ const updateQuarkResolver = async (parent, params, context, info) => {
   //const last_modified_user = user.user_id
   const last_modified_user = firebaseInstance.temporalUserId(user.user_id)
 
-  const last_modified_user = 8
+  // Read current node by id
   const readCypher = `MATCH (node:Quark { id: "${params.id}" }) RETURN node`
   // const readCypher = `MATCH (node:Quark { id: "hhhh" }) RETURN node`
   const existingRecords = await execCypher(context, readCypher)
