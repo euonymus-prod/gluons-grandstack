@@ -132,26 +132,25 @@ type Query {
 
 type Mutation {
   CreateQuark(
-    Label: String!
-    id: ID!,
-    name: String!,
-    en_name: String,
-    image_path: String,
-    description: String,
-    en_description: String,
-    start: _Neo4jDateTimeInput,
-    end: _Neo4jDateTimeInput,
-    start_accuracy: String,
-    end_accuracy: String,
-    is_momentary: Boolean,
-    url: String,
-    affiliate: String,
-    gender: Int,
-    is_private: Boolean,
-    is_exclusive: Boolean,
-    user_id: Int,
-    last_modified_user: Int,
-    quark_type_id: Int
-  ): LoggedInQuark @hasRole(roles:[admin, user])
+    quark_type_id: Int!
+    id: ID!
+    name: String!
+    en_name: String
+    image_path: String
+    description: String
+    en_description: String
+    start: _Neo4jDateTimeInput
+    end: _Neo4jDateTimeInput
+    start_accuracy: String
+    end_accuracy: String
+    is_momentary: Boolean
+    url: String
+    affiliate: String
+    gender: Int
+    is_private: Boolean
+    is_exclusive: Boolean
+    user_id: Int
+    last_modified_user: Int
+  ): LoggedInQuark
 }
 
