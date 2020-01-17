@@ -1,5 +1,6 @@
 import _ from 'lodash'
 // import { neo4jgraphql } from 'neo4j-graphql-js'
+import { firebaseInstance, getAuthorizationHeader } from './utils/firebase'
 import { quarkLabelsData } from './constants/quark-labels'
 import { gluonTypesData } from './constants/gluon-types'
 import { quarkPropertiesData } from './constants/quark-properties'
@@ -192,11 +193,21 @@ const generateDatetimeReturn = properties => {
 // Note: if you don't create resolver specifically, auto generated resolver will call cypher automatically, and generate node
 //       but, the problem is, it can't modify Label by param, and start datetime modification also needed
 const createQuarkResolver = async (parent, params, context, info) => {
+  const idToken = getAuthorizationHeader(context);
+  const user = await firebaseInstance.getLoggedIn(idToken)
+  if (!user) {
+    throw Error("The user must be logged in");
+  }
+  //const user_id = user.user_id
+  const user_id = firebaseInstance.temporalUserId(user.user_id)
+
+
+
   const Label = `:${quarkLabelsData[params.quark_type_id].label}`
   let existingParams = generateCypherParams(params)
   const {datetimeSetter, paramsReady} = generateDatetimeParams(params)
   
-  const cypher = `CREATE (node:Quark${Label} { id: apoc.create.uuid()${existingParams} }) SET node.created = datetime(), node.modified = datetime()${datetimeSetter} RETURN node`
+  const cypher = `CREATE (node:Quark${Label} { id: apoc.create.uuid()${existingParams}, user_id: ${user_id}, last_modified_user: ${user_id} }) SET node.created = datetime(), node.modified = datetime()${datetimeSetter} RETURN node`
 
   const session = context.driver.session()
   const result = await session.run(cypher, paramsReady)

@@ -150,6 +150,6 @@ type Mutation {
     is_exclusive: Boolean
     user_id: Int
     last_modified_user: Int
-  ): LoggedInQuark
+  ): LoggedInQuark @hasRole(roles:[admin, user])
 }
 

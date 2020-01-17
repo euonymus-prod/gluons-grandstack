@@ -1,7 +1,7 @@
 import { SchemaDirectiveVisitor } from "graphql-tools";
 import { GraphQLDirective, DirectiveLocation, GraphQLList, defaultFieldResolver } from "graphql";
 import { AuthenticationError } from 'apollo-server';
-import firebaseInstance from './firebase';
+import { firebaseInstance, getAuthorizationHeader } from './utils/firebase'
 import * as ROLES from './constants/roles'
 
 
@@ -115,13 +115,4 @@ function hasPermission(result, userRoles, fb_uid = false) {
     }
   }
   return false
-}
-
-// Check for existence of auth token in header
-function getAuthorizationHeader(context) {
-  if (!context || !context.headers || !context.headers.authorization) {
-    throw new AuthenticationError("No authorization token." );
-  }
-  const token = context.headers.authorization;
-  return token.replace("Bearer ", "");
 }
