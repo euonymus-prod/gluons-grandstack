@@ -36,6 +36,7 @@ export const POST_MUTATION = gql`
     $is_exclusive: Boolean!
   ) {
     CreateQuark(
+      quark_type_id: $quark_type_id
       name: $name
       image_path: $image_path
       description: $description
@@ -48,10 +49,8 @@ export const POST_MUTATION = gql`
       affiliate: $affiliate
       is_private: $is_private
       is_exclusive: $is_exclusive
-      quark_type_id: $quark_type_id
     ) {
-      id
-      created
+      quark_type_id
       name
       image_path
       description
