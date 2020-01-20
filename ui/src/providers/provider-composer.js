@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // Redux
-// import { Provider } from 'react-redux'
-// import store from './store'
+import { Provider } from "react-redux";
+import store from "./store";
 // apollo
 // import ApolloClient from "apollo-boost";
 import { createHttpLink } from "apollo-link-http";
@@ -43,7 +43,9 @@ const client = new ApolloClient({
 class ProviderComposer extends Component {
   render() {
     return (
-      <ApolloProvider client={client}>{this.props.children}</ApolloProvider>
+      <Provider store={store}>
+        <ApolloProvider client={client}>{this.props.children}</ApolloProvider>
+      </Provider>
     );
   }
 }

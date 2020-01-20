@@ -1,5 +1,8 @@
 // react
 import React, { Component } from "react";
+// redux
+import { connect } from "react-redux";
+import { setCurrentQuark } from "../actions/quark.js";
 // GraphQL
 import { Query } from "react-apollo";
 import { withAuthUser } from "../providers/session";
@@ -31,6 +34,7 @@ class Graph extends Component {
         {({ loading, error, data }) => {
           if (loading) return "Loading...";
           if (error) return `Error! ${error.message}`;
+          this.props.setCurrentQuark(data[queryName]);
           return (
             <div className="baryon-body">
               <MainQuark subject={data[queryName]} />
@@ -42,4 +46,6 @@ class Graph extends Component {
     );
   }
 }
-export default withAuthUser(Graph);
+export default connect(state => state, { setCurrentQuark })(
+  withAuthUser(Graph)
+);
