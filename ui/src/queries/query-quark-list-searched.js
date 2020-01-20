@@ -1,12 +1,12 @@
 import _ from "lodash";
 import gql from "graphql-tag";
 import * as QUERY_NAME from "../constants/query-names";
-import { queryFields } from "./quark-fields";
+import { quarkFields } from "./fields-quark";
 
 const quarkListCompiled = _.template(`
   query searchQuarks($first: Int, $keyword: String) {
     <%= queryName %>(first: $first, keyword: $keyword<%= addingUserIdParam %>) {
-    <%= queryFields %>
+    <%= quarkFields %>
     }
   }
 `);
@@ -18,7 +18,7 @@ class QuarkListSearched {
       addingUserIdParam = `, ${userIdParam}`;
     }
     return gql(
-      quarkListCompiled({ queryName, addingUserIdParam, queryFields })
+      quarkListCompiled({ queryName, addingUserIdParam, quarkFields })
     );
   }
 }

@@ -6,7 +6,7 @@ import { setCurrentQuark } from "../actions/quark.js";
 // GraphQL
 import { Query } from "react-apollo";
 import { withAuthUser } from "../providers/session";
-import GraphOnQuark from "../queries/graph-on-quark";
+import GraphOnQuark from "../queries/query-graph-on-quark";
 import { querySelector } from "../utils/auth-util";
 // component
 import MainQuark from "../components/main-quark";

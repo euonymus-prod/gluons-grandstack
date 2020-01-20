@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { withAuthUser } from "../providers/session";
 // GraphQL
-import QuarkListSearched from "../queries/quark-list-searched";
+import QuarkListSearched from "../queries/query-quark-list-searched";
 import { querySelector } from "../utils/auth-util";
 // component
 import Quarks from "../components/quarks";

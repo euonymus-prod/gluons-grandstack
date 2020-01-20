@@ -4,7 +4,7 @@ import { withLastLocation } from "react-router-last-location";
 import { withFirebase } from "../providers/firebase";
 import { Mutation } from "react-apollo";
 import InputQuarkLabels from "../components/input-quark-labels";
-import { POST_MUTATION } from "../queries/quark-fields";
+import { POST_MUTATION } from "../queries/mutation-quark";
 
 // Material UI
 import TextField from "@material-ui/core/TextField";

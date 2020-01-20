@@ -1,23 +1,5 @@
 import gql from "graphql-tag";
-export const queryFields = `
-       id
-       name
-       description
-       image_path
-       start {
-         year
-         month
-         day
-       }
-       end {
-         year
-         month
-         day
-       }
-       start_accuracy
-       end_accuracy
-       is_momentary
-`;
+import { quarkFields } from "./fields-quark";
 
 export const POST_MUTATION = gql`
   mutation CreateQuark(
@@ -50,37 +32,7 @@ export const POST_MUTATION = gql`
       is_private: $is_private
       is_exclusive: $is_exclusive
     ) {
-      quark_type_id
-      name
-      image_path
-      description
-      start {
-        year
-        month
-        day
-      }
-      end {
-        year
-        month
-        day
-      }
-      start_accuracy
-      end_accuracy
-      is_momentary
-      url
-      affiliate
-      is_private
-      is_exclusive
+      ${quarkFields}
     }
   }
 `;
-
-// legacy fields
-// quark_type {
-//   id
-//   name
-// }
-// user_id {
-//   id
-//   username
-// }

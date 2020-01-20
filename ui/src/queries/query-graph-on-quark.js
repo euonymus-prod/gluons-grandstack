@@ -1,58 +1,24 @@
 import _ from "lodash";
 import gql from "graphql-tag";
-import * as QUERY_NAME from "../constants/query-names";
+import { quarkFields } from "./fields-quark";
+import { gluonFields } from "./fields-gluon";
 
-const fieldsPeriod = `
-  start {
-    year
-    month
-    day
-  }
-  end {
-    year
-    month
-    day
-  }
-  start_accuracy
-  end_accuracy
-  is_momentary
-`;
-const fieldsQuark = `
-  id
-  name
-  description
-  image_path
-  ${fieldsPeriod}
-  url
-  is_private
-  user_id
-  is_exclusive
-  quark_type_id
-`;
-const fieldsGluon = `
-  id
-  relation
-  active_id
-  passive_id
-  ${fieldsPeriod}
-  object_id
-  gluon_type_id
-`;
+import * as QUERY_NAME from "../constants/query-names";
 
 const queryQuarkCompiled = _.template(`
   query Quark($name: String) {
     <%= queryName %>(name: $name<%= addingUserIdParam %>) {
-      ${fieldsQuark}
+      ${quarkFields}
       gluons<%= onlyUserIdParam %> {
-        ${fieldsGluon}
+        ${gluonFields}
       }
       objects<%= onlyUserIdParam %> {
-        ${fieldsQuark}
+        ${quarkFields}
         gluons<%= onlyUserIdParam %> {
-          ${fieldsGluon}
+          ${gluonFields}
         }
         objects<%= onlyUserIdParam %> {
-          ${fieldsQuark}
+          ${quarkFields}
         }
       }
       properties {
@@ -63,7 +29,7 @@ const queryQuarkCompiled = _.template(`
           caption_ja
         }
         gluons {
-          ${fieldsGluon}
+          ${gluonFields}
         }
       }
     }
