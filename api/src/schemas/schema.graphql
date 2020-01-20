@@ -96,6 +96,10 @@ type Query {
     @cypher(
       statement: "MATCH (node {name: $name}) RETURN node"
     )
+  editingQuark(id: ID, user_id: Int): LoggedInQuark @hasRole(roles:[admin, user])
+    @cypher(
+      statement: "MATCH (node {id: id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
+    )
   quarks(first: Int = 100): [PublicQuark]
     @cypher(
       statement: "MATCH (node) WHERE <%= cypherWherePublic %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
