@@ -6,20 +6,19 @@ import { gluonFields } from "./fields-gluon";
 import * as QUERY_NAME from "../constants/query-names";
 
 const queryQuarkCompiled = _.template(`
-  query Quark($name: String) {
-    <%= queryName %>(name: $name<%= addingUserIdParam %>) {
+  query editingQuark($id: ID) {
+    editingQuark(id: $id<%= addingUserIdParam %>) {
       ${quarkFields}
     }
   }
 `);
 class EditingQuark {
-  constructor(queryName, user_id = null) {
+  constructor(user_id = null) {
     let addingUserIdParam = "";
-    if (queryName === QUERY_NAME.USER_QUARK) {
-      const userIdParam = `user_id: ${user_id}`;
-      addingUserIdParam = `, ${userIdParam}`;
-    }
-    return gql(queryQuarkCompiled({ queryName, addingUserIdParam }));
+
+    const userIdParam = `user_id: ${user_id}`;
+    addingUserIdParam = `, ${userIdParam}`;
+    return gql(queryQuarkCompiled({ addingUserIdParam }));
   }
 }
 export default EditingQuark;

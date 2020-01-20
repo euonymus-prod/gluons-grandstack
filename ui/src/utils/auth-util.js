@@ -1,3 +1,4 @@
+export const convertTableForTemporallyUse = { qV183nzQ79MPRBidNFTCbUxCv1H2: 2 };
 export const querySelector = (authUser, readerQuery, userQuery, adminQuery) => {
   let queryName = readerQuery;
   let user_id = null;

@@ -218,7 +218,6 @@ class AddNewQuarkFormBase extends React.Component {
               this.props.history.push(`/graph/${data.CreateQuark.name}`)
             }
             update={(store, { data: { CreateQuark } }) => {
-              console.log(1);
               const first = QUARKS_PER_PAGE;
               const skip = 0;
               const orderBy = "created";
