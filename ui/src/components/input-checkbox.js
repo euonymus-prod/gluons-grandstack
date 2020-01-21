@@ -6,9 +6,23 @@ class InputCheckbox extends Component {
     value: ""
   };
 
+  componentDidMount() {
+    if (this.props.defaultValue) {
+      this.setState({ value: this.props.defaultValue });
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!prevState.value) {
+      const value = nextProps.defaultValue;
+      return { value };
+    }
+    return null;
+  }
+
   onChange = event => {
     this.setState({ value: !this.state.value });
-    this.props.onChange(event.target.name, !this.state.value);
+    this.props.onChange({ [event.target.name]: !this.state.value });
   };
 
   render() {
@@ -30,8 +44,12 @@ class InputCheckbox extends Component {
 }
 
 InputCheckbox.propTypes = {
+  defaultValue: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired
+};
+InputCheckbox.defaultProps = {
+  defaultValue: ""
 };
 export default InputCheckbox;

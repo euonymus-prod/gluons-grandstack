@@ -20,6 +20,12 @@ class SubmitQuark extends Component {
       end: { formatted: formVariables.end },
       quark_type_id: Number(formVariables.quark_type_id)
     };
+
+    if (formVariables.id) {
+      // TODO: edit node
+    } else {
+      // TODO: add new node
+    }
     return (
       <Mutation
         mutation={POST_MUTATION}

@@ -23,22 +23,18 @@ class InputQuarkLabels extends Component {
     }
   }
 
-  onChange = event => {
-    this.setState({ value: event.target.value });
-    this.props.onChange("quark_type_id", event.target.value);
-  };
-
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!prevState.value) {
-      let value = 1;
-      if (nextProps.defaultValue) {
-        value = nextProps.defaultValue;
-      }
-      nextProps.onChange("quark_type_id", value);
+      const value = nextProps.defaultValue;
       return { value };
     }
     return null;
   }
+
+  onChange = event => {
+    this.setState({ value: event.target.value });
+    this.props.onChange({ quark_type_id: event.target.value });
+  };
 
   render() {
     return (
@@ -65,5 +61,10 @@ class InputQuarkLabels extends Component {
 }
 InputQuarkLabels.propTypes = {
   defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+  onChange: PropTypes.func.isRequired
+};
+InputQuarkLabels.defaultProps = {
+  defaultValue: 1
 };
 export default InputQuarkLabels;

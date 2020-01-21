@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 import InputText from "./input-text";
 import InputCheckbox from "./input-checkbox";
 import InputQuarkLabels from "./input-quark-labels";
 import SubmitQuark from "./submit-quark";
+import Util from "../utils/common";
 
-class QuarkFormBase extends Component {
+class QuarkForm extends Component {
   state = {
     error: null,
     formVariables: {
@@ -24,9 +26,25 @@ class QuarkFormBase extends Component {
     }
   };
 
-  setFormVariables = (key, value) => {
+  componentDidMount() {
+    const { editingQuark } = this.props;
+    if (editingQuark) {
+      const util = new Util();
+      const start = util.date2str({
+        ...editingQuark.start,
+        month: editingQuark.start.month - 1
+      });
+      const end = util.date2str({
+        ...editingQuark.end,
+        month: editingQuark.end.month - 1
+      });
+      this.setFormVariables({ ...editingQuark, start, end });
+    }
+  }
+
+  setFormVariables = newVariables => {
     this.setState({
-      formVariables: { ...this.state.formVariables, [key]: value }
+      formVariables: { ...this.state.formVariables, ...newVariables }
     });
   };
 
@@ -37,6 +55,7 @@ class QuarkFormBase extends Component {
         name={name}
         onChange={this.setFormVariables}
         type={type}
+        defaultValue={this.state.formVariables[name]}
       />
     );
   };
@@ -46,6 +65,7 @@ class QuarkFormBase extends Component {
         title={title}
         name={name}
         onChange={this.setFormVariables}
+        defaultValue={this.state.formVariables[name]}
       />
     );
   };
@@ -76,7 +96,10 @@ class QuarkFormBase extends Component {
               {this.inputText("Affiliate URL", "affiliate")}
               <br />
               <label>Quark Type</label>
-              <InputQuarkLabels onChange={this.setFormVariables} />
+              <InputQuarkLabels
+                onChange={this.setFormVariables}
+                defaultValue={this.state.formVariables.quark_type_id}
+              />
               {this.inputCheckbox("Is Private", "is_private")}
               {this.inputCheckbox("Is Exclusive", "is_exclusive")}
             </div>
@@ -87,5 +110,7 @@ class QuarkFormBase extends Component {
     );
   }
 }
-const QuarkForm = QuarkFormBase;
+QuarkForm.propTypes = {
+  editingQuark: PropTypes.object
+};
 export default QuarkForm;
