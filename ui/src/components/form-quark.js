@@ -1,41 +1,28 @@
 import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
-import { withLastLocation } from "react-router-last-location";
-import { Mutation } from "react-apollo";
-import InputQuarkLabels from "./input-quark-labels";
 import InputText from "./input-text";
 import InputCheckbox from "./input-checkbox";
-import { POST_MUTATION } from "../queries/mutation-quark";
+import InputQuarkLabels from "./input-quark-labels";
 import SubmitQuark from "./submit-quark";
-// Material UI
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-
-const QUARKS_PER_PAGE = 20;
-// TODO
-const QUARKS_QUERY = "";
-
-const INITIAL_STATE = {
-  error: null,
-  formVariables: {
-    name: "",
-    image_path: "",
-    description: "",
-    start: "",
-    end: "",
-    start_accuracy: "",
-    end_accuracy: "",
-    is_momentary: false,
-    url: "",
-    affiliate: "",
-    is_private: false,
-    is_exclusive: true,
-    quark_type_id: ""
-  }
-};
 
 class QuarkFormBase extends Component {
-  state = { ...INITIAL_STATE };
+  state = {
+    error: null,
+    formVariables: {
+      name: "",
+      image_path: "",
+      description: "",
+      start: "",
+      end: "",
+      start_accuracy: "",
+      end_accuracy: "",
+      is_momentary: false,
+      url: "",
+      affiliate: "",
+      is_private: false,
+      is_exclusive: true,
+      quark_type_id: ""
+    }
+  };
 
   setFormVariables = (key, value) => {
     this.setState({
@@ -100,5 +87,5 @@ class QuarkFormBase extends Component {
     );
   }
 }
-const QuarkForm = withRouter(withLastLocation(QuarkFormBase));
+const QuarkForm = QuarkFormBase;
 export default QuarkForm;
