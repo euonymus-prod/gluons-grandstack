@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { withLastLocation } from "react-router-last-location";
 import { Mutation } from "react-apollo";
-import { POST_MUTATION } from "../queries/mutation-quark";
+import QuarkMutation from "../queries/mutation-quark";
 // Material UI
 import Button from "@material-ui/core/Button";
 
@@ -21,14 +21,16 @@ class SubmitQuark extends Component {
       quark_type_id: Number(formVariables.quark_type_id)
     };
 
-    if (formVariables.id) {
+    let mutationName = "CreateQuark";
+    if (variables.id) {
       // TODO: edit node
-    } else {
-      // TODO: add new node
+      mutationName = "UpdateQuark";
     }
+    // TODO なんで失敗するかわからんけど、 "No node found" のエラーが GraphQLから返却されてUpdateに失敗する
+    const mutation = new QuarkMutation(mutationName);
     return (
       <Mutation
-        mutation={POST_MUTATION}
+        mutation={mutation}
         variables={variables}
         onCompleted={data =>
           this.props.history.push(`/graph/${data.CreateQuark.name}`)
@@ -57,7 +59,7 @@ class SubmitQuark extends Component {
           <button
             className="btn btn-primary"
             onClick={() => {
-              if (!this.state.name) {
+              if (!formVariables.name) {
                 alert("Name is required");
                 return false;
               }

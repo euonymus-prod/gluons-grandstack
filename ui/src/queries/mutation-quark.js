@@ -1,8 +1,11 @@
+import _ from "lodash";
 import gql from "graphql-tag";
+import * as QUERY_NAME from "../constants/query-names";
 import { quarkFields } from "./fields-quark";
 
-export const POST_MUTATION = gql`
-  mutation CreateQuark(
+const quarkMutationCompiled = _.template(`
+  mutation mutateQuark(
+    <%= idSchema %>
     $quark_type_id: Int!
     $name: String!
     $image_path: String
@@ -17,7 +20,8 @@ export const POST_MUTATION = gql`
     $is_private: Boolean!
     $is_exclusive: Boolean!
   ) {
-    CreateQuark(
+    <%= mutationName %>(
+      <%= idParam %>
       quark_type_id: $quark_type_id
       name: $name
       image_path: $image_path
@@ -35,4 +39,17 @@ export const POST_MUTATION = gql`
       ${quarkFields}
     }
   }
-`;
+`);
+class QuarkMutation {
+  constructor(mutationName) {
+    let idSchema = "";
+    let idParam = "";
+    if (mutationName === QUERY_NAME.UPDATE_QUARK) {
+      idSchema = "$id: ID!";
+      idParam = "id: $id";
+    }
+
+    return gql(quarkMutationCompiled({ mutationName, idSchema, idParam }));
+  }
+}
+export default QuarkMutation;

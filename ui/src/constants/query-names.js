@@ -9,3 +9,6 @@ export const READER_QUARKS = "quarks";
 export const ADMIN_SEARCH_QUARKS = "adminSearchQuarks";
 export const USER_SEARCH_QUARKS = "loggedInSearchQuarks";
 export const READER_SEARCH_QUARKS = "searchQuarks";
+
+export const CREATE_QUARK = "CreateQuark";
+export const UPDATE_QUARK = "UpdateQuark";
