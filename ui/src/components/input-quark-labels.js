@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -16,6 +17,11 @@ class InputQuarkLabels extends Component {
   state = {
     value: ""
   };
+  componentDidMount() {
+    if (this.props.defaultValue) {
+      this.setState({ value: this.props.defaultValue });
+    }
+  }
 
   _onChange = e => {
     this.setState({ value: e.target.value });
@@ -57,4 +63,7 @@ class InputQuarkLabels extends Component {
     );
   }
 }
+InputQuarkLabels.propTypes = {
+  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+};
 export default InputQuarkLabels;
