@@ -3,6 +3,8 @@ import { withRouter } from "react-router-dom";
 import { withLastLocation } from "react-router-last-location";
 import { Mutation } from "react-apollo";
 import InputQuarkLabels from "./input-quark-labels";
+import InputText from "./input-text";
+import InputCheckbox from "./input-checkbox";
 import { POST_MUTATION } from "../queries/mutation-quark";
 import SubmitQuark from "./submit-quark";
 // Material UI
@@ -40,41 +42,24 @@ class QuarkFormBase extends Component {
       formVariables: { ...this.state.formVariables, [key]: value }
     });
   };
-  onChange = event => {
-    this.setFormVariables([event.target.name], event.target.value);
-  };
-  onChangeCheckbox = event => {
-    this.setFormVariables([event.target.name], !this.state[event.target.name]);
-  };
 
-  inputText = (title, key, type = "text") => {
+  inputText = (title, name, type = "text") => {
     return (
-      <Fragment>
-        <label>{title}</label>
-        <input
-          value={this.state[key]}
-          name={key}
-          onChange={this.onChange}
-          type={type}
-          placeholder={title}
-          className={`form-control ${type}`}
-        />
-      </Fragment>
+      <InputText
+        title={title}
+        name={name}
+        onChange={this.setFormVariables}
+        type={type}
+      />
     );
   };
-  inputCheckbox = (title, key) => {
+  inputCheckbox = (title, name) => {
     return (
-      <div className="input checkbox">
-        <label htmlFor={key}>
-          <input
-            name={key}
-            onChange={this.onChangeCheckbox}
-            type="checkbox"
-            checked={this.state[key]}
-          />
-          {title}
-        </label>
-      </div>
+      <InputCheckbox
+        title={title}
+        name={name}
+        onChange={this.setFormVariables}
+      />
     );
   };
 
@@ -104,11 +89,7 @@ class QuarkFormBase extends Component {
               {this.inputText("Affiliate URL", "affiliate")}
               <br />
               <label>Quark Type</label>
-              <InputQuarkLabels
-                onChange={quark_type_id =>
-                  this.setFormVariables("quark_type_id", quark_type_id)
-                }
-              />
+              <InputQuarkLabels onChange={this.setFormVariables} />
               {this.inputCheckbox("Is Private", "is_private")}
               {this.inputCheckbox("Is Exclusive", "is_exclusive")}
             </div>

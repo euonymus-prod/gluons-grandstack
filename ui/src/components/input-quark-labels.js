@@ -23,9 +23,9 @@ class InputQuarkLabels extends Component {
     }
   }
 
-  _onChange = e => {
-    this.setState({ value: e.target.value });
-    this.props.onChange(e.target.value);
+  onChange = event => {
+    this.setState({ value: event.target.value });
+    this.props.onChange("quark_type_id", event.target.value);
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -34,7 +34,7 @@ class InputQuarkLabels extends Component {
       if (nextProps.defaultValue) {
         value = nextProps.defaultValue;
       }
-      nextProps.onChange(value);
+      nextProps.onChange("quark_type_id", value);
       return { value };
     }
     return null;
@@ -50,7 +50,7 @@ class InputQuarkLabels extends Component {
             return "No Data for this Selectbox";
 
           return (
-            <select value={this.props.defaultValue} onChange={this._onChange}>
+            <select value={this.props.defaultValue} onChange={this.onChange}>
               {data.quarkLabels.map((data, index) => (
                 <option key={data.id} value={data.id}>
                   {data.id}: {data.label}
