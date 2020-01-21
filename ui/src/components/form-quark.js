@@ -35,23 +35,24 @@ const INITIAL_STATE = {
 class QuarkFormBase extends Component {
   state = { ...INITIAL_STATE };
 
-  onChange = event => {
+  setFormVariables = (key, value) => {
     this.setState({
-      formVariables: { [event.target.name]: event.target.value }
+      formVariables: { ...this.state.formVariables, [key]: value }
     });
+  };
+  onChange = event => {
+    this.setFormVariables([event.target.name], event.target.value);
   };
   onChangeCheckbox = event => {
-    this.setState({
-      formVariables: { [event.target.name]: !this.state[event.target.name] }
-    });
+    this.setFormVariables([event.target.name], !this.state[event.target.name]);
   };
 
-  inputText = (title, { key, value }, type = "text") => {
+  inputText = (title, key, type = "text") => {
     return (
       <Fragment>
         <label>{title}</label>
         <input
-          value={value}
+          value={this.state[key]}
           name={key}
           onChange={this.onChange}
           type={type}
@@ -61,7 +62,7 @@ class QuarkFormBase extends Component {
       </Fragment>
     );
   };
-  inputCheckbox = (title, { key, value }) => {
+  inputCheckbox = (title, key) => {
     return (
       <div className="input checkbox">
         <label htmlFor={key}>
@@ -69,7 +70,7 @@ class QuarkFormBase extends Component {
             name={key}
             onChange={this.onChangeCheckbox}
             type="checkbox"
-            checked={value}
+            checked={this.state[key]}
           />
           {title}
         </label>
@@ -79,23 +80,7 @@ class QuarkFormBase extends Component {
 
   render() {
     const { error, formVariables } = this.state;
-
-    const {
-      name,
-      image_path,
-      description,
-      start,
-      end,
-      start_accuracy,
-      end_accuracy,
-      is_momentary,
-      url,
-      affiliate,
-      is_private,
-      is_exclusive,
-      quark_type_id
-    } = formVariables;
-
+    const { name } = formVariables;
     const isInvalid = name === "";
     return (
       <div>
@@ -103,29 +88,29 @@ class QuarkFormBase extends Component {
           <fieldset>
             <legend>Add New Quark</legend>
             <div className="form-group">
-              {this.inputText("Name", { name })}
-              {this.inputText("Image Path", { image_path })}
+              {this.inputText("Name", "name")}
+              {this.inputText("Image Path", "image_path")}
             </div>
             <div className="form-group">
               <h4>optional</h4>
-              {this.inputText("Description", { description })}
-              {this.inputText("Start", { start }, "date")}
-              {this.inputText("End", { end }, "date")}
-              {this.inputText("Start Accuracy", { start_accuracy })}
-              {this.inputText("End Accuracy", { end_accuracy })}
-              {this.inputCheckbox("Is Momentary", { is_momentary })}
+              {this.inputText("Description", "description")}
+              {this.inputText("Start", "start", "date")}
+              {this.inputText("End", "end", "date")}
+              {this.inputText("Start Accuracy", "start_accuracy")}
+              {this.inputText("End Accuracy", "end_accuracy")}
+              {this.inputCheckbox("Is Momentary", "is_momentary")}
 
-              {this.inputText("URL", { url })}
-              {this.inputText("Affiliate URL", { affiliate })}
+              {this.inputText("URL", "url")}
+              {this.inputText("Affiliate URL", "affiliate")}
               <br />
               <label>Quark Type</label>
               <InputQuarkLabels
                 onChange={quark_type_id =>
-                  this.setState({ formVariables: { quark_type_id } })
+                  this.setFormVariables("quark_type_id", quark_type_id)
                 }
               />
-              {this.inputCheckbox("Is Private", { is_private })}
-              {this.inputCheckbox("Is Exclusive", { is_exclusive })}
+              {this.inputCheckbox("Is Private", "is_private")}
+              {this.inputCheckbox("Is Exclusive", "is_exclusive")}
             </div>
           </fieldset>
           <SubmitQuark formVariables={formVariables} />
