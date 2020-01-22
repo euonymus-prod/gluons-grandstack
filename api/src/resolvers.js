@@ -184,10 +184,8 @@ const updateQuarkResolver = async (parent, params, context, info) => {
 
   // Read current node by id
   const readCypher = `MATCH (node:Quark { id: "${params.id}" }) RETURN node`
-console.log('match cypher: ', readCypher)
   // const readCypher = `MATCH (node:Quark { id: "hhhh" }) RETURN node`
   const existingRecords = await execCypher(context, readCypher)
-console.log('record: ', existingRecords)
   if (existingRecords.length === 0) {
     throw Error("No node found");
   }
