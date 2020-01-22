@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { LastLocationProvider } from "react-router-last-location";
 import { withAuthentication } from "./providers/session";
 import ScrollToTop from "./components/scroll-to-top";
-import Navbar from "./components/navbar";
+import Navbar from "./components/navis/navbar";
 import Footer from "./components/footer";
 import AuthRoutes from "./auth-routes";
 // pages

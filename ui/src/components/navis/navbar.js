@@ -2,9 +2,9 @@ import React from "react";
 // redux
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
-import { withAuthUser } from "../providers/session";
-import { withFirebase } from "../providers/firebase";
-import * as ROUTES from "../constants/routes";
+import { withAuthUser } from "../../providers/session";
+import { withFirebase } from "../../providers/firebase";
+import * as ROUTES from "../../constants/routes";
 // Material UI
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -23,9 +23,9 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import EditIcon from "@material-ui/icons/Edit";
 // import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import logo from "../assets/images/logo.gif";
+import logo from "../../assets/images/logo.gif";
 // Styles
-import { useStyles } from "../assets/styles/navbar";
+import { useStyles } from "../../assets/styles/navbar";
 
 export default connect(state => state)(
   withRouter(
