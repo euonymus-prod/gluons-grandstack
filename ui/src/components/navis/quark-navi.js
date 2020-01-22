@@ -13,6 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import EditIcon from "@material-ui/icons/Edit";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
@@ -29,6 +30,17 @@ const QuarkNavi = props => {
   const onEditQuarkClick = () => {
     const quark_id = props.current_quark.id;
     props.history.push(`${ROUTES.EDIT_QUARK_BASE}${quark_id}`);
+    handleMenuClose();
+  };
+
+  const onDeleteQuarkClick = () => {
+    const quark_id = props.current_quark.id;
+    const name = props.current_quark.name;
+    let ret = window.confirm(`Are you sure you want to delete ${name}?`);
+    if (ret === true) {
+      // TODO
+      console.log("deleting: ", quark_id);
+    }
     handleMenuClose();
   };
 
@@ -66,6 +78,7 @@ const QuarkNavi = props => {
         {func("Add New Quark", <AddCircleOutlineIcon />, onAddQuarkClick)}
         {props.current_quark &&
           func("Edit Quark", <EditIcon />, onEditQuarkClick)}
+        {func("Delete Quark", <DeleteForeverIcon />, onDeleteQuarkClick)}
         {func("List", <ViewListIcon />, onListClick)}
         {func("Profile", <AccountCircle />, props.handleProfileMenuOpen)}
       </div>
