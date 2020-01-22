@@ -13,7 +13,6 @@ const QUARKS_QUERY = "";
 
 class SubmitQuark extends Component {
   updateAfterMutation = (store, { data: { CreateQuark } }) => {
-    console.log("in updateAfterMutation");
     const first = QUARKS_PER_PAGE;
     const skip = 0;
     const orderBy = "created";
@@ -54,7 +53,6 @@ class SubmitQuark extends Component {
         mutation={mutation}
         variables={variables}
         onCompleted={data => {
-          console.log("in onCompleted");
           this.props.history.push(`/graph/${data.CreateQuark.name}`);
         }}
         onError={error => {
@@ -63,7 +61,6 @@ class SubmitQuark extends Component {
         update={this.updateAfterMutation}
       >
         {postMutation => {
-          console.log("in postMutation");
           return (
             <Button
               color="primary"

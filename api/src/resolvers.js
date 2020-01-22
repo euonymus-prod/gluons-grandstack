@@ -166,7 +166,7 @@ const createQuarkResolver = async (parent, params, context, info) => {
   //const user_id = user.user_id
   const user_id = firebaseInstance.temporalUserId(user.user_id)
 
-  const Label = `:${quarkLabelsData[params.quark_type_id].label}`
+  const Label = `:${getLabel(params.quark_type_id)}`
   let existingParams = generateCypherParams(params)
   const {datetimeSetter, paramsReady} = generateDatetimeParams(params)
   
@@ -184,8 +184,10 @@ const updateQuarkResolver = async (parent, params, context, info) => {
 
   // Read current node by id
   const readCypher = `MATCH (node:Quark { id: "${params.id}" }) RETURN node`
+console.log('match cypher: ', readCypher)
   // const readCypher = `MATCH (node:Quark { id: "hhhh" }) RETURN node`
   const existingRecords = await execCypher(context, readCypher)
+console.log('record: ', existingRecords)
   if (existingRecords.length === 0) {
     throw Error("No node found");
   }
@@ -194,11 +196,8 @@ const updateQuarkResolver = async (parent, params, context, info) => {
   let updateLabelPre = '';        
   let updateLabelPost = '';        
   if (params.quark_type_id && (Number(params.quark_type_id) !== Number(existingProps.quark_type_id))) {
-    if (!quarkLabelsData[params.quark_type_id]) {
-      throw Error("Invalidate quark_type_id");
-    }
-    const label = quarkLabelsData[params.quark_type_id].label
-    const old_label = quarkLabelsData[existingProps.quark_type_id].label
+    const label = getLabel(params.quark_type_id)
+    const old_label = getLabel(existingProps.quark_type_id)
     updateLabelPre = ` REMOVE node:${old_label}`
     updateLabelPost = `, node:${label}`
   }
@@ -219,15 +218,17 @@ const generateCypherParams = params => {
 
 const generateDatetimeParams = params => {
   const existingDatetimeParams = _.keys(params).filter(paramKey => DATETIME_PROPERTIES.includes(paramKey))
-  const datetimeSetter = existingDatetimeParams.map(paramKey => {
+  const datetimeSetterArr = existingDatetimeParams.map(paramKey => {
     return `, node.${paramKey} = CASE node.${paramKey}
                                    WHEN 'NULL' THEN null
                                    WHEN '0000-00-00 00:00:00' THEN null
                                    ELSE datetime(node.${paramKey})
                                  END`
-  }).join('')
-
-  const paramsReady = params
+  })
+  datetimeSetterArr.push(", node.quark_type_id = toInteger(node.quark_type_id)")
+  const datetimeSetter = datetimeSetterArr.join('')
+  
+  const paramsReady = { ...params, quark_type_id: sanitizeQuarkTypeId(params.quark_type_id) }
   existingDatetimeParams.forEach(paramKey => {
     if (params[paramKey] && params[paramKey].formatted) {
       paramsReady[paramKey] = `${params[paramKey].formatted}T00:00:00+0900`
@@ -254,7 +255,7 @@ const generateUpdatingParams = params => {
     } else if (QUARK_BOOL_PROPERTIES.includes(paramKey)) {
       return `${paramKey}: ${targets[paramKey] ? 'TRUE': 'FALSE'}`
     } else if (QUARK_INT_PROPERTIES.includes(paramKey)) {
-      return `${paramKey}: ${targets[paramKey]}`
+      return `${paramKey}: toInteger(${targets[paramKey]})`
     } else if (QUARK_STR_PROPERTIES.includes(paramKey)) {
       return `${paramKey}: "${targets[paramKey]}"`
     }
@@ -298,6 +299,17 @@ const generateReturn = properties => {
     ret[paramKey] = { year, month, day }
   })
   return ret
+}
+const sanitizeQuarkTypeId = quark_type_id => {
+  return quark_type_id ? quark_type_id : 1
+}
+const getLabel = quark_type_id => {
+  quark_type_id = sanitizeQuarkTypeId(quark_type_id)
+  const quarkLabelObj = quarkLabelsData[quark_type_id]
+  if (!quarkLabelObj) {
+    throw Error("Invalidate quark_type_id");
+  }
+  return `${quarkLabelObj.label}`
 }
 
 export const resolvers = {
