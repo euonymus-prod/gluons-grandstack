@@ -43,7 +43,6 @@ class SubmitQuark extends Component {
 
     let mutationName = "CreateQuark";
     if (variables.id) {
-      // TODO: edit node
       mutationName = "UpdateQuark";
     }
     const mutation = new QuarkMutation(mutationName);
