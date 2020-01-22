@@ -1,10 +1,8 @@
 import _ from "lodash";
 import gql from "graphql-tag";
 import { quarkFields } from "./fields-quark";
-import { gluonFields } from "./fields-gluon";
 
-import * as QUERY_NAME from "../constants/query-names";
-
+// NOTE: This is a component to salvage a quark for editing purpose
 const queryQuarkCompiled = _.template(`
   query editingQuark($id: ID) {
     editingQuark(id: $id<%= addingUserIdParam %>) {

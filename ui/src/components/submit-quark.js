@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { withLastLocation } from "react-router-last-location";
@@ -12,6 +12,27 @@ const QUARKS_PER_PAGE = 20;
 const QUARKS_QUERY = "";
 
 class SubmitQuark extends Component {
+  updateAfterMutation = (store, { data: { CreateQuark } }) => {
+    console.log("in updateAfterMutation");
+    const first = QUARKS_PER_PAGE;
+    const skip = 0;
+    const orderBy = "created";
+
+    // Note: you need try catch, so error doesn't happen even if QUARKS_QUERY is not yet provided.
+    try {
+      const data = store.readQuery({
+        query: QUARKS_QUERY,
+        variables: { first, skip, orderBy }
+      });
+      data.quarks.unshift(CreateQuark);
+      store.writeQuery({
+        query: QUARKS_QUERY,
+        data,
+        variables: { first, skip, orderBy }
+      });
+    } catch (e) {} // eslint-disable-line
+  };
+
   render() {
     const { formVariables } = this.props;
     const variables = {
@@ -32,43 +53,33 @@ class SubmitQuark extends Component {
       <Mutation
         mutation={mutation}
         variables={variables}
-        onCompleted={data =>
-          this.props.history.push(`/graph/${data.CreateQuark.name}`)
-        }
-        update={(store, { data: { CreateQuark } }) => {
-          const first = QUARKS_PER_PAGE;
-          const skip = 0;
-          const orderBy = "created";
-
-          // Note: you need try catch, so error doesn't happen even if QUARKS_QUERY is not yet provided.
-          try {
-            const data = store.readQuery({
-              query: QUARKS_QUERY,
-              variables: { first, skip, orderBy }
-            });
-            data.quarks.unshift(CreateQuark);
-            store.writeQuery({
-              query: QUARKS_QUERY,
-              data,
-              variables: { first, skip, orderBy }
-            });
-          } catch (e) {} // eslint-disable-line
+        onCompleted={data => {
+          console.log("in onCompleted");
+          this.props.history.push(`/graph/${data.CreateQuark.name}`);
         }}
+        onError={error => {
+          alert(error.message);
+        }}
+        update={this.updateAfterMutation}
       >
-        {postMutation => (
-          <button
-            className="btn btn-primary"
-            onClick={() => {
-              if (!formVariables.name) {
-                alert("Name is required");
-                return false;
-              }
-              postMutation();
-            }}
-          >
-            Submit
-          </button>
-        )}
+        {postMutation => {
+          console.log("in postMutation");
+          return (
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => {
+                if (!formVariables.name) {
+                  alert("Name is required");
+                  return false;
+                }
+                postMutation();
+              }}
+            >
+              Submit
+            </Button>
+          );
+        }}
       </Mutation>
     );
   }

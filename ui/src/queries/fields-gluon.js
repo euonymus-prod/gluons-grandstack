@@ -1,4 +1,3 @@
-import gql from "graphql-tag";
 import { periodFields } from "./fields-period";
 
 export const gluonFields = `

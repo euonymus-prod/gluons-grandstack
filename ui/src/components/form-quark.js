@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import InputText from "./input-text";
 import InputCheckbox from "./input-checkbox";
@@ -8,7 +8,7 @@ import Util from "../utils/common";
 
 class QuarkForm extends Component {
   state = {
-    error: null,
+    // error: null,
     formVariables: {
       name: "",
       image_path: "",
@@ -71,9 +71,7 @@ class QuarkForm extends Component {
   };
 
   render() {
-    const { error, formVariables } = this.state;
-    const { name } = formVariables;
-    const isInvalid = name === "";
+    const { formVariables } = this.state;
     return (
       <div>
         <div className="container">
