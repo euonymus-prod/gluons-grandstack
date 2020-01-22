@@ -6,6 +6,7 @@ import { withAuthUser } from "../../providers/session";
 import { withFirebase } from "../../providers/firebase";
 import * as ROUTES from "../../constants/routes";
 import UserNavi from "./user-navi";
+import QuarkNavi from "./quark-navi";
 // Material UI
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -13,8 +14,6 @@ import IconButton from "@material-ui/core/IconButton";
 // import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 // import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -38,8 +37,6 @@ export default connect(state => state)(
           null
         );
         const [searchQuery, setSearchQuery] = React.useState("");
-
-        const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
         const handleProfileMenuOpen = event => {
           setAnchorEl(event.currentTarget);
@@ -84,68 +81,6 @@ export default connect(state => state)(
         const menuId = "primary-search-account-menu";
 
         const mobileMenuId = "primary-search-account-menu-mobile";
-        const renderMobileMenu = (
-          <Menu
-            anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{ vertical: "top", horizontal: "right" }}
-            open={isMobileMenuOpen}
-            onClose={handleMobileMenuClose}
-          >
-            <MenuItem onClick={onAddQuarkClick}>
-              <IconButton aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={0} color="secondary">
-                  <AddCircleOutlineIcon />
-                </Badge>
-              </IconButton>
-              <p>Add New Quark</p>
-            </MenuItem>
-
-            {props.current_quark && (
-              <MenuItem onClick={onEditQuarkClick}>
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                  <Badge badgeContent={0} color="secondary">
-                    <EditIcon />
-                  </Badge>
-                </IconButton>
-                <p>Edit Quark</p>
-              </MenuItem>
-            )}
-
-            <MenuItem onClick={onListClick}>
-              <IconButton aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={0} color="secondary">
-                  <ViewListIcon />
-                </Badge>
-              </IconButton>
-              <p>List</p>
-            </MenuItem>
-
-            {/*
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-*/}
-            <MenuItem onClick={handleProfileMenuOpen}>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="primary-search-account-menu"
-                aria-haspopup="true"
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <p>Profile</p>
-            </MenuItem>
-          </Menu>
-        );
 
         return (
           <div className={classes.grow}>
@@ -242,7 +177,11 @@ export default connect(state => state)(
                 </div>
               </Toolbar>
             </AppBar>
-            {renderMobileMenu}
+            <QuarkNavi
+              anchorEl={mobileMoreAnchorEl}
+              handleMenuClose={handleMenuClose}
+              handleProfileMenuOpen={handleProfileMenuOpen}
+            />
             <UserNavi anchorEl={anchorEl} handleMenuClose={handleMenuClose} />
           </div>
         );
