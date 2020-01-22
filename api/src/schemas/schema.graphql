@@ -98,7 +98,7 @@ type Query {
     )
   editingQuark(id: ID, user_id: Int): LoggedInQuark @hasRole(roles:[admin, user])
     @cypher(
-      statement: "MATCH (node {id: id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
+      statement: "MATCH (node {id: $id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
     )
   quarks(first: Int = 100): [PublicQuark]
     @cypher(
@@ -142,5 +142,12 @@ type Mutation {
     id: ID!
     <%= quarkMutateFields %>
   ): LoggedInQuark @hasRole(roles:[admin, user])
+  DeleteQuark(
+    id: ID!
+    user_id: Int
+  ): LoggedInQuark @hasRole(roles:[admin, user])
+    @cypher(
+      statement: "MATCH (node {id: $id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> DETACH DELETE node"
+    )
 }
 
