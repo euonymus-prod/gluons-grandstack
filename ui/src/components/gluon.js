@@ -13,7 +13,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 
-const util = new Util();
+const util = new Util(false);
 const useStyles = makeStyles({
   card: {
     margin: "20px",

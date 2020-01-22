@@ -37,7 +37,7 @@ class QuarkInList extends Component {
   render() {
     const { classes, data } = this.props;
 
-    let util = new Util();
+    let util = new Util(false);
     return (
       <Link to={`${ROUTES.GRAPH_BASE}${data.name}`}>
         <Card className={classes.card}>

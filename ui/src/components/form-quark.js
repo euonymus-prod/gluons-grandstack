@@ -29,15 +29,9 @@ class QuarkForm extends Component {
   componentDidMount() {
     const { editingQuark } = this.props;
     if (editingQuark) {
-      const util = new Util();
-      const start = util.date2str({
-        ...editingQuark.start,
-        month: editingQuark.start.month - 1
-      });
-      const end = util.date2str({
-        ...editingQuark.end,
-        month: editingQuark.end.month - 1
-      });
+      const util = new Util(false);
+      const start = util.date2str(editingQuark.start);
+      const end = util.date2str(editingQuark.end);
       this.setFormVariables({ ...editingQuark, start, end });
     }
   }

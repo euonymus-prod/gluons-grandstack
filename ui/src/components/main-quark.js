@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import LinkIcon from "@material-ui/icons/Link";
 
-const util = new Util();
+const util = new Util(false);
 const useStyles = makeStyles({
   media: {
     height: 300,

@@ -1,5 +1,14 @@
 import moment from "moment";
 class Util {
+  constructor(isJavascriptMode = true) {
+    // NOTE: isJavascriptMode is a flag if consumer uses javascript mode date object or not.
+    // Here are examples of date 2020-02-20
+    // ex1 [isJavascriptMode === true]    { year: 2020, month: 1, day: 20 }
+    // ex2 [isJavascriptMode === false]   { year: 2020, month: 2, day: 20 }
+    // * month of javascript mode start from 0 to 11
+    this.isJavascriptMode = isJavascriptMode;
+  }
+
   period2str(data) {
     if (!data.start && !data.end) return "";
 
@@ -36,6 +45,12 @@ class Util {
       format = "YYYY-MM-DD";
     }
     // return moment(date.toString()).format(format)
+    if (!this.isJavascriptMode) {
+      date = {
+        ...date,
+        month: date.month - 1
+      };
+    }
     return moment(date).format(format);
   }
   fCamelToSnake(p) {
