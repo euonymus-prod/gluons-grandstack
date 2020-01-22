@@ -46,14 +46,13 @@ class SubmitQuark extends Component {
       // TODO: edit node
       mutationName = "UpdateQuark";
     }
-    // TODO なんで失敗するかわからんけど、 "No node found" のエラーが GraphQLから返却されてUpdateに失敗する
     const mutation = new QuarkMutation(mutationName);
     return (
       <Mutation
         mutation={mutation}
         variables={variables}
         onCompleted={data => {
-          this.props.history.push(`/graph/${data.CreateQuark.name}`);
+          this.props.history.push(`/graph/${data[mutationName].name}`);
         }}
         onError={error => {
           alert(error.message);
