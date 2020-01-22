@@ -37,66 +37,67 @@ const QuarkNavi = props => {
     handleMenuClose();
   };
 
-  const menuId = "primary-search-account-menu-quark";
-  const isMenuOpen = Boolean(props.anchorEl);
-
-  return (
-    <Menu
-      anchorEl={props.anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={onAddQuarkClick}>
-        <IconButton aria-label="show 4 new mails" color="inherit">
+  const renderMenuItem = (title, iconComponent, onClick, label) => {
+    return (
+      <MenuItem onClick={onClick}>
+        <IconButton aria-label={label} color="inherit">
           <Badge badgeContent={0} color="secondary">
-            <AddCircleOutlineIcon />
+            {iconComponent}
           </Badge>
         </IconButton>
-        <p>Add New Quark</p>
+        <p>{title}</p>
       </MenuItem>
+    );
+  };
+  const renderIconItem = (title, iconComponent, onClick, label) => {
+    return (
+      <IconButton aria-label={label} onClick={onClick}>
+        <Badge badgeContent={0} color="secondary">
+          {iconComponent}
+        </Badge>
+      </IconButton>
+    );
+  };
 
-      {props.current_quark && (
-        <MenuItem onClick={onEditQuarkClick}>
-          <IconButton aria-label="show 4 new mails" color="inherit">
-            <Badge badgeContent={0} color="secondary">
-              <EditIcon />
-            </Badge>
-          </IconButton>
-          <p>Edit Quark</p>
-        </MenuItem>
-      )}
-
-      <MenuItem onClick={onListClick}>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={0} color="secondary">
-            <ViewListIcon />
-          </Badge>
-        </IconButton>
-        <p>List</p>
-      </MenuItem>
-
-      <MenuItem onClick={props.handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+  const renderItems = func => {
+    // Fragment is not allowed by Menu component
+    return (
+      <div>
+        {func("Add New Quark", <AddCircleOutlineIcon />, onAddQuarkClick)}
+        {props.current_quark &&
+          func("Edit Quark", <EditIcon />, onEditQuarkClick)}
+        {func("List", <ViewListIcon />, onListClick)}
+        {func("Profile", <AccountCircle />, props.handleProfileMenuOpen)}
+      </div>
+    );
+  };
+  if (props.withMenu) {
+    return (
+      <Menu
+        anchorEl={props.anchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id="primary-search-account-menu-quark"
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={Boolean(props.anchorEl)}
+        onClose={handleMenuClose}
+      >
+        {renderItems(renderMenuItem)}
+      </Menu>
+    );
+  } else {
+    return renderItems(renderIconItem);
+  }
 };
+
 QuarkNavi.propTypes = {
   anchorEl: PropTypes.object,
   handleMenuClose: PropTypes.func.isRequired,
-  handleProfileMenuOpen: PropTypes.func.isRequired
+  handleProfileMenuOpen: PropTypes.func.isRequired,
+  withMenu: PropTypes.bool.isRequired
+};
+QuarkNavi.defaultProps = {
+  withMenu: false
 };
 export default connect(state => state)(
   withRouter(withAuthUser(withFirebase(QuarkNavi)))

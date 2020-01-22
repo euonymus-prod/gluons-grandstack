@@ -11,17 +11,8 @@ import QuarkNavi from "./quark-navi";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-// import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
-import Badge from "@material-ui/core/Badge";
-// import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-// import MailIcon from "@material-ui/icons/Mail";
-import ViewListIcon from "@material-ui/icons/ViewList";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import EditIcon from "@material-ui/icons/Edit";
-// import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import logo from "../../assets/images/logo.gif";
 // Styles
@@ -55,20 +46,6 @@ export default connect(state => state)(
           setMobileMoreAnchorEl(event.currentTarget);
         };
 
-        const onAddQuarkClick = () => {
-          handleMenuClose();
-          props.history.push(ROUTES.ADD_QUARK);
-        };
-        const onEditQuarkClick = () => {
-          handleMenuClose();
-          const quark_id = props.current_quark.id;
-          props.history.push(`${ROUTES.EDIT_QUARK_BASE}${quark_id}`);
-        };
-        const onListClick = () => {
-          handleMenuClose();
-          props.history.push(ROUTES.LIST);
-        };
-
         const onSubmit = event => {
           event.preventDefault();
           props.history.push(`${ROUTES.SEARCH_BASE}${searchQuery}`);
@@ -78,24 +55,10 @@ export default connect(state => state)(
           setSearchQuery(value);
         };
 
-        const menuId = "primary-search-account-menu";
-
-        const mobileMenuId = "primary-search-account-menu-mobile";
-
         return (
           <div className={classes.grow}>
             <AppBar position="static" className={classes.appBar}>
               <Toolbar>
-                {/*
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
-*/}
                 <Toolbar>
                   <Link to={ROUTES.HOME}>
                     <img src={logo} className={classes.logo} alt="gluons" />
@@ -120,55 +83,16 @@ export default connect(state => state)(
                 </div>
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
-                  <IconButton
-                    aria-label="show 4 new mails"
-                    onClick={onAddQuarkClick}
-                  >
-                    <Badge badgeContent={0} color="secondary">
-                      <AddCircleOutlineIcon />
-                    </Badge>
-                  </IconButton>
-
-                  {props.current_quark && (
-                    <IconButton
-                      aria-label="show 4 new mails"
-                      onClick={onEditQuarkClick}
-                    >
-                      <Badge badgeContent={0} color="secondary">
-                        <EditIcon />
-                      </Badge>
-                    </IconButton>
-                  )}
-
-                  <IconButton
-                    aria-label="show 4 new mails"
-                    onClick={onListClick}
-                  >
-                    <Badge badgeContent={0} color="secondary">
-                      <ViewListIcon />
-                    </Badge>
-                  </IconButton>
-                  {/*
-            <IconButton aria-label="show 17 new notifications">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-*/}
-                  <IconButton
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-controls={menuId}
-                    aria-haspopup="true"
-                    onClick={handleProfileMenuOpen}
-                  >
-                    <AccountCircle />
-                  </IconButton>
+                  <QuarkNavi
+                    anchorEl={mobileMoreAnchorEl}
+                    handleMenuClose={handleMenuClose}
+                    handleProfileMenuOpen={handleProfileMenuOpen}
+                  />
                 </div>
                 <div className={classes.sectionMobile}>
                   <IconButton
                     aria-label="show more"
-                    aria-controls={mobileMenuId}
+                    aria-controls="primary-search-account-menu-mobile"
                     aria-haspopup="true"
                     onClick={handleMobileMenuOpen}
                   >
@@ -181,6 +105,7 @@ export default connect(state => state)(
               anchorEl={mobileMoreAnchorEl}
               handleMenuClose={handleMenuClose}
               handleProfileMenuOpen={handleProfileMenuOpen}
+              withMenu={true}
             />
             <UserNavi anchorEl={anchorEl} handleMenuClose={handleMenuClose} />
           </div>
