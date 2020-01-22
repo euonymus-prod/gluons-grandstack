@@ -1,9 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { withAuthUser } from "../providers/session";
 import { Query } from "react-apollo";
 import EditingQuark from "../queries/query-editing-quark";
 import QuarkForm from "../components/form-quark";
 import { convertTableForTemporallyUse } from "../utils/auth-util";
+import * as ROUTES from "../constants/routes";
+// Material UI
+import Button from "@material-ui/core/Button";
 
 const EditQuark = props => {
   const { authUser } = props;
@@ -22,6 +26,15 @@ const EditQuark = props => {
           <div className="EditQuark">
             <h1>Edit Quark</h1>
             <QuarkForm editingQuark={editingQuark} />
+            <br />
+            <Link
+              to={`${ROUTES.GRAPH_BASE}${editingQuark.name}`}
+              alt={editingQuark.name}
+            >
+              <Button variant="contained" color="primary">
+                Back to Quark
+              </Button>
+            </Link>
           </div>
         );
       }}
