@@ -6,10 +6,20 @@ import EditingQuark from "../queries/query-editing-quark";
 import QuarkForm from "../components/form-quark";
 import { convertTableForTemporallyUse } from "../utils/auth-util";
 import * as ROUTES from "../constants/routes";
+import LoggedinOnly from "../components/loggedin_only";
 // Material UI
 import Button from "@material-ui/core/Button";
 
 const EditQuark = props => {
+  return (
+    <LoggedinOnly>
+      <EditQuarkWrapper {...props} />
+    </LoggedinOnly>
+  );
+};
+
+const EditQuarkBase = props => {
+  console.log(props);
   const { authUser } = props;
   const user_id = convertTableForTemporallyUse[authUser.uid];
   const EDITING_QUARK = new EditingQuark(user_id);
@@ -42,4 +52,5 @@ const EditQuark = props => {
   );
 };
 
-export default withAuthUser(EditQuark);
+const EditQuarkWrapper = withAuthUser(EditQuarkBase);
+export default EditQuark;

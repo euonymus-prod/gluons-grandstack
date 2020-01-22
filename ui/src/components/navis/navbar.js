@@ -5,6 +5,7 @@ import { withRouter, Link } from "react-router-dom";
 import { withAuthUser } from "../../providers/session";
 import { withFirebase } from "../../providers/firebase";
 import * as ROUTES from "../../constants/routes";
+import UserNavi from "./user-navi";
 // Material UI
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -38,7 +39,6 @@ export default connect(state => state)(
         );
         const [searchQuery, setSearchQuery] = React.useState("");
 
-        const isMenuOpen = Boolean(anchorEl);
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
         const handleProfileMenuOpen = event => {
@@ -56,21 +56,6 @@ export default connect(state => state)(
 
         const handleMobileMenuOpen = event => {
           setMobileMoreAnchorEl(event.currentTarget);
-        };
-
-        const onLogin = () => {
-          handleMenuClose();
-          props.history.push(ROUTES.LOGIN);
-        };
-
-        const onLogout = () => {
-          handleMenuClose();
-          props.firebase.doSignOut();
-        };
-
-        const onSignup = () => {
-          handleMenuClose();
-          props.history.push(ROUTES.SIGN_UP);
         };
 
         const onAddQuarkClick = () => {
@@ -97,30 +82,6 @@ export default connect(state => state)(
         };
 
         const menuId = "primary-search-account-menu";
-        const renderMenu = (
-          <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{ vertical: "top", horizontal: "right" }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-          >
-            {props.authUser ? (
-              <MenuItem onClick={onLogout}>Logout</MenuItem>
-            ) : (
-              [
-                <MenuItem key="1" onClick={onLogin}>
-                  Login
-                </MenuItem>,
-                <MenuItem key="2" onClick={onSignup}>
-                  Signup
-                </MenuItem>
-              ]
-            )}
-          </Menu>
-        );
 
         const mobileMenuId = "primary-search-account-menu-mobile";
         const renderMobileMenu = (
@@ -282,7 +243,7 @@ export default connect(state => state)(
               </Toolbar>
             </AppBar>
             {renderMobileMenu}
-            {renderMenu}
+            <UserNavi anchorEl={anchorEl} handleMenuClose={handleMenuClose} />
           </div>
         );
       })
