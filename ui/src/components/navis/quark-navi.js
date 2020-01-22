@@ -6,6 +6,8 @@ import { withRouter } from "react-router-dom";
 import { withAuthUser } from "../../providers/session";
 import { withFirebase } from "../../providers/firebase";
 import * as ROUTES from "../../constants/routes";
+import SubmitQuarkDelete from "../submit-quark-delete";
+import { convertTableForTemporallyUse } from "../../utils/auth-util";
 // Material UI
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -30,17 +32,6 @@ const QuarkNavi = props => {
   const onEditQuarkClick = () => {
     const quark_id = props.current_quark.id;
     props.history.push(`${ROUTES.EDIT_QUARK_BASE}${quark_id}`);
-    handleMenuClose();
-  };
-
-  const onDeleteQuarkClick = () => {
-    const quark_id = props.current_quark.id;
-    const name = props.current_quark.name;
-    let ret = window.confirm(`Are you sure you want to delete ${name}?`);
-    if (ret === true) {
-      // TODO
-      console.log("deleting: ", quark_id);
-    }
     handleMenuClose();
   };
 
@@ -73,12 +64,20 @@ const QuarkNavi = props => {
 
   const renderItems = func => {
     // Fragment is not allowed by Menu component
+    const { authUser } = props;
+    const user_id = convertTableForTemporallyUse[authUser.uid];
     return (
       <div>
         {func("Add New Quark", <AddCircleOutlineIcon />, onAddQuarkClick)}
         {props.current_quark &&
           func("Edit Quark", <EditIcon />, onEditQuarkClick)}
-        {func("Delete Quark", <DeleteForeverIcon />, onDeleteQuarkClick)}
+        {props.current_quark && (
+          <SubmitQuarkDelete
+            name={"hoge"}
+            variables={{ id: props.current_quark.id, user_id }}
+            withMenu={props.withMenu}
+          />
+        )}
         {func("List", <ViewListIcon />, onListClick)}
         {func("Profile", <AccountCircle />, props.handleProfileMenuOpen)}
       </div>

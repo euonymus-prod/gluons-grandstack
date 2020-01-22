@@ -19,7 +19,6 @@ const EditQuark = props => {
 };
 
 const EditQuarkBase = props => {
-  console.log(props);
   const { authUser } = props;
   const user_id = convertTableForTemporallyUse[authUser.uid];
   const EDITING_QUARK = new EditingQuark(user_id);
