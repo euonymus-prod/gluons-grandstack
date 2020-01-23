@@ -15,7 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+// import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 

@@ -11,7 +11,8 @@ const useStyles = makeStyles({
   root: {
     // backgroundColor: theme.palette.background.paper,
     // backgroundColor: '#e6e6f5'
-    backgroundColor: "#e1e1e1"
+    backgroundColor: "#e1e1e1",
+    padding: "10px"
   }
 });
 
@@ -32,6 +33,7 @@ const PropertyBox = props => {
         subject={subject}
         object={object}
         hasSecondLevel={hasSecondLevel}
+        isTop={key === 0}
       />
     );
   });

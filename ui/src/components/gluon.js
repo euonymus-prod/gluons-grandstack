@@ -8,19 +8,42 @@ import * as ROUTES from "../constants/routes";
 // Material UI
 import { makeStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
+// import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+// import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 const util = new Util(false);
 const useStyles = makeStyles({
   card: {
-    margin: "20px",
+    margin: "0px",
+    marginTop: "15px",
+    display: "block"
+  },
+  cardTop: {
+    margin: "0px",
     display: "block"
   },
   avatarListItem: {
     width: 150
+  },
+  cover: {
+    width: 130,
+    height: 130
+  },
+  secondQuark: {
+    padding: 0
+  },
+  secondQuarkItem: {
+    padding: "20px"
+  },
+  secondGluons: {
+    height: 100,
+    padding: 0
   }
   // NOTE: This used to work, but suddenly stopped working.
   //       The reason is that makeStyles style is imported before MuiAvatar is impoted.
@@ -64,46 +87,67 @@ const relationTextBuilder = (subject, object, gluon) => {
   }
 
   return (
-    <p className="baryon-strong-interaction">
+    <Fragment>
       {glue_sentence_before_link}
       <Link to={`${ROUTES.GRAPH_BASE}${object.name}`}>{object.name}</Link>
       {glue_sentence_after_link}
-    </p>
+    </Fragment>
   );
 };
 
 const Gluon = props => {
-  const { subject, object, gluon, hasSecondLevel } = props;
+  const { subject, object, gluon, hasSecondLevel, isTop } = props;
   const classes = useStyles();
   const relationText = relationTextBuilder(subject, object, gluon);
 
   const avatar = (
-    <ListItemAvatar className={classes.avatarListItem}>
-      <Avatar className={classes.avatar} style={{ width: 130, height: 130 }}>
-        <img
-          className="baryon-gluon-image"
-          src={object.image_path}
-          alt={object.name}
-        />
-      </Avatar>
-    </ListItemAvatar>
+    <CardMedia
+      className={classes.cover}
+      image={object.image_path}
+      title={object.name}
+    />
   );
+
+  // <ListItemAvatar className={classes.avatarListItem}>
+  //   <Avatar className={classes.avatar} style={{ width: 130, height: 130 }}>
+  //     <img
+  //       className="baryon-gluon-image"
+  //       src={object.image_path}
+  //       alt={object.name}
+  //     />
+  //   </Avatar>
+  // </ListItemAvatar>
+
   return (
     <div className="baryon-gluon-body">
-      <Card className={classes.card}>
-        <ListItem>
+      <Card className={isTop ? classes.cardTop : classes.card}>
+        <ListItem divider={true} className={classes.secondQuark}>
           <Link to={`${ROUTES.GRAPH_BASE}${object.name}`}>{avatar}</Link>
+          <ListItemText
+            primary={object.name}
+            secondary={object.description}
+            className={classes.secondQuarkItem}
+          />
+        </ListItem>
+        <ListItem divider={true}>
           <ListItemText
             primary={relationText}
             secondary={util.period2str(gluon)}
           />
+          <Link to={`${ROUTES.EDIT_GLUON}${object.id}`}>
+            <IconButton>
+              <EditIcon />
+            </IconButton>
+          </Link>
+          <Link to={`/gluon/edit${object.id}`}>
+            <IconButton>
+              <DeleteForeverIcon />
+            </IconButton>
+          </Link>
         </ListItem>
         {hasSecondLevel && object.gluons.length !== 0 && (
           <Fragment>
-            <ListItem>
-              <h3>Secondary Relationships</h3>
-            </ListItem>
-            <ListItem>
+            <ListItem className={classes.secondGluons}>
               <SecondGluons
                 subject={object}
                 objects={object.objects}
@@ -127,10 +171,12 @@ Gluon.propTypes = {
   gluon: PropTypes.shape({
     relation: PropTypes.string.isRequired
   }),
-  hasSecondLevel: PropTypes.bool.isRequired
+  hasSecondLevel: PropTypes.bool.isRequired,
+  isTop: PropTypes.bool.isRequired
 };
 Gluon.defaultProps = {
-  hasSecondLevel: false
+  hasSecondLevel: false,
+  isTop: false
 };
 
 export default Gluon;
