@@ -10,6 +10,9 @@ import OpenInBrowserIcon from "@material-ui/icons/OpenInBrowser";
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
 
+const IMAGE_HEIGHT = "104px";
+const IMAGE_WIDTH = "180px";
+
 const useStyles = makeStyles(theme => ({
   title: {
     // color: theme.palette.primary.light,
@@ -20,9 +23,18 @@ const useStyles = makeStyles(theme => ({
       "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
   },
   imgFullHeight: {
-    height: "100px",
-    width: "150px",
+    height: IMAGE_HEIGHT,
+    width: IMAGE_WIDTH,
     objectFit: "cover"
+  },
+  quarkImage: {
+    height: IMAGE_HEIGHT,
+    width: "auto"
+  },
+  tile: {
+    height: IMAGE_HEIGHT,
+    width: IMAGE_WIDTH,
+    textAlign: "center"
   }
 }));
 
@@ -46,8 +58,15 @@ const SecondGluon = props => {
   );
 
   return (
-    <GridListTile classes={{ imgFullHeight: classes.imgFullHeight }}>
-      <img src={object.image_path} alt={object.name} />
+    <GridListTile
+      classes={{ imgFullHeight: classes.imgFullHeight, tile: classes.tile }}
+      style={{ width: IMAGE_WIDTH }}
+    >
+      <img
+        src={object.image_path}
+        alt={object.name}
+        className={classes.quarkImage}
+      />
       <GridListTileBar
         title={object.name}
         classes={{
