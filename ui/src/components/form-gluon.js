@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import InputText from "./input-text";
 import InputCheckbox from "./input-checkbox";
 import InputGluonTypes from "./input-gluon-types";
+import InputGluedQuark from "./input-glued-quark";
 import SubmitQuark from "./submit-quark";
 import Util from "../utils/common";
 
@@ -74,6 +75,7 @@ class GluonForm extends Component {
             <br />
             <br />
             {this.inputText("Quark you glue", "passive")}
+            <InputGluedQuark onChange={this.setFormVariables} />
             <br />
             <br />
             {this.inputText("Prefix", "prefix")}
