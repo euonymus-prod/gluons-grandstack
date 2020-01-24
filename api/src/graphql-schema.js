@@ -23,6 +23,7 @@ const readText = (filename) => {
 const quarkFields = readText('schema.quarkFields');
 const gluonFields = readText('schema.gluonFields');
 const quarkMutateFields = readText('schema.quarkMutateFields');
+const gluonMutateFields = readText('schema.gluonMutateFields');
 // read cypher parts
 const cypher = new CypherBuilder()
 const cypherMatchNeighbor = cypher.matchNeighbor('this', 'gluon', 'object');
@@ -42,6 +43,7 @@ export const typeDefs = schemaCompiled({
   quarkFields,
   gluonFields,
   quarkMutateFields,
+  gluonMutateFields,
   cypherMatchNeighbor,
   cypherWherePublic,
   cypherWherePublicObject,

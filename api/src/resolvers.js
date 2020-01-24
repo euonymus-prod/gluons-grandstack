@@ -207,6 +207,16 @@ const updateQuarkResolver = async (parent, params, context, info) => {
   return cypherRecord2Props(records[0])
 }
 
+const createGluonResolver = async (parent, params, context, info) => {
+  const user = await getUser(context)
+  // TODO: Before fix this, data updating is required
+  //const user_id = user.user_id
+  const user_id = firebaseInstance.temporalUserId(user.user_id)
+}
+const updateGluonResolver = async (parent, params, context, info) => {
+}
+
+
 // { hoge: foo, hage: bar } will become cypher snippet of ", hoge: $hoge, hage: $hage"
 const generateCypherParams = params => {
   return _.keys(params).map(paramKey => {
@@ -378,7 +388,9 @@ RETURN value.subject as subject, value.object as object, value.gluon as gluon
   },
   Mutation: {
     CreateQuark: createQuarkResolver,
-    UpdateQuark: updateQuarkResolver
+    UpdateQuark: updateQuarkResolver,
+    CreateGluon: createGluonResolver,
+    UpdateGluon: updateGluonResolver
   }
 }
 

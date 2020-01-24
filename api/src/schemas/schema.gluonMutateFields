@@ -1,0 +1,14 @@
+    gluon_type_id: Int!
+    active_id: ID!
+    passive_id: String
+    passive: String
+    prefix: String
+    relation: String
+    suffix: String
+    start: _Neo4jDateTimeInput
+    end: _Neo4jDateTimeInput
+    start_accuracy: String
+    end_accuracy: String
+    is_momentary: Boolean
+    affiliate: String
+    is_exclusive: Boolean

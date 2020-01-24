@@ -149,5 +149,20 @@ type Mutation {
     @cypher(
       statement: "MATCH (node {id: $id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> DETACH DELETE node"
     )
+
+  CreateGluon(
+    <%= gluonMutateFields %>
+  ): Gluon @hasRole(roles:[admin, user])
+  UpdateGluon(
+    id: ID!
+    <%= gluonMutateFields %>
+  ): Gluon @hasRole(roles:[admin, user])
+  DeleteGluon(
+    id: ID!
+    user_id: Int
+  ): LoggedInQuark @hasRole(roles:[admin, user])
+    @cypher(
+      statement: "MATCH ()-[relation {id: $id}]-() WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> DELETE relation"
+    )
 }
 
