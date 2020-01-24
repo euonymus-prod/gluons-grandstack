@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import Util from "../utils/common";
 // Material UI
@@ -10,7 +11,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import LinkIcon from "@material-ui/icons/Link";
+import ShoppingCart from "@material-ui/icons/ShoppingCart";
+import * as ROUTES from "../constants/routes";
 
 const util = new Util(false);
 const useStyles = makeStyles({
@@ -27,6 +31,13 @@ const MainQuark = props => {
   if (!subject) {
     return <div className="baryon-subject baryon-grid">Not Found</div>;
   }
+  const onLinkClick = (url, newWindow = false) => {
+    if (newWindow) {
+      window.open(url, "_blank");
+    } else {
+      props.history.push(url);
+    }
+  };
 
   return (
     <div className="baryon-subject baryon-grid">
@@ -52,23 +63,33 @@ const MainQuark = props => {
         </CardActionArea>
         <CardActions>
           {subject.url && (
-            <Button size="small" color="primary">
-              <a href={subject.url} target="_blank" rel="noopener noreferrer">
-                <LinkIcon />
-              </a>
+            <Button
+              size="small"
+              color="primary"
+              variant="contained"
+              onClick={() => onLinkClick(subject.url, true)}
+            >
+              Web <LinkIcon />
             </Button>
           )}
           {subject.affiliate && (
-            <Button size="small" color="primary">
-              <a
-                href={subject.affiliate}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Buy Now
-              </a>
+            <Button
+              size="small"
+              color="primary"
+              variant="contained"
+              onClick={() => onLinkClick(subject.affiliate, true)}
+            >
+              Buy Now <ShoppingCart />
             </Button>
           )}
+          <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            onClick={() => onLinkClick(ROUTES.ADD_GLUON)}
+          >
+            Add Gluon <AddCircleOutlineIcon />
+          </Button>
         </CardActions>
       </Card>
     </div>
@@ -78,4 +99,4 @@ const MainQuark = props => {
 MainQuark.propTypes = {
   subject: PropTypes.object.isRequired
 };
-export default MainQuark;
+export default withRouter(MainQuark);
