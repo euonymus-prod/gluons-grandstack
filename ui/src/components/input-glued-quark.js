@@ -10,24 +10,31 @@ import { querySelector } from "../utils/auth-util";
 import QuarkInList from "./quark-in-list";
 // constancts
 import * as QUERY_NAME from "../constants/query-names";
+// Material UI
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const ROWS_PER_PAGE = 20;
 
 class InputGluedQuark extends Component {
   state = {
     value: "",
-    searchKeyword: ""
+    searchKeyword: "",
+    anchorEl: null
   };
 
   onChange = event => {
-    this.props.onChange({ passive: event.target.value });
-    this.setState({ value: event.target.value }, () => {
-      if (this.state.value && this.state.value.length > 1) {
-        if (this.state.value.length % 2 === 0) {
-          this.debouncedGetInfo();
+    this.setState(
+      { value: event.target.value, anchorEl: event.currentTarget },
+      () => {
+        if (this.state.value && this.state.value.length > 1) {
+          if (this.state.value.length % 2 === 0) {
+            this.debouncedGetInfo();
+          }
         }
       }
-    });
+    );
+    this.props.onChange({ passive: event.target.value });
   };
 
   debouncedGetInfo = _.debounce(() => {
@@ -65,11 +72,19 @@ class InputGluedQuark extends Component {
               if (error) return `Error! ${error.message}`;
               const quarks = data[queryName];
               return (
-                <div>
+                <Menu anchorEl={this.state.anchorEl} open={true}>
                   {quarks.map(quark => {
-                    return <QuarkInList key={quark.id} data={quark} />;
+                    return (
+                      <MenuItem
+                        key={quark.id}
+                        dense={true}
+                        onClick={this.onChange}
+                      >
+                        {quark.name}
+                      </MenuItem>
+                    );
                   })}
-                </div>
+                </Menu>
               );
             }}
           </Query>
