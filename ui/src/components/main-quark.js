@@ -86,7 +86,7 @@ const MainQuark = props => {
             size="small"
             color="primary"
             variant="contained"
-            onClick={() => onLinkClick(ROUTES.ADD_GLUON)}
+            onClick={() => onLinkClick(`${ROUTES.ADD_GLUON_BASE}${subject.id}`)}
           >
             Add Gluon <AddCircleOutlineIcon />
           </Button>
