@@ -212,6 +212,41 @@ const createGluonResolver = async (parent, params, context, info) => {
   // TODO: Before fix this, data updating is required
   //const user_id = user.user_id
   const user_id = firebaseInstance.temporalUserId(user.user_id)
+
+  const Type = `:${getType(params.gluon_type_id)}`
+  let existingParams = generateCypherParams(params)
+
+  // TODO passive stringから逆引きして passive の id を取得
+  // const passive_id = params.passive_id ? params.passive_id :
+  const passive_id = 'hoge'
+
+  // TODO
+  const {datetimeSetter, paramsReady} = generateDatetimeParams(params)
+  const cypher = `
+    MATCH (active {id: "${params.active_id}"}),(passive {id: "${passive_id}"})
+    CREATE (active)-[ relation:${Type}  ]->(passive)
+    SET
+        relation.id = {id},
+        relation.gluon_type_id = {gluon_type_id},
+        relation.active_id = {active_id},
+        relation.passive_id = {passive_id},
+        relation.relation = {relation},
+        relation.prefix = {prefix},
+        relation.suffix = {suffix},
+        relation.start = datetime( {start} ),
+        relation.end = datetime( {end} ),
+        relation.start_accuracy = {start_accuracy},
+        relation.end_accuracy = {end_accuracy},
+        relation.is_momentary = {is_momentary},
+        relation.is_exclusive = {is_exclusive},
+        relation.user_id = {user_id},
+        relation.last_modified_user = {last_modified_user},
+        relation.created = datetime( {created} ),
+        relation.modified = datetime( {modified} )
+    RETURN relation`
+
+  const records = await execCypher(context, cypher, paramsReady)
+  return cypherRecord2Props(records[0])
 }
 const updateGluonResolver = async (parent, params, context, info) => {
 }
@@ -318,6 +353,14 @@ const getLabel = quark_type_id => {
     throw Error("Invalidate quark_type_id");
   }
   return `${quarkLabelObj.label}`
+}
+const getType = gluon_type_id => {
+  if (!gluon_type_id) return false
+  const gluonLabelObj = gluonTypesData[gluon_type_id]
+  if (!gluonLabelObj) {
+    throw Error("Invalidate gluon_type_id");
+  }
+  return `${gluonLabelObj.type}`
 }
 
 export const resolvers = {
