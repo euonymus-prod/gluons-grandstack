@@ -6,15 +6,19 @@ import { withAuthUser } from "../providers/session";
 // GraphQL
 import QuarkListSearched from "../queries/query-quark-list-searched";
 import { querySelector } from "../utils/auth-util";
-// component
-import QuarkInList from "./quark-in-list";
 // constancts
 import * as QUERY_NAME from "../constants/query-names";
 // Material UI
+import { withStyles } from "@material-ui/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
 const ROWS_PER_PAGE = 20;
+const styles = theme => ({
+  menu: {
+    paddingTop: "45px"
+  }
+});
 
 class InputGluedQuark extends Component {
   state = {
@@ -23,18 +27,41 @@ class InputGluedQuark extends Component {
     anchorEl: null
   };
 
+  onTabDown = event => {
+    if (event.key === "Tab" || event.key === "Enter") {
+      event.preventDefault();
+      this.setState({ searchKeyword: this.state.value });
+      const anchorEl = event.currentTarget;
+      this.setState({ anchorEl });
+    } else {
+      this.handleMenuClose();
+      this.setState({ searchKeyword: "" });
+    }
+  };
   onChange = event => {
-    this.setState(
-      { value: event.target.value, anchorEl: event.currentTarget },
-      () => {
-        if (this.state.value && this.state.value.length > 1) {
-          if (this.state.value.length % 2 === 0) {
-            this.debouncedGetInfo();
-          }
-        }
-      }
-    );
-    this.props.onChange({ passive: event.target.value });
+    const { dataset } = event.currentTarget;
+    let value = event.target.value;
+    let anchorEl = event.currentTarget;
+    if (dataset.value) {
+      anchorEl = null;
+      value = dataset.value;
+    }
+    this.setState({ value, anchorEl });
+
+    // this.setState(
+    //   { value, anchorEl },
+    //   () => {
+    //     if (this.state.value && this.state.value.length > 1) {
+    //       // if (this.state.value.length % 2 === 0) {
+    //         this.debouncedGetInfo();
+    //       // }
+    //     }
+    //   }
+    // );
+    this.props.onChange({ passive: value });
+  };
+  handleMenuClose = () => {
+    this.setState({ anchorEl: null });
   };
 
   debouncedGetInfo = _.debounce(() => {
@@ -42,6 +69,7 @@ class InputGluedQuark extends Component {
   }, 300);
 
   render() {
+    const { classes } = this.props;
     const { authUser } = this.props;
     const [queryName, user_id] = querySelector(
       authUser,
@@ -55,12 +83,14 @@ class InputGluedQuark extends Component {
     };
 
     const GRAPHQL_QUERY = new QuarkListSearched(queryName, user_id);
+    const isMenuOpen = Boolean(this.state.anchorEl);
     return (
       <Fragment>
         <input
           value={this.state.value}
           name="value"
           onChange={this.onChange}
+          onKeyDown={this.onTabDown}
           type="text"
           placeholder="Input Quark Name"
           className={`form-control`}
@@ -71,14 +101,23 @@ class InputGluedQuark extends Component {
               if (loading) return "Loading...";
               if (error) return `Error! ${error.message}`;
               const quarks = data[queryName];
+              if (quarks.length === 0) {
+                return null;
+              }
               return (
-                <Menu anchorEl={this.state.anchorEl} open={true}>
+                <Menu
+                  anchorEl={this.state.anchorEl}
+                  open={isMenuOpen}
+                  onClose={this.handleMenuClose}
+                  className={classes.menu}
+                >
                   {quarks.map(quark => {
                     return (
                       <MenuItem
                         key={quark.id}
                         dense={true}
                         onClick={this.onChange}
+                        data-value={quark.name}
                       >
                         {quark.name}
                       </MenuItem>
@@ -96,4 +135,4 @@ class InputGluedQuark extends Component {
 InputGluedQuark.propTypes = {
   onChange: PropTypes.func.isRequired
 };
-export default withAuthUser(InputGluedQuark);
+export default withStyles(styles)(withAuthUser(InputGluedQuark));

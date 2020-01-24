@@ -71,10 +71,14 @@ class GluonForm extends Component {
           <legend>Add New Gluon</legend>
           <div className="form-group">
             <label>Gluon Type</label>
-            <InputGluonTypes onChange={this.setFormVariables} />
+            <InputGluonTypes
+              onChange={this.setFormVariables}
+              defaultValue={this.state.formVariables.gluon_type_id}
+            />
             <br />
             <br />
-            {this.inputText("Quark you glue", "passive")}
+            {/*this.inputText("Quark you glue", "passive")*/}
+            <label>Quark you glue</label>
             <InputGluedQuark onChange={this.setFormVariables} />
             <br />
             <br />
