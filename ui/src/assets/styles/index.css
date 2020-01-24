@@ -47,6 +47,9 @@ a {
   z-index: 2;
 }
 
+.quark-list-container {
+  padding: 13px;
+}
 .baryon-body {
   text-align: left;
 }

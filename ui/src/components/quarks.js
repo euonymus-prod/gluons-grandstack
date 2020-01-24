@@ -15,7 +15,7 @@ class Quarks extends Component {
       queryName
     } = this.props;
     return (
-      <div className="container">
+      <div className="container quark-list-container">
         <h2>{quark_property_caption}</h2>
         <Query query={graphqlQuery} variables={variables}>
           {({ loading, error, data }) => {

@@ -20,8 +20,8 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Typography from "@material-ui/core/Typography";
 import no_image from "../assets/images/no_image.jpg";
 
-const IMAGE_HEIGHT = "230px";
-const IMAGE_WIDTH = "230px";
+const IMAGE_HEIGHT = "200px";
+const IMAGE_WIDTH = "200px";
 
 const util = new Util(false);
 const useStyles = makeStyles({
