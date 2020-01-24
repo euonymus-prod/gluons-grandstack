@@ -27,14 +27,12 @@ const useStyles = makeStyles(theme => ({
     width: IMAGE_WIDTH,
     objectFit: "cover"
   },
-  quarkImage: {
-    height: IMAGE_HEIGHT,
-    width: "auto"
-  },
   tile: {
     height: IMAGE_HEIGHT,
-    width: IMAGE_WIDTH,
-    textAlign: "center"
+    width: IMAGE_WIDTH
+  },
+  quarkImage: {
+    width: IMAGE_WIDTH
   }
 }));
 

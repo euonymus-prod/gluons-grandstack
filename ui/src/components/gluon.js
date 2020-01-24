@@ -9,6 +9,7 @@ import * as ROUTES from "../constants/routes";
 import { makeStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
+import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 // import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -16,6 +17,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import Typography from "@material-ui/core/Typography";
+import no_image from "../assets/images/no_image.jpg";
+
+const IMAGE_HEIGHT = "230px";
+const IMAGE_WIDTH = "230px";
 
 const util = new Util(false);
 const useStyles = makeStyles({
@@ -28,18 +34,20 @@ const useStyles = makeStyles({
     margin: "0px",
     display: "block"
   },
-  avatarListItem: {
-    width: 150
-  },
+  // avatarListItem: {
+  //   width: IMAGE_WIDTH
+  // },
   cover: {
-    width: 130,
-    height: 130
+    height: IMAGE_HEIGHT,
+    width: IMAGE_WIDTH
   },
   secondQuark: {
     padding: 0
   },
-  secondQuarkItem: {
-    padding: "20px"
+  secondQuarkItems: {
+    padding: "20px",
+    flexDirection: "column",
+    alignItems: "start"
   },
   secondGluons: {
     height: 100,
@@ -100,10 +108,11 @@ const Gluon = props => {
   const classes = useStyles();
   const relationText = relationTextBuilder(subject, object, gluon);
 
+  const quarkImagePath = object.image_path ? object.image_path : no_image;
   const avatar = (
     <CardMedia
       className={classes.cover}
-      image={object.image_path}
+      image={quarkImagePath}
       title={object.name}
     />
   );
@@ -121,14 +130,6 @@ const Gluon = props => {
   return (
     <div className="baryon-gluon-body">
       <Card className={isTop ? classes.cardTop : classes.card}>
-        <ListItem divider={true} className={classes.secondQuark}>
-          <Link to={`${ROUTES.GRAPH_BASE}${object.name}`}>{avatar}</Link>
-          <ListItemText
-            primary={object.name}
-            secondary={object.description}
-            className={classes.secondQuarkItem}
-          />
-        </ListItem>
         <ListItem divider={true}>
           <ListItemText
             primary={relationText}
@@ -144,6 +145,20 @@ const Gluon = props => {
               <DeleteForeverIcon />
             </IconButton>
           </Link>
+        </ListItem>
+        <ListItem divider={true} className={classes.secondQuark}>
+          <Link to={`${ROUTES.GRAPH_BASE}${object.name}`}>{avatar}</Link>
+          <List className={classes.secondQuarkItems}>
+            <ListItem>
+              <Typography variant="h5" component="span">
+                {object.name}
+              </Typography>
+            </ListItem>
+            <ListItemText
+              primary={object.description}
+              secondary={util.period2str(object)}
+            />
+          </List>
         </ListItem>
         {hasSecondLevel && object.gluons.length !== 0 && (
           <Fragment>
