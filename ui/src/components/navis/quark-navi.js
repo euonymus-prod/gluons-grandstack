@@ -76,7 +76,7 @@ const QuarkNavi = props => {
             {func("Add New Quark", <AddCircleOutlineIcon />, onAddQuarkClick)}
             {props.current_quark && (
               <div>
-                func("Edit Quark", <EditIcon />, onEditQuarkClick)
+                {func("Edit Quark", <EditIcon />, onEditQuarkClick)}
                 <SubmitQuarkDelete
                   name={"hoge"}
                   variables={{ id: props.current_quark.id, user_id }}
