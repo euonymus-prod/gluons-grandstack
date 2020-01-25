@@ -10,5 +10,4 @@
     start_accuracy: String
     end_accuracy: String
     is_momentary: Boolean
-    affiliate: String
     is_exclusive: Boolean

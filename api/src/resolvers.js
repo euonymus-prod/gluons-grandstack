@@ -35,8 +35,9 @@ const QUARK_STR_PROPERTIES = ['id', 'name', 'en_name', 'image_path', 'descriptio
                               'start_accuracy', 'end_accuracy','url', 'affiliate'];
 
 const GLUON_BOOL_PROPERTIES = ['is_momentary', 'is_exclusive'];
+// TODO: user_id, last_modified_user は string になる予定
 const GLUON_INT_PROPERTIES = ['gluon_type_id', 'user_id', 'last_modified_user'];
-const GLUON_STR_PROPERTIES = ['id', 'relation', 'prefix', 'suffix', 'start_accuracy', 'end_accuracy'];
+const GLUON_STR_PROPERTIES = ['id', 'active_id', 'passive_id', 'relation', 'prefix', 'suffix', 'start_accuracy', 'end_accuracy'];
 
 const revertDirection = (direction) => {
   if (direction === DIRECTION.A2B) {
@@ -200,7 +201,12 @@ const updateQuarkResolver = async (parent, params, context, info) => {
     updateLabelPost = `, node:${label}`
   }
 
-  const paramSetter = generateUpdatingParams({...params, last_modified_user})
+  const paramSetter = generateUpdatingParams(
+    {...params, last_modified_user},
+    QUARK_BOOL_PROPERTIES,
+    QUARK_INT_PROPERTIES,
+    QUARK_STR_PROPERTIES
+  )
   const cypher = `MATCH (node:Quark { id: "${params.id}" }) ${updateLabelPre} SET node += { ${paramSetter} } ${updateLabelPost} RETURN node`
   
   const records = await execCypher(context, cypher)
@@ -214,39 +220,33 @@ const createGluonResolver = async (parent, params, context, info) => {
   const user_id = firebaseInstance.temporalUserId(user.user_id)
 
   const Type = `:${getType(params.gluon_type_id)}`
-  let existingParams = generateCypherParams(params)
+  let existingParams = generateCypherSettingParams(params)
 
-  // TODO passive stringから逆引きして passive の id を取得
-  // const passive_id = params.passive_id ? params.passive_id :
-  const passive_id = 'hoge'
+  let passive_id = params.passive_id
+  if (!passive_id) {
+    // TODO passive stringから逆引きして passive の id を取得
+    passive_id = ''
+  }
+  const gluon_type_id = params.gluon_type_id ? params.gluon_type_id : 'null'
 
-  // TODO
-  const {datetimeSetter, paramsReady} = generateDatetimeParams(params)
+  const targetResource = 'relation'
+
+  // TODO: 将来firebase uuidを利用した際には、user_id, last_modified_userをstring型で "${user_id}"　とすること！
   const cypher = `
     MATCH (active {id: "${params.active_id}"}),(passive {id: "${passive_id}"})
-    CREATE (active)-[ relation:${Type}  ]->(passive)
+    CREATE (active)-[ ${targetResource}${Type}  ]->(passive)
     SET
-        relation.id = {id},
-        relation.gluon_type_id = {gluon_type_id},
-        relation.active_id = {active_id},
-        relation.passive_id = {passive_id},
-        relation.relation = {relation},
-        relation.prefix = {prefix},
-        relation.suffix = {suffix},
-        relation.start = datetime( {start} ),
-        relation.end = datetime( {end} ),
-        relation.start_accuracy = {start_accuracy},
-        relation.end_accuracy = {end_accuracy},
-        relation.is_momentary = {is_momentary},
-        relation.is_exclusive = {is_exclusive},
-        relation.user_id = {user_id},
-        relation.last_modified_user = {last_modified_user},
-        relation.created = datetime( {created} ),
-        relation.modified = datetime( {modified} )
-    RETURN relation`
+        ${targetResource}.id = apoc.create.uuid(),
+        ${targetResource}.gluon_type_id = ${gluon_type_id},
+        ${existingParams},
+        ${targetResource}.user_id = toInteger(${user_id}),
+        ${targetResource}.last_modified_user = toInteger(${user_id}),
+        ${targetResource}.created = datetime(),
+        ${targetResource}.modified = datetime()
+    RETURN ${targetResource}`
 
-  const records = await execCypher(context, cypher, paramsReady)
-  return cypherRecord2Props(records[0])
+  const records = await execCypher(context, cypher)
+  return cypherRecord2Props(records[0], targetResource)
 }
 const updateGluonResolver = async (parent, params, context, info) => {
 }
@@ -257,6 +257,29 @@ const generateCypherParams = params => {
   return _.keys(params).map(paramKey => {
     return `, ${paramKey}: $${paramKey}`
   }).join('')
+}
+const generateCypherSettingParams = params => {
+  const avoids = ['id', 'gluon_type_id']
+  const targets = {}
+  _.keys(params).filter(paramKey => !avoids.includes(paramKey)).forEach(paramKey => {
+    targets[paramKey] = params[paramKey]
+  })
+  return _.keys(targets).map(paramKey => {
+    if (DATETIME_PROPERTIES.includes(paramKey)) {
+      if (paramKey === 'modified') {
+        return `relation.${paramKey} = datetime("${targets[paramKey].formatted}")`
+      } else {
+        return `relation.${paramKey} = datetime("${targets[paramKey].formatted}T00:00:00+0900")`
+      }
+    } else if (GLUON_BOOL_PROPERTIES.includes(paramKey)) {
+      return `relation.${paramKey} = ${targets[paramKey] ? 'TRUE': 'FALSE'}`
+    } else if (GLUON_INT_PROPERTIES.includes(paramKey)) {
+      return `relation.${paramKey} = toInteger(${targets[paramKey]})`
+    } else if (GLUON_STR_PROPERTIES.includes(paramKey)) {
+      return `relation.${paramKey} = "${targets[paramKey]}"`
+    }
+    return ''
+  }).join()
 }
 
 const generateDatetimeParams = params => {
@@ -281,7 +304,7 @@ const generateDatetimeParams = params => {
   })
   return {datetimeSetter, paramsReady}
 }
-const generateUpdatingParams = params => {
+const generateUpdatingParams = (params, bool_props, int_props, str_props) => {
   const avoids = ['id']
   const targets = {}
   _.keys(params).filter(paramKey => !avoids.includes(paramKey)).forEach(paramKey => {
@@ -295,11 +318,11 @@ const generateUpdatingParams = params => {
       } else {
         return `${paramKey}: datetime("${targets[paramKey].formatted}T00:00:00+0900")`
       }
-    } else if (QUARK_BOOL_PROPERTIES.includes(paramKey)) {
+    } else if (bool_props.includes(paramKey)) {
       return `${paramKey}: ${targets[paramKey] ? 'TRUE': 'FALSE'}`
-    } else if (QUARK_INT_PROPERTIES.includes(paramKey)) {
+    } else if (int_props.includes(paramKey)) {
       return `${paramKey}: toInteger(${targets[paramKey]})`
-    } else if (QUARK_STR_PROPERTIES.includes(paramKey)) {
+    } else if (str_props.includes(paramKey)) {
       return `${paramKey}: "${targets[paramKey]}"`
     }
     return ''
@@ -320,14 +343,21 @@ const execCypher = async (context, cypher, params = {}) => {
   session.close()
   return result.records
 }
-const cypherRecord2Props = record => {
-  const { properties } = record.get('node')
+const cypherRecord2Props = (record, targetResource = 'node') => {
+  const { properties } = record.get(targetResource)
   return generateReturn(properties)
 }
 const generateReturn = properties => {
   const ret = properties
   QUARK_INT_PROPERTIES.forEach(paramKey => {
-    ret[paramKey] = properties[paramKey].toString()
+    if (properties[paramKey]) {
+      ret[paramKey] = properties[paramKey].toString()
+    }
+  })
+  GLUON_INT_PROPERTIES.forEach(paramKey => {
+    if (properties[paramKey]) {
+      ret[paramKey] = properties[paramKey].toString()
+    }
   })
 
   DATETIME_PROPERTIES.forEach(paramKey => {
