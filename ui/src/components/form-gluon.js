@@ -11,6 +11,7 @@ class GluonForm extends Component {
   state = {
     // error: null,
     formVariables: {
+      passive_id: "",
       passive: "",
       prefix: "",
       relation: "",

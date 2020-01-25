@@ -42,9 +42,11 @@ class InputGluedQuark extends Component {
     const { dataset } = event.currentTarget;
     let value = event.target.value;
     let anchorEl = event.currentTarget;
-    if (dataset.value) {
+    let passive_id = null;
+    if (dataset.passive_id) {
       anchorEl = null;
-      value = dataset.value;
+      value = dataset.passive;
+      passive_id = dataset.passive_id;
     }
     this.setState({ value, anchorEl });
 
@@ -58,7 +60,8 @@ class InputGluedQuark extends Component {
     //     }
     //   }
     // );
-    this.props.onChange({ passive: value });
+
+    this.props.onChange({ passive: value, passive_id });
   };
   handleMenuClose = () => {
     this.setState({ anchorEl: null });
@@ -117,7 +120,8 @@ class InputGluedQuark extends Component {
                         key={quark.id}
                         dense={true}
                         onClick={this.onChange}
-                        data-value={quark.name}
+                        data-passive_id={quark.id}
+                        data-passive={quark.name}
                       >
                         {quark.name}
                       </MenuItem>
