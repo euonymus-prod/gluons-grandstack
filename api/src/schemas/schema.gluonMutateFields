@@ -1,9 +1,9 @@
     gluon_type_id: Int!
     active_id: ID!
-    passive_id: String
+    passive_id: ID
     passive: String
     prefix: String
-    relation: String
+    relation: String!
     suffix: String
     start: _Neo4jDateTimeInput
     end: _Neo4jDateTimeInput
