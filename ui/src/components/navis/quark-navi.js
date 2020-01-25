@@ -20,6 +20,8 @@ import ViewListIcon from "@material-ui/icons/ViewList";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 const QuarkNavi = props => {
+  const { authUser } = props;
+
   const handleMenuClose = () => {
     props.handleMenuClose();
   };
@@ -63,20 +65,26 @@ const QuarkNavi = props => {
   };
 
   const renderItems = func => {
-    // Fragment is not allowed by Menu component
-    const { authUser } = props;
-    const user_id = convertTableForTemporallyUse[authUser.uid];
+    const user_id = authUser
+      ? convertTableForTemporallyUse[authUser.uid]
+      : null;
+    // NOTE: Fragment is not allowed by Menu component
     return (
       <div>
-        {func("Add New Quark", <AddCircleOutlineIcon />, onAddQuarkClick)}
-        {props.current_quark &&
-          func("Edit Quark", <EditIcon />, onEditQuarkClick)}
-        {props.current_quark && (
-          <SubmitQuarkDelete
-            name={"hoge"}
-            variables={{ id: props.current_quark.id, user_id }}
-            withMenu={props.withMenu}
-          />
+        {authUser && (
+          <div>
+            {func("Add New Quark", <AddCircleOutlineIcon />, onAddQuarkClick)}
+            {props.current_quark && (
+              <div>
+                func("Edit Quark", <EditIcon />, onEditQuarkClick)
+                <SubmitQuarkDelete
+                  name={"hoge"}
+                  variables={{ id: props.current_quark.id, user_id }}
+                  withMenu={props.withMenu}
+                />
+              </div>
+            )}
+          </div>
         )}
         {func("List", <ViewListIcon />, onListClick)}
         {func("Profile", <AccountCircle />, props.handleProfileMenuOpen)}
