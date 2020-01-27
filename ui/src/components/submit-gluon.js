@@ -35,7 +35,7 @@ class SubmitGluon extends Component {
   };
 
   render() {
-    const { formVariables } = this.props;
+    const { targetQuark, formVariables } = this.props;
     const variables = {
       ...formVariables,
       start: { formatted: formVariables.start },
@@ -53,7 +53,7 @@ class SubmitGluon extends Component {
         mutation={mutation}
         variables={variables}
         onCompleted={data => {
-          this.props.history.push(`/graph/${data[mutationName].name}`);
+          this.props.history.push(`/graph/${targetQuark.name}`);
         }}
         onError={error => {
           alert(error.message);
@@ -82,6 +82,7 @@ class SubmitGluon extends Component {
   }
 }
 SubmitGluon.propTypes = {
+  targetQuark: PropTypes.object.isRequired,
   formVariables: PropTypes.object.isRequired
 };
 export default withRouter(withLastLocation(SubmitGluon));

@@ -265,7 +265,7 @@ const generateCypherParams = params => {
   }).join('')
 }
 const generateCypherSettingParams = params => {
-  const avoids = ['id', 'gluon_type_id']
+  const avoids = ['id', 'gluon_type_id', 'passive']
   const targets = {}
   _.keys(params).filter(paramKey => !avoids.includes(paramKey)).forEach(paramKey => {
     targets[paramKey] = params[paramKey]
@@ -285,7 +285,7 @@ const generateCypherSettingParams = params => {
       return `relation.${paramKey} = "${targets[paramKey]}"`
     }
     return ''
-  }).join()
+  }).filter(data => data).join()
 }
 
 const generateDatetimeParams = params => {

@@ -83,7 +83,7 @@ class GluonForm extends Component {
   };
 
   render() {
-    const { formVariables } = this.state;
+    const { targetQuark, formVariables } = this.state;
     return (
       <div className="container">
         <fieldset>
@@ -116,7 +116,7 @@ class GluonForm extends Component {
             {this.inputCheckbox("Is Exclusive", "is_exclusive")}
           </div>
         </fieldset>
-        <SubmitGluon formVariables={formVariables} />
+        <SubmitGluon targetQuark={targetQuark} formVariables={formVariables} />
       </div>
     );
   }
