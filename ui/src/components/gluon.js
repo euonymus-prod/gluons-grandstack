@@ -5,6 +5,7 @@ import Util from "../utils/common";
 import SecondGluons from "./second-gluons";
 import { LANGTYPE_ENG_LIKE, LANGTYPE_JP_LIKE } from "../constants/langtypes";
 import * as ROUTES from "../constants/routes";
+import SubmitQuarkDelete from "./submit-quark-delete";
 // Material UI
 import { makeStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
@@ -135,16 +136,17 @@ const Gluon = props => {
             primary={relationText}
             secondary={util.period2str(gluon)}
           />
-          <Link to={`${ROUTES.EDIT_GLUON}${object.id}`}>
+          <Link to={`${ROUTES.EDIT_GLUON_BASE}${object.id}`}>
             <IconButton>
               <EditIcon />
             </IconButton>
           </Link>
-          <Link to={`/gluon/edit${object.id}`}>
-            <IconButton>
-              <DeleteForeverIcon />
-            </IconButton>
-          </Link>
+          {/* TODO */}
+          <SubmitQuarkDelete
+            name={"hoge"}
+            variables={{}}
+            withMenu={props.withMenu}
+          />
         </ListItem>
         <ListItem divider={true} className={classes.secondQuark}>
           <Link to={`${ROUTES.GRAPH_BASE}${object.name}`}>{avatar}</Link>
