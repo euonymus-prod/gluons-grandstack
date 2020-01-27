@@ -284,7 +284,7 @@ const updateGluonResolver = async (parent, params, context, info) => {
 
 
   // TODO: Type の変更に未対応
-  return cypherRecord2Props(records[0])
+  return cypherRecord2Props(records[0], targetResource)
 }
 
 
