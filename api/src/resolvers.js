@@ -216,6 +216,9 @@ const updateQuarkResolver = async (parent, params, context, info) => {
 }
 
 const createGluonResolver = async (parent, params, context, info) => {
+  return createGluon(params, context)
+}
+const createGluon = async (params, context) => {
   const user = await getUser(context)
   // TODO: Before fix this, data updating is required
   //const user_id = user.user_id
@@ -268,33 +271,31 @@ const updateGluonResolver = async (parent, params, context, info) => {
     throw Error("No relation found");
   }
   const existingProps = cypherRecord2Props(existingRecords[0], targetResource)
-  const paramSetter = generateUpdatingParams(
-    {...params, last_modified_user},
-    GLUON_BOOL_PROPERTIES,
-    GLUON_INT_PROPERTIES,
-    GLUON_STR_PROPERTIES
-  )
-  const cypher = `MATCH (active)-[${targetResource} {id: "${params.id}"}]->(passive) SET ${targetResource} += { ${paramSetter} } RETURN ${targetResource}`
-  const records = await execCypher(context, cypher)
-
   // MEMO: You cannot change type, but you can recreate one
   // https://community.neo4j.com/t/change-relationships-name/6473
-    console.log(0)
   if (params.gluon_type_id && (Number(params.gluon_type_id) !== Number(existingProps.gluon_type_id))) {
-    console.log(1)
-    console.log(params.gluon_type_id)
     const type = getType(params.gluon_type_id)
-    console.log(2)
-    console.log(existingProps.gluon_type_id)
     const old_type = getType(existingProps.gluon_type_id)
-    console.log(3)
 
+    const active_id = existingProps.active_id
+    const passive_id = existingProps.passive_id
+    const newParams = { ..._.omit(params, ['id']), active_id, passive_id }
+    const res = createGluon(newParams, context)
 
-    // TODO: なんかうまく Type が更新されない
-    const cypherToChangeType = `MATCH (active)-[origin {id: "${params.id}"}]->(passive) MARGE (active)-[${targetResource}:${type}]->(passive) DELETE origin`
-    // const records = await execCypher(context, cypherToChangeType)
+    const cypherToChangeType = `MATCH (active)-[origin {id: "${params.id}"}]->(passive) DELETE origin`
+    await execCypher(context, cypherToChangeType)
+    return res
+  } else {
+    const paramSetter = generateUpdatingParams(
+      {...params, last_modified_user},
+      GLUON_BOOL_PROPERTIES,
+      GLUON_INT_PROPERTIES,
+      GLUON_STR_PROPERTIES
+    )
+    const cypher = `MATCH (active)-[${targetResource} {id: "${params.id}"}]->(passive) SET ${targetResource} += { ${paramSetter} } RETURN ${targetResource}`
+    let records = await execCypher(context, cypher)
+    return cypherRecord2Props(records[0], targetResource)
   }
-  return cypherRecord2Props(records[0], targetResource)
 }
 
 
@@ -433,7 +434,6 @@ const getLabel = quark_type_id => {
 const getType = gluon_type_id => {
   if (!gluon_type_id) return DEFAULT_RELATION_TYPE
   const gluonLabelObj = gluonTypesData[gluon_type_id]
-  console.log(gluonLabelObj)
   if (!gluonLabelObj) {
     throw Error("Invalidate gluon_type_id");
   }
