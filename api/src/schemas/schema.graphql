@@ -45,6 +45,18 @@ type Gluon {
 <%= gluonFields %>
 }
 
+type ExpandedGluon {
+<%= gluonFields %>
+  active(user_id: Int): LoggedInQuark
+    @cypher(
+      statement: "MATCH (active)-[this]->(passive) RETURN active"
+    )
+  passive(user_id: Int): LoggedInQuark
+    @cypher(
+      statement: "MATCH (active)-[this]->(passive) RETURN passive"
+    )
+}
+
 type QuarkLabel {
   id: ID!
   label: String
@@ -124,7 +136,7 @@ type Query {
     @cypher(
       statement: "MATCH (node {id: $id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
     )
-  editingGluon(id: ID, user_id: Int): Gluon @isAuthenticated
+  editingGluon(id: ID, user_id: Int): ExpandedGluon @isAuthenticated
     @cypher(
       statement: "MATCH (active)-[relation {id: $id}]->(passive) RETURN relation"
     )
