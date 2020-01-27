@@ -35,7 +35,7 @@ const EditQuarkBase = props => {
         const { editingQuark } = data;
         return (
           <div className="EditQuark">
-            <h1>Edit Quark</h1>
+            <h1>Edit Gluon</h1>
             <QuarkForm editingQuark={editingQuark} />
             <br />
             <Link
