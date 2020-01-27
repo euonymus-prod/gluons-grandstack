@@ -10,23 +10,23 @@ import LoggedinOnly from "../components/loggedin_only";
 // Material UI
 import Button from "@material-ui/core/Button";
 
-const EditQuark = props => {
+const EditGluon = props => {
   return (
     <LoggedinOnly>
-      <EditQuarkWrapper {...props} />
+      <EditGluonWrapper {...props} />
     </LoggedinOnly>
   );
 };
 
-const EditQuarkBase = props => {
+const EditGluonBase = props => {
   const { authUser } = props;
   const user_id = convertTableForTemporallyUse[authUser.uid];
-  const EDITING_QUARK = new EditingQuark(user_id);
+  const EDITING_GLUON = new EditingQuark(user_id);
   const variables = {
     id: props.match.params.gluon_id
   };
   return (
-    <Query query={EDITING_QUARK} variables={variables}>
+    <Query query={EDITING_GLUON} variables={variables}>
       {({ loading, error, data }) => {
         if (loading) return "Loading...";
         if (error) {
@@ -34,7 +34,7 @@ const EditQuarkBase = props => {
         }
         const { editingQuark } = data;
         return (
-          <div className="EditQuark">
+          <div className="EditGluon">
             <h1>Edit Gluon</h1>
             <QuarkForm editingQuark={editingQuark} />
             <br />
@@ -53,5 +53,5 @@ const EditQuarkBase = props => {
   );
 };
 
-const EditQuarkWrapper = withAuthUser(EditQuarkBase);
-export default EditQuark;
+const EditGluonWrapper = withAuthUser(EditGluonBase);
+export default EditGluon;
