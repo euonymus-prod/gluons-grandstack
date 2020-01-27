@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { withAuthUser } from "../providers/session";
 import { Query } from "react-apollo";
-import EditingQuark from "../queries/query-editing-quark";
+import EditingGluon from "../queries/query-editing-gluon";
 import QuarkForm from "../components/form-quark";
 import { convertTableForTemporallyUse } from "../utils/auth-util";
 import * as ROUTES from "../constants/routes";
@@ -21,7 +21,7 @@ const EditGluon = props => {
 const EditGluonBase = props => {
   const { authUser } = props;
   const user_id = convertTableForTemporallyUse[authUser.uid];
-  const EDITING_GLUON = new EditingQuark(user_id);
+  const EDITING_GLUON = new EditingGluon(user_id);
   const variables = {
     id: props.match.params.gluon_id
   };
@@ -32,11 +32,12 @@ const EditGluonBase = props => {
         if (error) {
           return `Error! ${error.message}`;
         }
-        const { editingQuark } = data;
+        const { editingGluon } = data;
         return (
           <div className="EditGluon">
             <h1>Edit Gluon</h1>
-            <QuarkForm editingQuark={editingQuark} />
+            {/*
+            <QuarkForm editingGluon={editingGluon} />
             <br />
             <Link
               to={`${ROUTES.GRAPH_BASE}${editingQuark.name}`}
@@ -46,6 +47,7 @@ const EditGluonBase = props => {
                 Back to Quark
               </Button>
             </Link>
+            */}
           </div>
         );
       }}

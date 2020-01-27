@@ -136,7 +136,7 @@ const Gluon = props => {
             primary={relationText}
             secondary={util.period2str(gluon)}
           />
-          <Link to={`${ROUTES.EDIT_GLUON_BASE}${object.id}`}>
+          <Link to={`${ROUTES.EDIT_GLUON_BASE}${gluon.id}`}>
             <IconButton>
               <EditIcon />
             </IconButton>
