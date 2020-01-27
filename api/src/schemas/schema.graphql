@@ -151,6 +151,9 @@ type Mutation {
     )
 
   CreateGluon(
+    active_id: ID!
+    passive_id: ID
+    passive: String
     <%= gluonMutateFields %>
   ): Gluon @hasRole(roles:[admin, user])
   UpdateGluon(

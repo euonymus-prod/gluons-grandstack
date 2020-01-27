@@ -1,7 +1,4 @@
     gluon_type_id: Int!
-    active_id: ID!
-    passive_id: ID
-    passive: String
     prefix: String
     relation: String!
     suffix: String

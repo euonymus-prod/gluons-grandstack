@@ -255,6 +255,36 @@ const createGluonResolver = async (parent, params, context, info) => {
   return cypherRecord2Props(records[0], targetResource)
 }
 const updateGluonResolver = async (parent, params, context, info) => {
+  const user = await getUser(context)
+  // TODO: Before fix this, data updating is required
+  //const last_modified_user = user.user_id
+  const last_modified_user = firebaseInstance.temporalUserId(user.user_id)
+
+  // Read current relation by id
+  const targetResource = 'relation'
+  const readCypher = `MATCH (active)-[${targetResource} {id: "${params.id}"}]->(passive) RETURN ${targetResource}`
+  const existingRecords = await execCypher(context, readCypher)
+  if (existingRecords.length === 0) {
+    throw Error("No relation found");
+  }
+  const existingProps = cypherRecord2Props(existingRecords[0], targetResource)
+
+  if (params.gluon_type_id && (Number(params.gluon_type_id) !== Number(existingProps.gluon_type_id))) {
+    const type = getType(params.gluon_type_id)
+    const old_type = getType(existingProps.gluon_type_id)
+  }
+  const paramSetter = generateUpdatingParams(
+    {...params, last_modified_user},
+    GLUON_BOOL_PROPERTIES,
+    GLUON_INT_PROPERTIES,
+    GLUON_STR_PROPERTIES
+  )
+  const cypher = `MATCH (active)-[${targetResource} {id: "${params.id}"}]->(passive) SET ${targetResource} += { ${paramSetter} } RETURN ${targetResource}`
+  const records = await execCypher(context, cypher)
+
+
+  // TODO: Type の変更に未対応
+  return cypherRecord2Props(records[0])
 }
 
 
@@ -311,7 +341,7 @@ const generateDatetimeParams = params => {
   return {datetimeSetter, paramsReady}
 }
 const generateUpdatingParams = (params, bool_props, int_props, str_props) => {
-  const avoids = ['id']
+  const avoids = ['id', 'active_id', 'passive_id']
   const targets = {}
   _.keys(params).filter(paramKey => !avoids.includes(paramKey)).forEach(paramKey => {
     targets[paramKey] = params[paramKey]
