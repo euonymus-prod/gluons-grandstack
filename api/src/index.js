@@ -28,12 +28,14 @@ const schema = makeAugmentedSchema({
   //     isAuthenticated: true
   //   }
   // },
-  // pass our custom directive classes when we create the GraphQL schema
+  // Pass our custom directive classes so that you can use scoped permission directives
+  // To Node properties optional, set allowUndefinedInResolve: true, or all the Node property has to be created
   schemaDirectives: {
     isAuthenticated: IsAuthenticatedDirective,
     hasRole: HasRoleDirective,
   },
-  resolvers
+  resolvers,
+  allowUndefinedInResolve: true
 });
 
 /*

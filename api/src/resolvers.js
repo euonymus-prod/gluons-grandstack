@@ -27,6 +27,8 @@ MATCH (subject {name: "眞弓聡"})<-[r:SON_OF|DAUGHTER_OF]-(object)
 RETURN subject, object, r
 */
 
+const DEFAULT_RELATION_TYPE = 'HAS_RELATION_TO';
+
 const DATETIME_PROPERTIES = ['start', 'end', 'modified', 'created'];
 
 const QUARK_BOOL_PROPERTIES = ['is_momentary', 'is_private', 'is_exclusive'];
@@ -219,7 +221,13 @@ const createGluonResolver = async (parent, params, context, info) => {
   //const user_id = user.user_id
   const user_id = firebaseInstance.temporalUserId(user.user_id)
 
-  const Type = `:${getType(params.gluon_type_id)}`
+  let TypeInCypher = ""
+  const Type = getType(params.gluon_type_id)
+  if (Type) {
+    TypeInCypher = `:${Type}`
+  }
+  const gluon_type_id = params.gluon_type_id ? params.gluon_type_id : 'null'
+
   let existingParams = generateCypherSettingParams(params)
 
   let passive_id = params.passive_id
@@ -227,14 +235,12 @@ const createGluonResolver = async (parent, params, context, info) => {
     // TODO passive stringから逆引きして passive の id を取得
     passive_id = ''
   }
-  const gluon_type_id = params.gluon_type_id ? params.gluon_type_id : 'null'
-
-  const targetResource = 'relation'
 
   // TODO: 将来firebase uuidを利用した際には、user_id, last_modified_userをstring型で "${user_id}"　とすること！
+  const targetResource = 'relation'
   const cypher = `
     MATCH (active {id: "${params.active_id}"}),(passive {id: "${passive_id}"})
-    CREATE (active)-[ ${targetResource}${Type}  ]->(passive)
+    CREATE (active)-[ ${targetResource}${TypeInCypher}  ]->(passive)
     SET
         ${targetResource}.id = apoc.create.uuid(),
         ${targetResource}.gluon_type_id = ${gluon_type_id},
@@ -385,7 +391,7 @@ const getLabel = quark_type_id => {
   return `${quarkLabelObj.label}`
 }
 const getType = gluon_type_id => {
-  if (!gluon_type_id) return false
+  if (!gluon_type_id) return DEFAULT_RELATION_TYPE
   const gluonLabelObj = gluonTypesData[gluon_type_id]
   if (!gluonLabelObj) {
     throw Error("Invalidate gluon_type_id");

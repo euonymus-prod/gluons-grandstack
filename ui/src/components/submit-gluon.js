@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { withLastLocation } from "react-router-last-location";
 import { Mutation } from "react-apollo";
-import QuarkMutation from "../queries/mutation-quark";
+import GluonMutation from "../queries/mutation-gluon";
 import * as QUERY_NAME from "../constants/query-names";
 
 // Material UI
@@ -13,7 +13,7 @@ const QUARKS_PER_PAGE = 20;
 // TODO
 const QUARKS_QUERY = "";
 
-class SubmitQuark extends Component {
+class SubmitGluon extends Component {
   updateAfterMutation = (store, { data: { CreateQuark } }) => {
     const first = QUARKS_PER_PAGE;
     const skip = 0;
@@ -40,14 +40,14 @@ class SubmitQuark extends Component {
       ...formVariables,
       start: { formatted: formVariables.start },
       end: { formatted: formVariables.end },
-      quark_type_id: Number(formVariables.quark_type_id)
+      gluon_type_id: Number(formVariables.gluon_type_id)
     };
 
-    let mutationName = QUERY_NAME.CREATE_QUARK;
+    let mutationName = QUERY_NAME.CREATE_GLUON;
     if (variables.id) {
-      mutationName = QUERY_NAME.UPDATE_QUARK;
+      mutationName = QUERY_NAME.UPDATE_GLUON;
     }
-    const mutation = new QuarkMutation(mutationName);
+    const mutation = new GluonMutation(mutationName);
     return (
       <Mutation
         mutation={mutation}
@@ -66,7 +66,7 @@ class SubmitQuark extends Component {
               color="primary"
               variant="contained"
               onClick={() => {
-                if (!formVariables.name) {
+                if (!formVariables.relation) {
                   alert("Name is required");
                   return false;
                 }
@@ -81,7 +81,7 @@ class SubmitQuark extends Component {
     );
   }
 }
-SubmitQuark.propTypes = {
+SubmitGluon.propTypes = {
   formVariables: PropTypes.object.isRequired
 };
-export default withRouter(withLastLocation(SubmitQuark));
+export default withRouter(withLastLocation(SubmitGluon));

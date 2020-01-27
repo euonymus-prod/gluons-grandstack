@@ -4,13 +4,15 @@ import InputText from "./input-text";
 import InputCheckbox from "./input-checkbox";
 import InputGluonTypes from "./input-gluon-types";
 import InputGluedQuark from "./input-glued-quark";
-import SubmitQuark from "./submit-quark";
+import SubmitGluon from "./submit-gluon";
 import Util from "../utils/common";
 
 class GluonForm extends Component {
   state = {
     // error: null,
+    targetQuark: null,
     formVariables: {
+      active_id: "",
       passive_id: "",
       passive: "",
       prefix: "",
@@ -27,13 +29,29 @@ class GluonForm extends Component {
   };
 
   componentDidMount() {
-    const { editingGluon } = this.props;
+    const { targetQuark, editingGluon } = this.props;
+    const active_id = targetQuark.id;
+    let formVariables = {};
     if (editingGluon) {
       const util = new Util(false);
       const start = util.date2str(editingGluon.start);
       const end = util.date2str(editingGluon.end);
-      this.setFormVariables({ ...editingGluon, start, end });
+      formVariables = { ...editingGluon, active_id, start, end };
+    } else {
+      formVariables = { active_id };
     }
+    this.setFormVariables(formVariables);
+    this.setState({ targetQuark });
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { targetQuark } = nextProps;
+    if (!prevState.targetQuark || targetQuark.id !== prevState.targetQuark.id) {
+      return {
+        formVariables: { ...prevState.formVariables, active_id: targetQuark.id }
+      };
+    }
+    return null;
   }
 
   setFormVariables = newVariables => {
@@ -98,12 +116,13 @@ class GluonForm extends Component {
             {this.inputCheckbox("Is Exclusive", "is_exclusive")}
           </div>
         </fieldset>
-        <SubmitQuark formVariables={formVariables} />
+        <SubmitGluon formVariables={formVariables} />
       </div>
     );
   }
 }
 GluonForm.propTypes = {
+  targetQuark: PropTypes.object.isRequired,
   editingGluon: PropTypes.object
 };
 export default GluonForm;

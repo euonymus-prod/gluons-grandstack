@@ -28,7 +28,8 @@ class InputGluedQuark extends Component {
   };
 
   onTabDown = event => {
-    if (event.key === "Tab" || event.key === "Enter") {
+    // if (event.key === "Tab" || event.key === "Enter") {
+    if (event.key === "Enter") {
       event.preventDefault();
       this.setState({ searchKeyword: this.state.value });
       const anchorEl = event.currentTarget;
@@ -37,6 +38,9 @@ class InputGluedQuark extends Component {
       this.handleMenuClose();
       this.setState({ searchKeyword: "" });
     }
+  };
+  onClick = event => {
+    this.onChange(event);
   };
   onChange = event => {
     const { dataset } = event.currentTarget;
@@ -119,7 +123,7 @@ class InputGluedQuark extends Component {
                       <MenuItem
                         key={quark.id}
                         dense={true}
-                        onClick={this.onChange}
+                        onClick={this.onClick}
                         data-passive_id={quark.id}
                         data-passive={quark.name}
                       >

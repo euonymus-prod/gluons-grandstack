@@ -32,7 +32,7 @@ const AddNewGluonBase = props => {
         return (
           <div className="AddNewGluon">
             <h1>Add New Gluon on {editingQuark.name}</h1>
-            <GluonForm />
+            <GluonForm targetQuark={editingQuark} />
             <br />
             <Link
               to={`${ROUTES.GRAPH_BASE}${editingQuark.name}`}
