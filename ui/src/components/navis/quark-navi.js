@@ -69,28 +69,34 @@ const QuarkNavi = props => {
       ? convertTableForTemporallyUse[authUser.uid]
       : null;
     // NOTE: Fragment is not allowed by Menu component
+    if (!authUser) {
+      return (
+        <div>
+          {func("List", <ViewListIcon />, onListClick)}
+          {func("Profile", <AccountCircle />, props.handleProfileMenuOpen)}
+        </div>
+      );
+    }
+
     return (
       <div>
-        {authUser && (
-          <div>
-            {func("Add New Quark", <AddCircleOutlineIcon />, onAddQuarkClick)}
-            {props.current_quark && (
-              <div>
-                {func("Edit Quark", <EditIcon />, onEditQuarkClick)}
-                <SubmitQuarkDelete
-                  name={"hoge"}
-                  variables={{ id: props.current_quark.id, user_id }}
-                  withMenu={props.withMenu}
-                />
-              </div>
-            )}
-          </div>
+        {func("Add New Quark", <AddCircleOutlineIcon />, onAddQuarkClick)}
+        {props.current_quark &&
+          func("Edit Quark", <EditIcon />, onEditQuarkClick)}
+        {props.current_quark && (
+          <SubmitQuarkDelete
+            name={"hoge"}
+            variables={{ id: props.current_quark.id, user_id }}
+            withMenu={props.withMenu}
+          />
         )}
+
         {func("List", <ViewListIcon />, onListClick)}
         {func("Profile", <AccountCircle />, props.handleProfileMenuOpen)}
       </div>
     );
   };
+
   if (props.withMenu) {
     return (
       <Menu
