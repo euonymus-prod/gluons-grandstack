@@ -268,11 +268,6 @@ const updateGluonResolver = async (parent, params, context, info) => {
     throw Error("No relation found");
   }
   const existingProps = cypherRecord2Props(existingRecords[0], targetResource)
-
-  if (params.gluon_type_id && (Number(params.gluon_type_id) !== Number(existingProps.gluon_type_id))) {
-    const type = getType(params.gluon_type_id)
-    const old_type = getType(existingProps.gluon_type_id)
-  }
   const paramSetter = generateUpdatingParams(
     {...params, last_modified_user},
     GLUON_BOOL_PROPERTIES,
@@ -282,8 +277,23 @@ const updateGluonResolver = async (parent, params, context, info) => {
   const cypher = `MATCH (active)-[${targetResource} {id: "${params.id}"}]->(passive) SET ${targetResource} += { ${paramSetter} } RETURN ${targetResource}`
   const records = await execCypher(context, cypher)
 
+  // MEMO: You cannot change type, but you can recreate one
+  // https://community.neo4j.com/t/change-relationships-name/6473
+    console.log(0)
+  if (params.gluon_type_id && (Number(params.gluon_type_id) !== Number(existingProps.gluon_type_id))) {
+    console.log(1)
+    console.log(params.gluon_type_id)
+    const type = getType(params.gluon_type_id)
+    console.log(2)
+    console.log(existingProps.gluon_type_id)
+    const old_type = getType(existingProps.gluon_type_id)
+    console.log(3)
 
-  // TODO: Type の変更に未対応
+
+    // TODO: なんかうまく Type が更新されない
+    const cypherToChangeType = `MATCH (active)-[origin {id: "${params.id}"}]->(passive) MARGE (active)-[${targetResource}:${type}]->(passive) DELETE origin`
+    // const records = await execCypher(context, cypherToChangeType)
+  }
   return cypherRecord2Props(records[0], targetResource)
 }
 
@@ -423,6 +433,7 @@ const getLabel = quark_type_id => {
 const getType = gluon_type_id => {
   if (!gluon_type_id) return DEFAULT_RELATION_TYPE
   const gluonLabelObj = gluonTypesData[gluon_type_id]
+  console.log(gluonLabelObj)
   if (!gluonLabelObj) {
     throw Error("Invalidate gluon_type_id");
   }
