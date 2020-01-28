@@ -406,7 +406,6 @@ const generateReturn = properties => {
       ret[paramKey] = properties[paramKey].toString()
     }
   })
-
   DATETIME_PROPERTIES.forEach(paramKey => {
     let year = null
     let month = null

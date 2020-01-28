@@ -42,25 +42,24 @@ const MainQuark = props => {
   return (
     <div className="baryon-subject baryon-grid">
       <Card className={classes.card}>
-        <CardActionArea>
-          {subject.image_path && (
-            <CardMedia
-              className={classes.media}
-              image={subject.image_path}
-              title={subject.name}
-            />
-          )}
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {subject.name}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {util.period2str(subject)}
-              <br />
-              {subject.description}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
+        {subject.image_path && (
+          <CardMedia
+            className={classes.media}
+            image={subject.image_path}
+            title={subject.name}
+          />
+        )}
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {subject.name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {util.period2str(subject)}
+            <br />
+            {subject.description}
+          </Typography>
+        </CardContent>
+
         <CardActions>
           {subject.url && (
             <Button
