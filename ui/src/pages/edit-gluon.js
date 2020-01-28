@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { withAuthUser } from "../providers/session";
 import { Query } from "react-apollo";
@@ -35,20 +35,26 @@ const EditGluonBase = props => {
         const { editingGluon } = data;
         return (
           <div className="EditGluon">
-            <h1>
-              Edit Gluon between {editingGluon.active.name} and{" "}
-              {editingGluon.passive.name}
-            </h1>
-            <GluonForm editingGluon={editingGluon} />
-            <br />
-            <Link
-              to={`${ROUTES.GRAPH_BASE}${editingGluon.active.name}`}
-              alt={editingGluon.active.name}
-            >
-              <Button variant="contained" color="primary">
-                Back to Quark
-              </Button>
-            </Link>
+            {!editingGluon ? (
+              <h1>No gluon found</h1>
+            ) : (
+              <Fragment>
+                <h1>
+                  Edit Gluon between {editingGluon.active.name} and{" "}
+                  {editingGluon.passive.name}
+                </h1>
+                <GluonForm editingGluon={editingGluon} />
+                <br />
+                <Link
+                  to={`${ROUTES.GRAPH_BASE}${editingGluon.active.name}`}
+                  alt={editingGluon.active.name}
+                >
+                  <Button variant="contained" color="primary">
+                    Back to Quark
+                  </Button>
+                </Link>
+              </Fragment>
+            )}
           </div>
         );
       }}
