@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import InputText from "./input-text";
@@ -12,9 +13,9 @@ class GluonForm extends Component {
     // error: null,
     targetQuark: null,
     formVariables: {
-      active_id: "",
-      passive_id: "",
-      passive: "",
+      // active_id: "",
+      // passive_id: "",
+      // passive: "",
       prefix: "",
       relation: "",
       suffix: "",
@@ -29,35 +30,78 @@ class GluonForm extends Component {
   };
 
   componentDidMount() {
-    const { targetQuark, editingGluon } = this.props;
-    const active_id = targetQuark.id;
-    let formVariables = {};
-    if (editingGluon) {
-      const util = new Util(false);
-      const start = util.date2str(editingGluon.start);
-      const end = util.date2str(editingGluon.end);
-      formVariables = { ...editingGluon, active_id, start, end };
-    } else {
-      formVariables = { active_id };
-    }
-    this.setFormVariables(formVariables);
-    this.setState({ targetQuark });
+    const { editingGluon } = this.props;
+    const newState = GluonForm.generateInitialState(this.props, this.state);
+    this.setState(newState);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { targetQuark } = nextProps;
-    if (!prevState.targetQuark || targetQuark.id !== prevState.targetQuark.id) {
-      return {
-        formVariables: { ...prevState.formVariables, active_id: targetQuark.id }
-      };
+    const targetQuark = GluonForm.getTargetQuark(nextProps);
+    if (
+      GluonForm.isTargetEmpty(prevState) ||
+      targetQuark.id !== prevState.targetQuark.id
+    ) {
+      const newState = GluonForm.generateInitialState(nextProps, prevState);
+      return newState;
     }
     return null;
   }
 
   setFormVariables = newVariables => {
-    this.setState({
-      formVariables: { ...this.state.formVariables, ...newVariables }
-    });
+    const formVariables = GluonForm.generateNewFormVariables(
+      newVariables,
+      this.state
+    );
+    this.setState({ formVariables });
+  };
+
+  static generateInitialState = (nextProps, prevState) => {
+    const avoid2Edit = [
+      "active_id",
+      "passive_id",
+      "active",
+      "passive",
+      "object_id"
+    ];
+    const { editingGluon } = nextProps;
+    const targetQuark = GluonForm.getTargetQuark(nextProps);
+    if (!targetQuark) {
+      return false;
+    }
+
+    let newVariables = null;
+    if (editingGluon) {
+      const util = new Util(false);
+      const start = util.date2str(editingGluon.start);
+      const end = util.date2str(editingGluon.end);
+      newVariables = { ..._.omit(editingGluon, avoid2Edit), start, end };
+    } else {
+      const active_id = targetQuark.id;
+      newVariables = { active_id };
+    }
+    const formVariables = GluonForm.generateNewFormVariables(
+      newVariables,
+      prevState
+    );
+    return { targetQuark, formVariables };
+  };
+
+  static generateNewFormVariables = (newVariables, prevState) => {
+    return { ...prevState.formVariables, ...newVariables };
+  };
+
+  static isTargetEmpty = state => {
+    return !state.targetQuark;
+  };
+
+  static getTargetQuark = props => {
+    const { targetQuark, editingGluon } = props;
+    if (targetQuark) {
+      return targetQuark;
+    } else if (editingGluon.active) {
+      return editingGluon.active;
+    }
+    return false;
   };
 
   inputText = (title, name, type = "text") => {
@@ -92,7 +136,7 @@ class GluonForm extends Component {
             <label>Gluon Type</label>
             <InputGluonTypes
               onChange={this.setFormVariables}
-              defaultValue={this.state.formVariables.gluon_type_id}
+              defaultValue={formVariables.gluon_type_id}
             />
             <br />
             <br />
@@ -122,7 +166,7 @@ class GluonForm extends Component {
   }
 }
 GluonForm.propTypes = {
-  targetQuark: PropTypes.object.isRequired,
+  targetQuark: PropTypes.object,
   editingGluon: PropTypes.object
 };
 export default GluonForm;

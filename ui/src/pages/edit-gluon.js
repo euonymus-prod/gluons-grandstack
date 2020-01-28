@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { withAuthUser } from "../providers/session";
 import { Query } from "react-apollo";
 import EditingGluon from "../queries/query-editing-gluon";
-import QuarkForm from "../components/form-quark";
+import GluonForm from "../components/form-gluon";
 import { convertTableForTemporallyUse } from "../utils/auth-util";
 import * as ROUTES from "../constants/routes";
 import LoggedinOnly from "../components/loggedin_only";
@@ -36,18 +36,16 @@ const EditGluonBase = props => {
         return (
           <div className="EditGluon">
             <h1>Edit Gluon</h1>
-            {/*
-            <QuarkForm editingGluon={editingGluon} />
+            <GluonForm editingGluon={editingGluon} />
             <br />
             <Link
-              to={`${ROUTES.GRAPH_BASE}${editingQuark.name}`}
-              alt={editingQuark.name}
+              to={`${ROUTES.GRAPH_BASE}${editingGluon.active.name}`}
+              alt={editingGluon.active.name}
             >
               <Button variant="contained" color="primary">
                 Back to Quark
               </Button>
             </Link>
-            */}
           </div>
         );
       }}

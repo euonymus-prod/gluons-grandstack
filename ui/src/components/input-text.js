@@ -8,17 +8,22 @@ class InputText extends Component {
 
   componentDidMount() {
     if (this.props.defaultValue) {
-      this.setState({ value: this.props.defaultValue });
+      const value = InputText.sanitizedInputValue(this.props);
+      this.setState({ value });
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!prevState.value) {
-      const value = nextProps.defaultValue;
+      const value = InputText.sanitizedInputValue(nextProps);
       return { value };
     }
     return null;
   }
+
+  static sanitizedInputValue = props => {
+    return props.defaultValue ? props.defaultValue : "";
+  };
 
   onChange = event => {
     this.setState({ value: event.target.value });
@@ -43,7 +48,7 @@ class InputText extends Component {
   }
 }
 InputText.propTypes = {
-  defaultValue: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string,
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
