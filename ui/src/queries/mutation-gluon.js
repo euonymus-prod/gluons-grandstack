@@ -5,14 +5,11 @@ import { gluonFields } from "./fields-gluon";
 
 const gluonMutationCompiled = _.template(`
   mutation mutateGluon(
-    <%= idSchema %>
+    <%= dynamicSchema %>
     $gluon_type_id: Int!
-    $active_id: ID!
-    $passive_id: ID
-    $passive: String
-    $prefix: String
     $relation: String!
     $suffix: String
+    $prefix: String
     $start: _Neo4jDateTimeInput
     $end: _Neo4jDateTimeInput
     $start_accuracy: String
@@ -21,14 +18,11 @@ const gluonMutationCompiled = _.template(`
     $is_exclusive: Boolean!
   ) {
     <%= mutationName %>(
-      <%= idParam %>
+      <%= dynamicParam %>
       gluon_type_id: $gluon_type_id
-      active_id: $active_id
-      passive_id: $passive_id
-      passive: $passive
-      prefix: $prefix
       relation: $relation
       suffix: $suffix
+      prefix: $prefix
       start: $start
       end: $end
       start_accuracy: $start_accuracy
@@ -42,14 +36,27 @@ const gluonMutationCompiled = _.template(`
 `);
 class GluonMutation {
   constructor(mutationName) {
-    let idSchema = "";
-    let idParam = "";
+    let dynamicSchema = "";
+    let dynamicParam = "";
     if (mutationName === QUERY_NAME.UPDATE_GLUON) {
-      idSchema = "$id: ID!";
-      idParam = "id: $id";
+      dynamicSchema = "$id: ID!";
+      dynamicParam = "id: $id";
+    } else {
+      dynamicSchema = `
+        $active_id: ID!
+        $passive_id: ID
+        $passive: String
+      `;
+      dynamicParam = `
+        active_id: $active_id
+        passive_id: $passive_id
+        passive: $passive
+      `;
     }
 
-    return gql(gluonMutationCompiled({ mutationName, idSchema, idParam }));
+    return gql(
+      gluonMutationCompiled({ mutationName, dynamicSchema, dynamicParam })
+    );
   }
 }
 export default GluonMutation;

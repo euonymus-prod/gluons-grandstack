@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import InputText from "./input-text";
 import InputCheckbox from "./input-checkbox";
@@ -128,6 +128,8 @@ class GluonForm extends Component {
 
   render() {
     const { targetQuark, formVariables } = this.state;
+    const { editingGluon } = this.props;
+    console.log(formVariables);
     return (
       <div className="container">
         <fieldset>
@@ -141,10 +143,14 @@ class GluonForm extends Component {
             <br />
             <br />
             {/*this.inputText("Quark you glue", "passive")*/}
-            <label>Quark you glue</label>
-            <InputGluedQuark onChange={this.setFormVariables} />
-            <br />
-            <br />
+            {!editingGluon && (
+              <Fragment>
+                <label>Quark you glue</label>
+                <InputGluedQuark onChange={this.setFormVariables} />
+                <br />
+                <br />
+              </Fragment>
+            )}
             {this.inputText("Prefix", "prefix")}
             {this.inputText("Relation", "relation")}
             {this.inputText("Suffix", "suffix")}
