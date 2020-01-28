@@ -69,7 +69,7 @@ class QuarkForm extends Component {
     return (
       <div className="container">
         <fieldset>
-          <legend>Add New Quark</legend>
+          <legend>Quark Form</legend>
           <div className="form-group">
             {this.inputText("Name", "name")}
             {this.inputText("Image Path", "image_path")}

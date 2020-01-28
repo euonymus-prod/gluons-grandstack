@@ -35,7 +35,10 @@ const EditGluonBase = props => {
         const { editingGluon } = data;
         return (
           <div className="EditGluon">
-            <h1>Edit Gluon</h1>
+            <h1>
+              Edit Gluon between {editingGluon.active.name} and{" "}
+              {editingGluon.passive.name}
+            </h1>
             <GluonForm editingGluon={editingGluon} />
             <br />
             <Link

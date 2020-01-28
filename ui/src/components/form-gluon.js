@@ -131,7 +131,7 @@ class GluonForm extends Component {
     return (
       <div className="container">
         <fieldset>
-          <legend>Add New Gluon</legend>
+          <legend>Gluon Form</legend>
           <div className="form-group">
             <label>Gluon Type</label>
             <InputGluonTypes
