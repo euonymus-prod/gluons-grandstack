@@ -9,6 +9,9 @@ node_modules/
 # production
 build
 
+# Firebase settings
+.firebaserc
+
 # Firebase Service Account Keys
 SAKey4dev.json
 SAKey4prod.json
