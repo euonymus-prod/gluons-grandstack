@@ -9,9 +9,8 @@ import * as QUERY_NAME from "../constants/query-names";
 // Material UI
 import Button from "@material-ui/core/Button";
 
-const QUARKS_PER_PAGE = 20;
-// TODO
-const QUARKS_QUERY = "";
+// const QUARKS_PER_PAGE = 20;
+// const QUARKS_QUERY = "";
 
 class SubmitGluon extends Component {
   getMutationName = () => {
@@ -22,9 +21,8 @@ class SubmitGluon extends Component {
 
   // updateAfterMutation = (store, { data: { CreateQuark } }) => {
   updateAfterMutation = (store, result) => {
-    const mutationName = this.getMutationName();
-    console.log(result.data[mutationName]);
-
+    // const mutationName = this.getMutationName();
+    // console.log(result.data[mutationName]);
     // const first = QUARKS_PER_PAGE;
     // const skip = 0;
     // const orderBy = "created";

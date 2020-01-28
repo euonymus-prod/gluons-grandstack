@@ -17,7 +17,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 // import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+// import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Typography from "@material-ui/core/Typography";
 import no_image from "../assets/images/no_image.jpg";
 

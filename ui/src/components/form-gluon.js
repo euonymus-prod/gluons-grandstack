@@ -30,7 +30,6 @@ class GluonForm extends Component {
   };
 
   componentDidMount() {
-    const { editingGluon } = this.props;
     const newState = GluonForm.generateInitialState(this.props, this.state);
     this.setState(newState);
   }
