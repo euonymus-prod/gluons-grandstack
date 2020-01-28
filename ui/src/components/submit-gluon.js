@@ -14,24 +14,34 @@ const QUARKS_PER_PAGE = 20;
 const QUARKS_QUERY = "";
 
 class SubmitGluon extends Component {
-  updateAfterMutation = (store, { data: { CreateQuark } }) => {
-    const first = QUARKS_PER_PAGE;
-    const skip = 0;
-    const orderBy = "created";
+  getMutationName = () => {
+    return this.props.formVariables.id
+      ? QUERY_NAME.UPDATE_GLUON
+      : QUERY_NAME.CREATE_GLUON;
+  };
 
-    // Note: you need try catch, so error doesn't happen even if QUARKS_QUERY is not yet provided.
-    try {
-      const data = store.readQuery({
-        query: QUARKS_QUERY,
-        variables: { first, skip, orderBy }
-      });
-      data.quarks.unshift(CreateQuark);
-      store.writeQuery({
-        query: QUARKS_QUERY,
-        data,
-        variables: { first, skip, orderBy }
-      });
-    } catch (e) {} // eslint-disable-line
+  // updateAfterMutation = (store, { data: { CreateQuark } }) => {
+  updateAfterMutation = (store, result) => {
+    const mutationName = this.getMutationName();
+    console.log(result.data[mutationName]);
+
+    // const first = QUARKS_PER_PAGE;
+    // const skip = 0;
+    // const orderBy = "created";
+    //
+    // // Note: you need try catch, so error doesn't happen even if QUARKS_QUERY is not yet provided.
+    // try {
+    //   const data = store.readQuery({
+    //     query: QUARKS_QUERY,
+    //     variables: { first, skip, orderBy }
+    //   });
+    //   data.quarks.unshift(CreateQuark);
+    //   store.writeQuery({
+    //     query: QUARKS_QUERY,
+    //     data,
+    //     variables: { first, skip, orderBy }
+    //   });
+    // } catch (e) {} // eslint-disable-line
   };
 
   render() {
@@ -43,10 +53,7 @@ class SubmitGluon extends Component {
       gluon_type_id: Number(formVariables.gluon_type_id)
     };
 
-    let mutationName = QUERY_NAME.CREATE_GLUON;
-    if (variables.id) {
-      mutationName = QUERY_NAME.UPDATE_GLUON;
-    }
+    const mutationName = this.getMutationName();
     const mutation = new GluonMutation(mutationName);
     return (
       <Mutation
