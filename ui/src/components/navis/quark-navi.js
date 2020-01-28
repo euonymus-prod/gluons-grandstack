@@ -64,6 +64,13 @@ const QuarkNavi = props => {
     );
   };
 
+  const showEditQuark = () => {
+    if (!props.current_quark) {
+      return false;
+    }
+    return props.location.pathname.startsWith(ROUTES.GRAPH_BASE);
+  };
+
   const renderItems = func => {
     const user_id = authUser
       ? convertTableForTemporallyUse[authUser.uid]
@@ -81,9 +88,8 @@ const QuarkNavi = props => {
     return (
       <div>
         {func("Add New Quark", <AddCircleOutlineIcon />, onAddQuarkClick)}
-        {props.current_quark &&
-          func("Edit Quark", <EditIcon />, onEditQuarkClick)}
-        {props.current_quark && (
+        {showEditQuark() && func("Edit Quark", <EditIcon />, onEditQuarkClick)}
+        {showEditQuark() && (
           <SubmitQuarkDelete
             name={"hoge"}
             variables={{ id: props.current_quark.id, user_id }}
