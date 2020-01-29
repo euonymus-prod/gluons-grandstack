@@ -2,6 +2,12 @@
 
 # Gluons
 
+## Check the Neo4j version
+
+```
+call dbms.components() yield name, versions, edition unwind versions as version return name, version, edition;
+```
+
 ## Setting Constraints
 Once you setup Neo4j Database, you need to create constraints on Quark Label to have uniqueness
 
@@ -15,6 +21,20 @@ Check the constraints
 ```
 call db.constraints
 ```
+
+## Set Quark Label on all the Nodes
+
+```
+MATCH (node) SET node:Quark
+```
+
+## User replacement from MySQL version to firebase
+
+```
+MATCH (node {user_id:1}) SET node += { user_id: "gNRXKhn591WlzLs7dsCVuOekONy1"} return count(node)
+MATCH (node {user_id:2}) SET node += { user_id: "1nlbladYQEgDTYN4ymn8d6T8YRw1"} return count(node)
+```
+
 
 
 # GRANDstack Starter
