@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { withAuthUser } from "../providers/session";
 import Util from "../utils/common";
 import SecondGluons from "./second-gluons";
 import { LANGTYPE_ENG_LIKE, LANGTYPE_JP_LIKE } from "../constants/langtypes";
@@ -128,6 +129,10 @@ const Gluon = props => {
   //   </Avatar>
   // </ListItemAvatar>
 
+  const isLoggedIn = () => {
+    return !!props.authUser;
+  };
+
   return (
     <div className="baryon-gluon-body">
       <Card className={isTop ? classes.cardTop : classes.card}>
@@ -136,17 +141,20 @@ const Gluon = props => {
             primary={relationText}
             secondary={util.period2str(gluon)}
           />
-          <Link to={`${ROUTES.EDIT_GLUON_BASE}${gluon.id}`}>
-            <IconButton>
-              <EditIcon />
-            </IconButton>
-          </Link>
-          {/* TODO */}
-          <SubmitQuarkDelete
-            name={"hoge"}
-            variables={{}}
-            withMenu={props.withMenu}
-          />
+          {isLoggedIn() && (
+            <Fragment>
+              <Link to={`${ROUTES.EDIT_GLUON_BASE}${gluon.id}`}>
+                <IconButton>
+                  <EditIcon />
+                </IconButton>
+              </Link>
+              <SubmitQuarkDelete
+                name={"hoge"}
+                variables={{}}
+                withMenu={props.withMenu}
+              />
+            </Fragment>
+          )}
         </ListItem>
         <ListItem divider={true} className={classes.secondQuark}>
           <Link to={`${ROUTES.GRAPH_BASE}${object.name}`}>{avatar}</Link>
@@ -196,4 +204,4 @@ Gluon.defaultProps = {
   isTop: false
 };
 
-export default Gluon;
+export default withAuthUser(Gluon);

@@ -1,6 +1,7 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { withAuthUser } from "../providers/session";
 import Util from "../utils/common";
 // Material UI
 import { makeStyles } from "@material-ui/styles";
@@ -37,6 +38,10 @@ const MainQuark = props => {
     } else {
       props.history.push(url);
     }
+  };
+
+  const isLoggedIn = () => {
+    return !!props.authUser;
   };
 
   return (
@@ -81,14 +86,18 @@ const MainQuark = props => {
               Buy Now <ShoppingCart />
             </Button>
           )}
-          <Button
-            size="small"
-            color="primary"
-            variant="contained"
-            onClick={() => onLinkClick(`${ROUTES.ADD_GLUON_BASE}${subject.id}`)}
-          >
-            Add Gluon <AddCircleOutlineIcon />
-          </Button>
+          {isLoggedIn() && (
+            <Button
+              size="small"
+              color="primary"
+              variant="contained"
+              onClick={() =>
+                onLinkClick(`${ROUTES.ADD_GLUON_BASE}${subject.id}`)
+              }
+            >
+              Add Gluon <AddCircleOutlineIcon />
+            </Button>
+          )}
         </CardActions>
       </Card>
     </div>
@@ -98,4 +107,4 @@ const MainQuark = props => {
 MainQuark.propTypes = {
   subject: PropTypes.object.isRequired
 };
-export default withRouter(MainQuark);
+export default withRouter(withAuthUser(MainQuark));
