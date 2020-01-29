@@ -15,8 +15,13 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    maxWidth: 500,
-    width: "100%"
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      maxWidth: 500
+    },
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: 350
+    }
   },
   button: {
     marginTop: theme.spacing(2)

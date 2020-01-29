@@ -9,7 +9,7 @@ import List from "@material-ui/core/List";
 
 const useStyles = makeStyles({
   card: {
-    backgroundColor: "#e1f1f1",
+    backgroundColor: "#e5f1f1",
     // backgroundColor: "#40c3c2",
     marginBottom: "20px"
   },
