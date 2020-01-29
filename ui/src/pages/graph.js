@@ -34,6 +34,7 @@ class Graph extends Component {
         {({ loading, error, data }) => {
           if (loading) return "Loading...";
           if (error) return `Error! ${error.message}`;
+          if (!data || !data[queryName]) return "No Quark was found";
           this.props.setCurrentQuark(data[queryName]);
           return (
             <div className="baryon-body">
