@@ -7,7 +7,7 @@ import { withAuthUser } from "../../providers/session";
 import { withFirebase } from "../../providers/firebase";
 import * as ROUTES from "../../constants/routes";
 import SubmitQuarkDelete from "../submit-quark-delete";
-import { convertTableForTemporallyUse } from "../../utils/auth-util";
+// import { convertTableForTemporallyUse } from "../../utils/auth-util";
 // Material UI
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -72,11 +72,9 @@ const QuarkNavi = props => {
   };
 
   const renderItems = func => {
-    const user_id = authUser
-      ? convertTableForTemporallyUse[authUser.uid]
-      : null;
-    // NOTE: Fragment is not allowed by Menu component
+    const user_id = authUser ? authUser.uid : null;
     if (!authUser) {
+      // NOTE: Fragment is not allowed by Menu component
       return (
         <div>
           {func("List", <ViewListIcon />, onListClick)}

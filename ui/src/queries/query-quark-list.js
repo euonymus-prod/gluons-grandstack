@@ -14,7 +14,7 @@ class QuarkList {
   constructor(queryName, user_id = null) {
     let addingUserIdParam = "";
     if (queryName === QUERY_NAME.USER_QUARKS) {
-      const userIdParam = `user_id: ${user_id}`;
+      const userIdParam = `user_id: "${user_id}"`;
       addingUserIdParam = `, ${userIdParam}`;
     }
     return gql(

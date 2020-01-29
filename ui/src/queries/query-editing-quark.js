@@ -14,7 +14,7 @@ class EditingQuark {
   constructor(user_id = null) {
     let addingUserIdParam = "";
 
-    const userIdParam = `user_id: ${user_id}`;
+    const userIdParam = `user_id: "${user_id}"`;
     addingUserIdParam = `, ${userIdParam}`;
     return gql(queryQuarkCompiled({ addingUserIdParam }));
   }

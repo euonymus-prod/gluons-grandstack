@@ -4,7 +4,7 @@ import { withAuthUser } from "../providers/session";
 import { Query } from "react-apollo";
 import EditingQuark from "../queries/query-editing-quark";
 import QuarkForm from "../components/form-quark";
-import { convertTableForTemporallyUse } from "../utils/auth-util";
+// import { convertTableForTemporallyUse } from "../utils/auth-util";
 import * as ROUTES from "../constants/routes";
 import LoggedinOnly from "../components/loggedin_only";
 // Material UI
@@ -20,7 +20,7 @@ const EditQuark = props => {
 
 const EditQuarkBase = props => {
   const { authUser } = props;
-  const user_id = convertTableForTemporallyUse[authUser.uid];
+  const user_id = authUser ? authUser.uid : null;
   const EDITING_QUARK = new EditingQuark(user_id);
   const variables = {
     id: props.match.params.quark_id
