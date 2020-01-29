@@ -15,7 +15,7 @@
   is_private: Boolean
   is_exclusive: Boolean
   user_id: String
-  last_modified_user: Int
+  last_modified_user: String
   quark_type_id: Int
   created: _Neo4jDateTime
   modified: _Neo4jDateTime
