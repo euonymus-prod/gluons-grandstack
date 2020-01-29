@@ -32,14 +32,13 @@ const DEFAULT_RELATION_TYPE = 'HAS_RELATION_TO';
 const DATETIME_PROPERTIES = ['start', 'end', 'modified', 'created'];
 
 const QUARK_BOOL_PROPERTIES = ['is_momentary', 'is_private', 'is_exclusive'];
-const QUARK_INT_PROPERTIES = ['quark_type_id', 'user_id', 'last_modified_user'];
+const QUARK_INT_PROPERTIES = ['quark_type_id'];
 const QUARK_STR_PROPERTIES = ['id', 'name', 'en_name', 'image_path', 'description', 'en_description',
-                              'start_accuracy', 'end_accuracy','url', 'affiliate'];
+                              'start_accuracy', 'end_accuracy','url', 'affiliate', 'user_id', 'last_modified_user'];
 
 const GLUON_BOOL_PROPERTIES = ['is_momentary', 'is_exclusive'];
-// TODO: user_id, last_modified_user は string になる予定
-const GLUON_INT_PROPERTIES = ['gluon_type_id', 'user_id', 'last_modified_user'];
-const GLUON_STR_PROPERTIES = ['id', 'active_id', 'passive_id', 'relation', 'prefix', 'suffix', 'start_accuracy', 'end_accuracy'];
+const GLUON_INT_PROPERTIES = ['gluon_type_id'];
+const GLUON_STR_PROPERTIES = ['id', 'active_id', 'passive_id', 'relation', 'prefix', 'suffix', 'start_accuracy', 'end_accuracy', 'user_id', 'last_modified_user'];
 
 const revertDirection = (direction) => {
   if (direction === DIRECTION.A2B) {
@@ -165,25 +164,22 @@ const quarkPropertiesResolver= (parent, params, context, info) => {
 //       but, the problem is, it can't modify Label by param, and start datetime modification also needed
 const createQuarkResolver = async (parent, params, context, info) => {
   const user = await getUser(context)
-  // TODO: Before fix this, data updating is required
-  //const user_id = user.user_id
-  const user_id = firebaseInstance.temporalUserId(user.user_id)
+  const user_id = user.user_id
+  // const user_id = firebaseInstance.temporalUserId(user.user_id)
 
   const Label = `:${getLabel(params.quark_type_id)}`
   let existingParams = generateCypherParams(params)
   const {datetimeSetter, paramsReady} = generateDatetimeParams(params)
   
-  const cypher = `CREATE (node:Quark${Label} { id: apoc.create.uuid()${existingParams}, user_id: ${user_id}, last_modified_user: ${user_id} }) SET node.created = datetime(), node.modified = datetime()${datetimeSetter} RETURN node`
+  const cypher = `CREATE (node:Quark${Label} { id: apoc.create.uuid()${existingParams}, user_id: "${user_id}", last_modified_user: "${user_id}" }) SET node.created = datetime(), node.modified = datetime()${datetimeSetter} RETURN node`
 
   const records = await execCypher(context, cypher, paramsReady)
   return cypherRecord2Props(records[0])
 }
 const updateQuarkResolver = async (parent, params, context, info) => {
-  // TODO
   const user = await getUser(context)
-  // TODO: Before fix this, data updating is required
-  //const last_modified_user = user.user_id
-  const last_modified_user = firebaseInstance.temporalUserId(user.user_id)
+  const last_modified_user = user.user_id
+  // const last_modified_user = firebaseInstance.temporalUserId(user.user_id)
 
   // Read current node by id
   const readCypher = `MATCH (node:Quark { id: "${params.id}" }) RETURN node`
@@ -220,9 +216,8 @@ const createGluonResolver = async (parent, params, context, info) => {
 }
 const createGluon = async (params, context) => {
   const user = await getUser(context)
-  // TODO: Before fix this, data updating is required
-  //const user_id = user.user_id
-  const user_id = firebaseInstance.temporalUserId(user.user_id)
+  const user_id = user.user_id
+  // const user_id = firebaseInstance.temporalUserId(user.user_id)
 
   let TypeInCypher = ""
   const Type = getType(params.gluon_type_id)
@@ -239,7 +234,6 @@ const createGluon = async (params, context) => {
     passive_id = ''
   }
 
-  // TODO: 将来firebase uuidを利用した際には、user_id, last_modified_userをstring型で "${user_id}"　とすること！
   const targetResource = 'relation'
   const cypher = `
     MATCH (active {id: "${params.active_id}"}),(passive {id: "${passive_id}"})
@@ -248,8 +242,8 @@ const createGluon = async (params, context) => {
         ${targetResource}.id = apoc.create.uuid(),
         ${targetResource}.gluon_type_id = ${gluon_type_id},
         ${existingParams},
-        ${targetResource}.user_id = toInteger(${user_id}),
-        ${targetResource}.last_modified_user = toInteger(${user_id}),
+        ${targetResource}.user_id = "${user_id}",
+        ${targetResource}.last_modified_user = "${user_id}",
         ${targetResource}.created = datetime(),
         ${targetResource}.modified = datetime()
     RETURN ${targetResource}`
@@ -259,9 +253,8 @@ const createGluon = async (params, context) => {
 }
 const updateGluonResolver = async (parent, params, context, info) => {
   const user = await getUser(context)
-  // TODO: Before fix this, data updating is required
-  //const last_modified_user = user.user_id
-  const last_modified_user = firebaseInstance.temporalUserId(user.user_id)
+  const last_modified_user = user.user_id
+  // const last_modified_user = firebaseInstance.temporalUserId(user.user_id)
 
   // Read current relation by id
   const targetResource = 'relation'

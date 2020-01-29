@@ -19,11 +19,11 @@ type PublicQuark implements Quark {
 
 type LoggedInQuark implements Quark {
 <%= quarkFields %>
-  gluons(user_id: Int): [Gluon]
+  gluons(user_id: String): [Gluon]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE <%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %> RETURN gluon ORDER BY <%=cypherOrderByStartDesc %>"
     )
-  objects(user_id: Int): [LoggedInQuark]
+  objects(user_id: String): [LoggedInQuark]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE <%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %> RETURN object ORDER BY <%=cypherOrderByStartDesc %>"
     )
@@ -31,11 +31,11 @@ type LoggedInQuark implements Quark {
 
 type AdminQuark implements Quark {
 <%= quarkFields %>
-  gluons(user_id: Int): [Gluon]
+  gluons(user_id: String): [Gluon]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> RETURN gluon ORDER BY <%=cypherOrderByStartDesc %>"
     )
-  objects(user_id: Int): [AdminQuark]
+  objects(user_id: String): [AdminQuark]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> RETURN object ORDER BY <%=cypherOrderByStartDesc %>"
     )
@@ -47,11 +47,11 @@ type Gluon {
 
 type ExpandedGluon {
 <%= gluonFields %>
-  active(user_id: Int): LoggedInQuark
+  active(user_id: String): LoggedInQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN active"
     )
-  passive(user_id: Int): LoggedInQuark
+  passive(user_id: String): LoggedInQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN passive"
     )
@@ -100,7 +100,7 @@ type Query {
     @cypher(
       statement: "MATCH (node {name: $name}) WHERE <%= cypherWherePublic %> RETURN node"
     )
-  loggedInQuark(name: String, user_id: Int): LoggedInQuark @hasRole(roles:[admin, user])
+  loggedInQuark(name: String, user_id: String): LoggedInQuark @hasRole(roles:[admin, user])
     @cypher(
       statement: "MATCH (node {name: $name}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
     )
@@ -112,7 +112,7 @@ type Query {
     @cypher(
       statement: "MATCH (node) WHERE <%= cypherWherePublic %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
-  loggedInQuarks(first: Int = 100, user_id: Int): [LoggedInQuark] @hasRole(roles:[admin, user])
+  loggedInQuarks(first: Int = 100, user_id: String): [LoggedInQuark] @hasRole(roles:[admin, user])
     @cypher(
       statement: "MATCH (node) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
@@ -124,7 +124,7 @@ type Query {
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node WHERE <%= cypherWherePublic %> RETURN node"
     )
-  loggedInSearchQuarks(first: Int = 100, keyword: String, user_id: Int): [LoggedInQuark] @hasRole(roles:[admin, user])
+  loggedInSearchQuarks(first: Int = 100, keyword: String, user_id: String): [LoggedInQuark] @hasRole(roles:[admin, user])
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
     )
@@ -132,11 +132,11 @@ type Query {
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node RETURN node"
     )
-  editingQuark(id: ID, user_id: Int): LoggedInQuark @hasRole(roles:[admin, user])
+  editingQuark(id: ID, user_id: String): LoggedInQuark @hasRole(roles:[admin, user])
     @cypher(
       statement: "MATCH (node {id: $id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
     )
-  editingGluon(id: ID, user_id: Int): ExpandedGluon @isAuthenticated
+  editingGluon(id: ID, user_id: String): ExpandedGluon @isAuthenticated
     @cypher(
       statement: "MATCH (active)-[relation {id: $id}]->(passive) RETURN relation"
     )
@@ -160,7 +160,7 @@ type Mutation {
   ): LoggedInQuark @hasRole(roles:[admin, user])
   DeleteQuark(
     id: ID!
-    user_id: Int
+    user_id: String
   ): LoggedInQuark @hasRole(roles:[admin, user])
     @cypher(
       statement: "MATCH (node {id: $id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> DETACH DELETE node"
@@ -178,7 +178,7 @@ type Mutation {
   ): Gluon @hasRole(roles:[admin, user])
   DeleteGluon(
     id: ID!
-    user_id: Int
+    user_id: String
   ): LoggedInQuark @hasRole(roles:[admin, user])
     @cypher(
       statement: "MATCH ()-[relation {id: $id}]-() WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> DELETE relation"

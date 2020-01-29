@@ -1,9 +1,7 @@
 import * as admin from 'firebase-admin';
 const serviceAccount = require("../../SAKey4dev.json");
 
-// TODO
-// MEMO: firebase's user_uid is depending on firebase project
-const convertTableForTemporallyUse = {'qV183nzQ79MPRBidNFTCbUxCv1H2': 2}
+// const convertTableForTemporallyUse = {'qV183nzQ79MPRBidNFTCbUxCv1H2': 2}
 
 // NOTE: This class is using Singleton Pattern
 class Firebase {
@@ -47,9 +45,9 @@ class Firebase {
     return (this._data['decoded'] !== null)
   }
 
-  temporalUserId(uuid) {
-    return convertTableForTemporallyUse[uuid]
-  }
+  // temporalUserId(uuid) {
+  //   return convertTableForTemporallyUse[uuid]
+  // }
 }
 
 const firebaseInstance = new Firebase();

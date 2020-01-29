@@ -93,7 +93,7 @@ export class HasRoleDirective extends SchemaDirectiveVisitor {
   }
 }
 
-function hasPermission(result, userRoles, fb_uid = false) {
+function hasPermission(result, userRoles, user_id = false) {
   if (userRoles === ROLES.ADMIN) {
     return true
   }
@@ -104,12 +104,10 @@ function hasPermission(result, userRoles, fb_uid = false) {
     return true
   }
   if (userRoles === ROLES.USER) {
-    // TODO: ------------------------------
-    let user_id = false
-    if (fb_uid === 'qV183nzQ79MPRBidNFTCbUxCv1H2') {
-      user_id = 2
-    }
-    // ------------------------------------
+    // let user_id = false
+    // if (fb_uid === 'qV183nzQ79MPRBidNFTCbUxCv1H2') {
+    //   user_id = 2
+    // }
     if (user_id === result.user_id) {
       return true
     }

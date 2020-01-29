@@ -14,7 +14,7 @@
   gender: Int
   is_private: Boolean
   is_exclusive: Boolean
-  user_id: Int
+  user_id: String
   last_modified_user: Int
   quark_type_id: Int
   created: _Neo4jDateTime

@@ -10,7 +10,7 @@
   end_accuracy: String
   is_momentary: Boolean
   is_exclusive: Boolean
-  user_id: Int
+  user_id: String
   last_modified_user: Int
   gluon_type_id: Int
   created: _Neo4jDateTime
