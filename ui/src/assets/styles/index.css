@@ -62,15 +62,16 @@ a {
 .baryon-grid {
   float: left;
 }
+.property-box h2 {
+  padding-left: 16px;
+  margin-bottom: 0px;
+}
 @media (max-width: 970px) {
   .baryon-grid {
     float: none;
   }
   .baryon-properties {
     margin-top: 20px;
-  }
-  .baryon-properties h2 {
-    padding-left: 16px;
   }
 }
 @media (min-width: 970px) {

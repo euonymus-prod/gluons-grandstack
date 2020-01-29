@@ -8,10 +8,14 @@ import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
 
 const useStyles = makeStyles({
+  card: {
+    backgroundColor: "#e1f1f1",
+    // backgroundColor: "#40c3c2",
+    marginBottom: "20px"
+  },
   root: {
     // backgroundColor: theme.palette.background.paper,
     // backgroundColor: '#e6e6f5'
-    backgroundColor: "#e1e1e1",
     padding: "10px"
   }
 });
@@ -41,9 +45,9 @@ const PropertyBox = props => {
     return null;
   }
   return (
-    <div>
-      <h2>{propertyResource.caption_ja}</h2>
+    <div className="property-box">
       <Card className={classes.card}>
+        <h2>{propertyResource.caption_ja}</h2>
         <List className={classes.root}>{gluonsList}</List>
       </Card>
     </div>
