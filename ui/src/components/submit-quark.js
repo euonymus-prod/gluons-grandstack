@@ -5,6 +5,7 @@ import { withLastLocation } from "react-router-last-location";
 import { Mutation } from "react-apollo";
 import QuarkMutation from "../queries/mutation-quark";
 import * as QUERY_NAME from "../constants/query-names";
+import * as ROUTES from "../constants/routes";
 
 // Material UI
 import Button from "@material-ui/core/Button";
@@ -53,7 +54,9 @@ class SubmitQuark extends Component {
         mutation={mutation}
         variables={variables}
         onCompleted={data => {
-          this.props.history.push(`/graph/${data[mutationName].name}`);
+          this.props.history.push(
+            `${ROUTES.GRAPH_BASE}${data[mutationName].name}`
+          );
         }}
         onError={error => {
           alert(error.message);

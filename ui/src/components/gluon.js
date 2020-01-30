@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { withAuthUser } from "../providers/session";
 import Util from "../utils/common";
 import SecondGluons from "./second-gluons";
@@ -11,6 +11,7 @@ import SubmitGluonDelete from "./submit-gluon-delete";
 import { makeStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
+import CardActionArea from "@material-ui/core/CardActionArea";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -135,6 +136,9 @@ const Gluon = props => {
     return !!authUser;
   };
 
+  const onClick = event => {
+    props.history.push(`${ROUTES.GRAPH_BASE}${object.name}`);
+  };
   return (
     <div className="baryon-gluon-body">
       <Card className={isTop ? classes.cardTop : classes.card}>
@@ -154,30 +158,30 @@ const Gluon = props => {
             </Fragment>
           )}
         </ListItem>
-        <ListItem divider={true} className={classes.secondQuark}>
-          <Link to={`${ROUTES.GRAPH_BASE}${object.name}`}>{avatar}</Link>
-          <List className={classes.secondQuarkItems}>
-            <ListItem>
-              <Typography variant="h5" component="span">
-                {object.name}
-              </Typography>
-            </ListItem>
-            <ListItemText
-              primary={object.description}
-              secondary={util.period2str(object)}
-            />
-          </List>
-        </ListItem>
-        {hasSecondLevel && object.gluons.length !== 0 && (
-          <Fragment>
-            <ListItem className={classes.secondGluons}>
-              <SecondGluons
-                subject={object}
-                objects={object.objects}
-                gluons={object.gluons}
+        <CardActionArea onClick={onClick}>
+          <ListItem divider={true} className={classes.secondQuark}>
+            <Link to={`${ROUTES.GRAPH_BASE}${object.name}`}>{avatar}</Link>
+            <List className={classes.secondQuarkItems}>
+              <ListItem>
+                <Typography variant="h5" component="span">
+                  {object.name}
+                </Typography>
+              </ListItem>
+              <ListItemText
+                primary={object.description}
+                secondary={util.period2str(object)}
               />
-            </ListItem>
-          </Fragment>
+            </List>
+          </ListItem>
+        </CardActionArea>
+        {hasSecondLevel && object.gluons.length !== 0 && (
+          <ListItem className={classes.secondGluons}>
+            <SecondGluons
+              subject={object}
+              objects={object.objects}
+              gluons={object.gluons}
+            />
+          </ListItem>
         )}
       </Card>
     </div>
@@ -202,4 +206,4 @@ Gluon.defaultProps = {
   isTop: false
 };
 
-export default withAuthUser(Gluon);
+export default withRouter(withAuthUser(Gluon));

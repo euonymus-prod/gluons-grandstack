@@ -5,6 +5,7 @@ import { withLastLocation } from "react-router-last-location";
 import { Mutation } from "react-apollo";
 import GluonMutation from "../queries/mutation-gluon";
 import * as QUERY_NAME from "../constants/query-names";
+import * as ROUTES from "../constants/routes";
 
 // Material UI
 import Button from "@material-ui/core/Button";
@@ -58,7 +59,7 @@ class SubmitGluon extends Component {
         mutation={mutation}
         variables={variables}
         onCompleted={data => {
-          this.props.history.push(`/graph/${targetQuark.name}`);
+          this.props.history.push(`${ROUTES.GRAPH_BASE}${targetQuark.name}`);
         }}
         onError={error => {
           alert(error.message);
