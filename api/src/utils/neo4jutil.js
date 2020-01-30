@@ -114,6 +114,14 @@ class Neo4jUtil {
       return styleFunc(paramKey, value, targetResource)
     }).filter(data => data).join()
   }
+  existingDatetimeParams = params => {
+    return _.keys(params).filter(paramKey => DATETIME_PROPERTIES.includes(paramKey))
+  }
+  cypherSnippetArgsFromParams = params => {
+    return _.keys(params).map(paramKey => {
+      return this.cypherSnippetObjectParam(paramKey, `$${paramKey}`)
+    }).join(',')
+  }
   cypherSnippetParamSetter = (key, value, targetResource = "") => {
     let prefix = targetResource ? `${targetResource}.` : ""
     return `${prefix}${key} = ${value}`

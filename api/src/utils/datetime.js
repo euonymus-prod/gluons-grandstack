@@ -45,6 +45,7 @@ class Datetime {
     return this.managedFormattedTime(rawFormattedTime, jst)
   }
   generateDateFromObject(obj) {
+    if (!obj) return false
     if (obj.formatted) {
       return this.generateDateFromString(obj.formatted)
     }
