@@ -72,7 +72,7 @@ class SubmitGluon extends Component {
               variant="contained"
               onClick={() => {
                 if (!formVariables.relation) {
-                  alert("Name is required");
+                  alert("Relation is required");
                   return false;
                 }
                 postMutation();
