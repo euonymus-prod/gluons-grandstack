@@ -8,7 +8,9 @@ import { qtypePropertiesData } from './constants/qtype-properties'
 import { qpropertyGtypesData } from './constants/qproperty-gtypes'
 import * as ID_TYPE from './constants/id-types'
 import * as DIRECTION from './constants/gluon-directions'
+import Neo4jUtil from './utils/neo4jutil'
 
+const neou = new Neo4jUtil(false)
 /*
 // sample CYPHER
 
@@ -26,8 +28,6 @@ UNION
 MATCH (subject {name: "眞弓聡"})<-[r:SON_OF|DAUGHTER_OF]-(object) 
 RETURN subject, object, r
 */
-
-const DEFAULT_RELATION_TYPE = 'HAS_RELATION_TO';
 
 const DATETIME_PROPERTIES = ['start', 'end', 'modified', 'created'];
 
@@ -167,14 +167,13 @@ const createQuarkResolver = async (parent, params, context, info) => {
   const user_id = user.user_id
   // const user_id = firebaseInstance.temporalUserId(user.user_id)
 
-  const Label = `:${getLabel(params.quark_type_id)}`
+  const Label = `:${neou.getLabel(params.quark_type_id)}`
   let existingParams = generateCypherParams(params)
   const {datetimeSetter, paramsReady} = generateDatetimeParams(params)
   
   const cypher = `CREATE (node:Quark${Label} { id: apoc.create.uuid()${existingParams}, user_id: "${user_id}", last_modified_user: "${user_id}" }) SET node.created = datetime(), node.modified = datetime()${datetimeSetter} RETURN node`
 
-  const records = await execCypher(context, cypher, paramsReady)
-  return cypherRecord2Props(records[0])
+  return neou.execCypherAndReadResponse(context.driver, cypher, paramsReady)
 }
 const updateQuarkResolver = async (parent, params, context, info) => {
   const user = await getUser(context)
@@ -184,31 +183,22 @@ const updateQuarkResolver = async (parent, params, context, info) => {
   // Read current node by id
   const readCypher = `MATCH (node:Quark { id: "${params.id}" }) RETURN node`
   // const readCypher = `MATCH (node:Quark { id: "hhhh" }) RETURN node`
-  const existingRecords = await execCypher(context, readCypher)
-  if (existingRecords.length === 0) {
+  const existingProps = await neou.execCypherAndReadResponse(context.driver, readCypher)
+  if (Object.keys(existingProps).length === 0) {
     throw Error("No node found");
   }
-  const existingProps = cypherRecord2Props(existingRecords[0])
-
   let updateLabelPre = '';        
   let updateLabelPost = '';        
   if (params.quark_type_id && (Number(params.quark_type_id) !== Number(existingProps.quark_type_id))) {
-    const label = getLabel(params.quark_type_id)
-    const old_label = getLabel(existingProps.quark_type_id)
+    const label = neou.getLabel(params.quark_type_id)
+    const old_label = neou.getLabel(existingProps.quark_type_id)
     updateLabelPre = ` REMOVE node:${old_label}`
     updateLabelPost = `, node:${label}`
   }
 
-  const paramSetter = generateUpdatingParams(
-    {...params, last_modified_user},
-    QUARK_BOOL_PROPERTIES,
-    QUARK_INT_PROPERTIES,
-    QUARK_STR_PROPERTIES
-  )
+  const paramSetter = generateUpdatingParams({...params, last_modified_user})
   const cypher = `MATCH (node:Quark { id: "${params.id}" }) ${updateLabelPre} SET node += { ${paramSetter} } ${updateLabelPost} RETURN node`
-  
-  const records = await execCypher(context, cypher)
-  return cypherRecord2Props(records[0])
+  return neou.execCypherAndReadResponse(context.driver, cypher)
 }
 
 const createGluonResolver = async (parent, params, context, info) => {
@@ -220,11 +210,12 @@ const createGluon = async (params, context) => {
   // const user_id = firebaseInstance.temporalUserId(user.user_id)
 
   let TypeInCypher = ""
-  const Type = getType(params.gluon_type_id)
+  const Type = neou.getType(params.gluon_type_id)
   if (Type) {
     TypeInCypher = `:${Type}`
   }
-  const gluon_type_id = params.gluon_type_id ? params.gluon_type_id : 'null'
+  // NOTE: You have to set gluon_type_id explicitly, even if gluon_type_id param doen't exist
+  const gluon_type_id = neou.sanitizeGluonTypeId(params.gluon_type_id)
 
   let existingParams = generateCypherSettingParams(params)
 
@@ -248,8 +239,7 @@ const createGluon = async (params, context) => {
         ${targetResource}.modified = datetime()
     RETURN ${targetResource}`
 
-  const records = await execCypher(context, cypher)
-  return cypherRecord2Props(records[0], targetResource)
+  return neou.execCypherAndReadResponse(context.driver, cypher, targetResource)
 }
 const updateGluonResolver = async (parent, params, context, info) => {
   const user = await getUser(context)
@@ -259,16 +249,15 @@ const updateGluonResolver = async (parent, params, context, info) => {
   // Read current relation by id
   const targetResource = 'relation'
   const readCypher = `MATCH (active)-[${targetResource} {id: "${params.id}"}]->(passive) RETURN ${targetResource}`
-  const existingRecords = await execCypher(context, readCypher)
-  if (existingRecords.length === 0) {
+  const existingProps = await neou.execCypherAndReadResponse(context.driver, readCypher, targetResource)
+  if (existingProps) {
     throw Error("No relation found");
   }
-  const existingProps = cypherRecord2Props(existingRecords[0], targetResource)
   // MEMO: You cannot change type, but you can recreate one
   // https://community.neo4j.com/t/change-relationships-name/6473
   if (params.gluon_type_id && (Number(params.gluon_type_id) !== Number(existingProps.gluon_type_id))) {
-    const type = getType(params.gluon_type_id)
-    const old_type = getType(existingProps.gluon_type_id)
+    const type = neou.getType(params.gluon_type_id)
+    const old_type = neou.getType(existingProps.gluon_type_id)
 
     const active_id = existingProps.active_id
     const passive_id = existingProps.passive_id
@@ -276,18 +265,13 @@ const updateGluonResolver = async (parent, params, context, info) => {
     const res = createGluon(newParams, context)
 
     const cypherToChangeType = `MATCH (active)-[origin {id: "${params.id}"}]->(passive) DELETE origin`
-    await execCypher(context, cypherToChangeType)
+    await neou.execCypher(context.driver, cypherToChangeType)
     return res
   } else {
-    const paramSetter = generateUpdatingParams(
-      {...params, last_modified_user},
-      GLUON_BOOL_PROPERTIES,
-      GLUON_INT_PROPERTIES,
-      GLUON_STR_PROPERTIES
-    )
+    const paramSetter = generateUpdatingParams({...params, last_modified_user}, true)
     const cypher = `MATCH (active)-[${targetResource} {id: "${params.id}"}]->(passive) SET ${targetResource} += { ${paramSetter} } RETURN ${targetResource}`
-    let records = await execCypher(context, cypher)
-    return cypherRecord2Props(records[0], targetResource)
+
+    return neou.execCypherAndReadResponse(context.driver, cypher, targetResource)
   }
 }
 
@@ -300,26 +284,8 @@ const generateCypherParams = params => {
 }
 const generateCypherSettingParams = params => {
   const avoids = ['id', 'gluon_type_id', 'passive']
-  const targets = {}
-  _.keys(params).filter(paramKey => !avoids.includes(paramKey)).forEach(paramKey => {
-    targets[paramKey] = params[paramKey]
-  })
-  return _.keys(targets).map(paramKey => {
-    if (DATETIME_PROPERTIES.includes(paramKey)) {
-      if (paramKey === 'modified') {
-        return `relation.${paramKey} = datetime("${targets[paramKey].formatted}")`
-      } else {
-        return `relation.${paramKey} = datetime("${targets[paramKey].formatted}T00:00:00+0900")`
-      }
-    } else if (GLUON_BOOL_PROPERTIES.includes(paramKey)) {
-      return `relation.${paramKey} = ${targets[paramKey] ? 'TRUE': 'FALSE'}`
-    } else if (GLUON_INT_PROPERTIES.includes(paramKey)) {
-      return `relation.${paramKey} = toInteger(${targets[paramKey]})`
-    } else if (GLUON_STR_PROPERTIES.includes(paramKey)) {
-      return `relation.${paramKey} = "${targets[paramKey]}"`
-    }
-    return ''
-  }).filter(data => data).join()
+  const targets = _.omit(params, avoids)
+  return neou.cypherSnippetFromParamsForGluon(targets, true, "relation")
 }
 
 const generateDatetimeParams = params => {
@@ -334,7 +300,7 @@ const generateDatetimeParams = params => {
   datetimeSetterArr.push(", node.quark_type_id = toInteger(node.quark_type_id)")
   const datetimeSetter = datetimeSetterArr.join('')
   
-  const paramsReady = { ...params, quark_type_id: sanitizeQuarkTypeId(params.quark_type_id) }
+  const paramsReady = { ...params, quark_type_id: neou.sanitizeQuarkTypeId(params.quark_type_id) }
   existingDatetimeParams.forEach(paramKey => {
     if (params[paramKey] && params[paramKey].formatted) {
       paramsReady[paramKey] = `${params[paramKey].formatted}T00:00:00+0900`
@@ -344,29 +310,13 @@ const generateDatetimeParams = params => {
   })
   return {datetimeSetter, paramsReady}
 }
-const generateUpdatingParams = (params, bool_props, int_props, str_props) => {
+const generateUpdatingParams = (params, forGluon = false) => {
   const avoids = ['id', 'active_id', 'passive_id']
-  const targets = {}
-  _.keys(params).filter(paramKey => !avoids.includes(paramKey)).forEach(paramKey => {
-    targets[paramKey] = params[paramKey]
-  })
+  const targets = _.omit(params, avoids)
   targets.modified = {formatted:''}
-  return _.keys(targets).map(paramKey => {
-    if (DATETIME_PROPERTIES.includes(paramKey)) {
-      if (paramKey === 'modified') {
-        return `${paramKey}: datetime(${targets[paramKey].formatted})`
-      } else {
-        return `${paramKey}: datetime("${targets[paramKey].formatted}T00:00:00+0900")`
-      }
-    } else if (bool_props.includes(paramKey)) {
-      return `${paramKey}: ${targets[paramKey] ? 'TRUE': 'FALSE'}`
-    } else if (int_props.includes(paramKey)) {
-      return `${paramKey}: toInteger(${targets[paramKey]})`
-    } else if (str_props.includes(paramKey)) {
-      return `${paramKey}: "${targets[paramKey]}"`
-    }
-    return ''
-  }).join()
+
+  const func = forGluon ? neou.cypherSnippetFromParamsForGluon : neou.cypherSnippetFromParamsForQuark
+  return func(targets, false)
 }
 
 const getUser = async context => {
@@ -377,61 +327,6 @@ const getUser = async context => {
   }
   return user
 }
-const execCypher = async (context, cypher, params = {}) => {
-  const session = context.driver.session()
-  const result = await session.run(cypher, params)
-  session.close()
-  return result.records
-}
-const cypherRecord2Props = (record, targetResource = 'node') => {
-  const { properties } = record.get(targetResource)
-  return generateReturn(properties)
-}
-const generateReturn = properties => {
-  const ret = properties
-  QUARK_INT_PROPERTIES.forEach(paramKey => {
-    if (properties[paramKey]) {
-      ret[paramKey] = properties[paramKey].toString()
-    }
-  })
-  GLUON_INT_PROPERTIES.forEach(paramKey => {
-    if (properties[paramKey]) {
-      ret[paramKey] = properties[paramKey].toString()
-    }
-  })
-  DATETIME_PROPERTIES.forEach(paramKey => {
-    let year = null
-    let month = null
-    let day = null
-    if (properties[paramKey]) {
-      year = properties[paramKey].year.toString()
-      month = properties[paramKey].month.toString()
-      day =   properties[paramKey].day.toString()
-    }
-    ret[paramKey] = { year, month, day }
-  })
-  return ret
-}
-const sanitizeQuarkTypeId = quark_type_id => {
-  return quark_type_id ? quark_type_id : 1
-}
-const getLabel = quark_type_id => {
-  quark_type_id = sanitizeQuarkTypeId(quark_type_id)
-  const quarkLabelObj = quarkLabelsData[quark_type_id]
-  if (!quarkLabelObj) {
-    throw Error("Invalidate quark_type_id");
-  }
-  return `${quarkLabelObj.label}`
-}
-const getType = gluon_type_id => {
-  if (!gluon_type_id) return DEFAULT_RELATION_TYPE
-  const gluonLabelObj = gluonTypesData[gluon_type_id]
-  if (!gluonLabelObj) {
-    throw Error("Invalidate gluon_type_id");
-  }
-  return `${gluonLabelObj.type}`
-}
-
 export const resolvers = {
   Quark: {
     properties: quarkPropertiesResolver

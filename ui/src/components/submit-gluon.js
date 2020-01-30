@@ -71,7 +71,7 @@ class SubmitGluon extends Component {
               color="primary"
               variant="contained"
               onClick={() => {
-                if (!formVariables.relation) {
+                if (!formVariables.relation || !formVariables.passive_id) {
                   alert("Relation is required");
                   return false;
                 }
