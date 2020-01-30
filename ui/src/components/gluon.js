@@ -6,7 +6,7 @@ import Util from "../utils/common";
 import SecondGluons from "./second-gluons";
 import { LANGTYPE_ENG_LIKE, LANGTYPE_JP_LIKE } from "../constants/langtypes";
 import * as ROUTES from "../constants/routes";
-import SubmitQuarkDelete from "./submit-quark-delete";
+import SubmitGluonDelete from "./submit-gluon-delete";
 // Material UI
 import { makeStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
@@ -106,7 +106,7 @@ const relationTextBuilder = (subject, object, gluon) => {
 };
 
 const Gluon = props => {
-  const { subject, object, gluon, hasSecondLevel, isTop } = props;
+  const { authUser, subject, object, gluon, hasSecondLevel, isTop } = props;
   const classes = useStyles();
   const relationText = relationTextBuilder(subject, object, gluon);
 
@@ -129,8 +129,10 @@ const Gluon = props => {
   //   </Avatar>
   // </ListItemAvatar>
 
+  const user_id = authUser ? authUser.uid : null;
+
   const isLoggedIn = () => {
-    return !!props.authUser;
+    return !!authUser;
   };
 
   return (
@@ -148,11 +150,7 @@ const Gluon = props => {
                   <EditIcon />
                 </IconButton>
               </Link>
-              <SubmitQuarkDelete
-                name={"hoge"}
-                variables={{}}
-                withMenu={props.withMenu}
-              />
+              <SubmitGluonDelete variables={{ id: gluon.id, user_id }} />
             </Fragment>
           )}
         </ListItem>

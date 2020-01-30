@@ -5,7 +5,6 @@ import { withLastLocation } from "react-router-last-location";
 import { Mutation } from "react-apollo";
 import { GLUON_DELETE_MUTATION } from "../queries/mutation-gluon-delete";
 // Material UI
-import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
@@ -30,11 +29,19 @@ class SubmitGluonDelete extends Component {
     // } catch (e) {} // eslint-disable-line
   };
 
-  renderIconItem = (iconComponent, postMutation, name) => {
+  onClick = postMutation => {
+    let ret = window.confirm(`Are you sure you want to delete the relation?`);
+    if (ret !== true) {
+      return false;
+    }
+    postMutation();
+  };
+
+  renderIconItem = (iconComponent, postMutation) => {
     return (
       <IconButton
         onClick={() => {
-          this.onClick(postMutation, name);
+          this.onClick(postMutation);
         }}
       >
         <Badge badgeContent={0} color="secondary">
@@ -44,16 +51,9 @@ class SubmitGluonDelete extends Component {
     );
   };
 
-  onClick = (postMutation, name) => {
-    let ret = window.confirm(`Are you sure you want to delete ${name}?`);
-    if (ret !== true) {
-      return false;
-    }
-    postMutation();
-  };
   render() {
-    const { name, variables } = this.props;
-    const mutation = QUARK_DELETE_MUTATION;
+    const { variables } = this.props;
+    const mutation = GLUON_DELETE_MUTATION;
 
     return (
       <Mutation
@@ -68,7 +68,7 @@ class SubmitGluonDelete extends Component {
         update={this.updateAfterMutation}
       >
         {postMutation => {
-          return this.renderIconItem(<DeleteForeverIcon />, postMutation, name);
+          return this.renderIconItem(<DeleteForeverIcon />, postMutation);
         }}
       </Mutation>
     );

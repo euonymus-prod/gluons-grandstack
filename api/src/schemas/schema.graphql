@@ -181,7 +181,7 @@ type Mutation {
     user_id: String
   ): LoggedInQuark @hasRole(roles:[admin, user])
     @cypher(
-      statement: "MATCH ()-[relation {id: $id}]-() WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> DELETE relation"
+      statement: "MATCH ()-[relation {id: $id}]-() WHERE <%= cypherWhereUsersRelation %> OR <%= cypherWherePublicRelation %> DELETE relation"
     )
 }
 

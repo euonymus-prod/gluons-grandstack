@@ -29,8 +29,10 @@ const cypher = new CypherBuilder()
 const cypherMatchNeighbor = cypher.matchNeighbor('this', 'gluon', 'object');
 const cypherWherePublic = cypher.wherePublic()
 const cypherWherePublicObject = cypher.wherePublic('object')
+const cypherWherePublicRelation = cypher.wherePublic('relation')
 const cypherWhereUsersNode = cypher.whereUsersNode()
 const cypherWhereUsersObject = cypher.whereUsersNode('object')
+const cypherWhereUsersRelation = cypher.whereUsersNode('relation')
 const cypherOrderByStartDesc = cypher.orderByStartDesc('gluon', 'object')
 const cypherOrderByCreatedDesc = cypher.orderByCreatedDesc()
 
@@ -47,8 +49,10 @@ export const typeDefs = schemaCompiled({
   cypherMatchNeighbor,
   cypherWherePublic,
   cypherWherePublicObject,
+  cypherWherePublicRelation,
   cypherWhereUsersNode,
   cypherWhereUsersObject,
+  cypherWhereUsersRelation,
   cypherOrderByStartDesc,
   cypherOrderByCreatedDesc
 })
