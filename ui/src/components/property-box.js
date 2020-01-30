@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   card: {
     backgroundColor: "#e5f1f1",
     // backgroundColor: "#40c3c2",
-    marginBottom: "20px"
+    marginBottom: "35px"
   },
   root: {
     // backgroundColor: theme.palette.background.paper,
