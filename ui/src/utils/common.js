@@ -10,10 +10,11 @@ class Util {
   }
 
   period2str(data) {
-    if (!data.start && !data.end) return "";
+    if (!data || (!data.start && !data.end)) return "";
 
     let start_str = this.date2str(data.start, data.start_accuracy);
     let end_str = this.date2str(data.end, data.end_accuracy);
+    if (!start_str && !end_str) return "";
 
     let ret = "";
     if (data.is_momentary) {
@@ -62,40 +63,5 @@ class Util {
   fPascalToSnake(p) {
     return this.fCamelToSnake(p).replace(/^_/, "");
   }
-
-  sanitizeFormData(form) {
-    let ret = {};
-    Object.keys(form).map((value, index) => {
-      if (form[value] === null || typeof form[value] === "undefined") {
-        return null;
-      }
-
-      if (typeof form[value] === "boolean") {
-        ret[value] = form[value] ? 1 : 0;
-      } else {
-        ret[value] = form[value];
-      }
-      return null;
-    });
-    return ret;
-  }
 }
 export default Util;
-
-// DateInString format: yyyy-mm-dd
-export function strDateToJSTDate(dateInString) {
-  return new Date(`${dateInString}T00:00:00+0900`);
-}
-
-// date is Date type
-export function toDateString(date) {
-  if (!date || isNaN(date)) {
-    return "";
-  }
-  let month = (date.getMonth() + 1).toString();
-  let day = date.getDate().toString();
-  day.length === 1 && (day = "0" + day);
-  month.length === 1 && (month = "0" + month);
-
-  return `${date.getFullYear()}-${month}-${day}`;
-}
