@@ -86,10 +86,12 @@ const MainQuark = props => {
               Buy Now <ShoppingCart />
             </Button>
           )}
-          {isLoggedIn() && (
+        </CardActions>
+        {isLoggedIn() && (
+          <CardActions>
             <Button
               size="small"
-              color="primary"
+              color="secondary"
               variant="contained"
               onClick={() =>
                 onLinkClick(`${ROUTES.ADD_GLUON_BASE}${subject.id}`)
@@ -97,8 +99,8 @@ const MainQuark = props => {
             >
               Add Gluon <AddCircleOutlineIcon />
             </Button>
-          )}
-        </CardActions>
+          </CardActions>
+        )}
       </Card>
     </div>
   );

@@ -170,6 +170,14 @@ class Neo4jUtil {
   sanitizeGluonTypeId(gluon_type_id) {
     return gluon_type_id ? gluon_type_id : "null"
   }
+  sanitizeImagePath = (quark) => {
+    if (quark.image_path) {
+      return quark.image_path
+    }
+    const label = this.getLabel(quark.quark_type_id)
+    const fileNameBase = this.snakeCase(label)
+    return `/img/${fileNameBase}.png`
+  }
   getLabel = (quark_type_id) => {
     const quarkLabelObj = this.getLabelObj(quark_type_id)
     return `${quarkLabelObj.label}`
@@ -193,6 +201,18 @@ class Neo4jUtil {
       throw Error("Invalidate gluon_type_id");
     }
     return gluonLabelObj
+  }
+  camelCase = (str) => {
+    str = str.charAt(0).toLowerCase() + str.slice(1);
+    return str.replace(/[-_](.)/g, function(match, group1) {
+      return group1.toUpperCase();
+    });
+  }
+  snakeCase = (str) => {
+    var camel = this.camelCase(str);
+    return camel.replace(/[A-Z]/g, function(s){
+      return "_" + s.charAt(0).toLowerCase();
+    });
   }
 }
 export default Neo4jUtil;

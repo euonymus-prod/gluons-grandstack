@@ -304,12 +304,14 @@ const generateDatetimeParams = params => {
   existingDatetimeParams.forEach(paramKey => {
     paramsReady[paramKey] = neou.generateDatetimeParam(params[paramKey])
   })
+  paramsReady.image_path = neou.sanitizeImagePath(paramsReady)
   return {datetimeSetter, paramsReady}
 }
 const generateUpdatingParams = (params, forGluon = false) => {
   const avoids = ['id', 'active_id', 'passive_id']
   const targets = _.omit(params, avoids)
   targets.modified = {formatted:''}
+  targets.image_path = neou.sanitizeImagePath(targets)
 
   const func = forGluon ? neou.cypherSnippetFromParamsForGluon : neou.cypherSnippetFromParamsForQuark
   return func(targets, false)
