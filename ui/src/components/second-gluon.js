@@ -1,11 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import * as ROUTES from "../constants/routes";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
-import IconButton from "@material-ui/core/IconButton";
-import OpenInBrowserIcon from "@material-ui/icons/OpenInBrowser";
+import CardActionArea from "@material-ui/core/CardActionArea";
 
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,44 +35,35 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const onLinkClick = name => {
-  const link = `${ROUTES.GRAPH_BASE}${name}`;
-  console.log(link);
-};
 const SecondGluon = props => {
   const classes = useStyles();
 
-  const { subject, object, gluon } = props;
-  const actionIcon = (
-    <IconButton
-      aria-label={`star ${object.name}`}
-      onClick={() => {
-        onLinkClick(object.name);
-      }}
-    >
-      <OpenInBrowserIcon className={classes.title} />
-    </IconButton>
-  );
+  const { object } = props;
+
+  const onLinkClick = name => {
+    props.history.push(`${ROUTES.GRAPH_BASE}${name}`);
+  };
 
   return (
-    <GridListTile
-      classes={{ imgFullHeight: classes.imgFullHeight, tile: classes.tile }}
-      style={{ width: IMAGE_WIDTH }}
-    >
-      <img
-        src={object.image_path}
-        alt={object.name}
-        className={classes.quarkImage}
-      />
-      <GridListTileBar
-        title={object.name}
-        classes={{
-          root: classes.titleBar,
-          title: classes.title
-        }}
-        actionIcon={actionIcon}
-      />
-    </GridListTile>
+    <CardActionArea onClick={() => onLinkClick(object.name)}>
+      <GridListTile
+        classes={{ imgFullHeight: classes.imgFullHeight, tile: classes.tile }}
+        style={{ width: IMAGE_WIDTH }}
+      >
+        <img
+          src={object.image_path}
+          alt={object.name}
+          className={classes.quarkImage}
+        />
+        <GridListTileBar
+          title={object.name}
+          classes={{
+            root: classes.titleBar,
+            title: classes.title
+          }}
+        />
+      </GridListTile>
+    </CardActionArea>
   );
 };
 
@@ -83,4 +73,4 @@ SecondGluon.propTypes = {
   gluon: PropTypes.object.isRequired
 };
 
-export default SecondGluon;
+export default withRouter(SecondGluon);
