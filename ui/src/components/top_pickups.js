@@ -20,8 +20,8 @@ const styles = theme => ({
   }
 });
 export const QUARKS_QUERY = gql`
-  query FeedQuery($first: Int) {
-    quarks(first: $first) {
+  query FeedQuery {
+    topQuarks {
       id
       name
       image_path
@@ -33,18 +33,18 @@ class TopPickups extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Query query={QUARKS_QUERY} variables={{ first: 8 }}>
+      <Query query={QUARKS_QUERY}>
         {({ loading, error, data }) => {
           if (loading) return "Loading";
           if (error) return "Error";
-          if (data.quarks.length === 0) {
+          if (data.topQuarks.length === 0) {
             return "No Data for the top page";
           }
 
           return (
             <div className={classes.root}>
               <Grid container spacing={3}>
-                {data.quarks.map((data, index) => (
+                {data.topQuarks.map((data, index) => (
                   <Grid item xs={12} sm={3} key={data.id}>
                     <TopPickupDetail quark={data} />
                   </Grid>

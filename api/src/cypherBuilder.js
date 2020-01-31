@@ -20,9 +20,8 @@ export class CypherBuilder {
       "Koki",
     ]
     const snippet = candidates.map(candidate => {
-      return `node.name = \\\"${candidate}\\\"`
+      return `node.name = \\\\\\"${candidate}\\\\\\"`
     }).join(" OR ")
-
     return `(${snippet})`
   }
   orderByStartDesc(relation = 'relation', object = 'object') {
