@@ -5,32 +5,19 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as ROUTES from "../constants/routes";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
-
-const IMAGE_HEIGHT = "104px";
-const IMAGE_WIDTH = "180px";
+import GridListTileBar from "@material-ui/core/GridListTileBar";
 
 const useStyles = makeStyles(theme => ({
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-    width: "100%",
-    height: "150px"
-  },
-  imgFullHeight: {
-    height: IMAGE_HEIGHT,
-    width: IMAGE_WIDTH,
-    objectFit: "cover"
-  },
-  tile: {
-    height: IMAGE_HEIGHT,
-    width: IMAGE_WIDTH
-  },
-  quarkImage: {
-    width: IMAGE_WIDTH
-  },
   media: {
     paddingTop: "65%"
+  },
+  title: {
+    // color: theme.palette.primary.light,
+    color: "white"
+  },
+  titleBar: {
+    background:
+      "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
   }
 }));
 
@@ -49,6 +36,13 @@ const TopPickupDetail = props => {
         className={classes.media}
         image={image_path}
         title={quark.name}
+      />
+      <GridListTileBar
+        title={quark.name}
+        classes={{
+          root: classes.titleBar,
+          title: classes.title
+        }}
       />
     </CardActionArea>
   );

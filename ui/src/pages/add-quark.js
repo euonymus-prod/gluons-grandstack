@@ -1,6 +1,6 @@
 import React from "react";
 import QuarkForm from "../components/form-quark";
-import LoggedinOnly from "../components/loggedin_only";
+import LoggedinOnly from "../components/loggedin-only";
 
 const AddNewQuark = () => (
   <LoggedinOnly>

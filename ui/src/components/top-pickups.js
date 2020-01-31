@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 // react
 import React, { Component } from "react";
 // component
-import TopPickupDetail from "./top_pickup_detail";
+import TopPickupDetail from "./top-pickup-detail";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
@@ -45,7 +45,7 @@ class TopPickups extends Component {
             <div className={classes.root}>
               <Grid container spacing={3}>
                 {data.topQuarks.map((data, index) => (
-                  <Grid item xs={12} sm={3} key={data.id}>
+                  <Grid item xs={6} sm={3} key={data.id}>
                     <TopPickupDetail quark={data} />
                   </Grid>
                 ))}

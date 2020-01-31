@@ -6,7 +6,7 @@ import EditingQuark from "../queries/query-editing-quark";
 import GluonForm from "../components/form-gluon";
 // import { convertTableForTemporallyUse } from "../utils/auth-util";
 import * as ROUTES from "../constants/routes";
-import LoggedinOnly from "../components/loggedin_only";
+import LoggedinOnly from "../components/loggedin-only";
 // Material UI
 import Button from "@material-ui/core/Button";
 
