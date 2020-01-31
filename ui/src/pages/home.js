@@ -4,7 +4,7 @@ import logo from "../assets/images/logo.gif";
 
 // component
 import SearchBar from "../components/search-bar";
-// import TopPickups from '../containers/top_pickups';
+import TopPickups from "../components/top_pickups";
 
 class Home extends Component {
   componentDidMount() {
@@ -25,10 +25,10 @@ class Home extends Component {
           </p>
 
           <SearchBar type="home" />
+          <TopPickups />
         </div>
       </div>
     );
   }
 }
 export default Home;
-// <TopPickups />
