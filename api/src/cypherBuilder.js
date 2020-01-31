@@ -8,6 +8,23 @@ export class CypherBuilder {
   whereUsersNode(node = 'node') {
     return `(${node}.user_id = $user_id)`
   }
+  whereTopNodes() {
+    const candidates = [
+      "岡田朋峰",
+      "守谷絢子",
+      "伊藤春香 (編集者)",
+      "阿部哲子",
+      "稲井大輝",
+      "高橋ユウ",
+      "上原多香子",
+      "Koki",
+    ]
+    const snippet = candidates.map(candidate => {
+      return `node.name = \\\"${candidate}\\\"`
+    }).join(" OR ")
+
+    return `(${snippet})`
+  }
   orderByStartDesc(relation = 'relation', object = 'object') {
     return `(CASE ${relation}.start WHEN null THEN {} ELSE ${relation}.start END) DESC, (CASE ${object}.start WHEN null THEN {} ELSE ${object}.start END) DESC`
   }

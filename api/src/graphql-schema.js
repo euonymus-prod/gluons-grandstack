@@ -33,9 +33,9 @@ const cypherWherePublicRelation = cypher.wherePublic('relation')
 const cypherWhereUsersNode = cypher.whereUsersNode()
 const cypherWhereUsersObject = cypher.whereUsersNode('object')
 const cypherWhereUsersRelation = cypher.whereUsersNode('relation')
+const cypherWhereTopNodes = cypher.whereTopNodes()
 const cypherOrderByStartDesc = cypher.orderByStartDesc('gluon', 'object')
 const cypherOrderByCreatedDesc = cypher.orderByCreatedDesc()
-
 
 // read graphql schema
 const schemaCompiled = _.template(readText('schema.graphql'));
@@ -53,6 +53,7 @@ export const typeDefs = schemaCompiled({
   cypherWhereUsersNode,
   cypherWhereUsersObject,
   cypherWhereUsersRelation,
+  cypherWhereTopNodes,
   cypherOrderByStartDesc,
   cypherOrderByCreatedDesc
 })
