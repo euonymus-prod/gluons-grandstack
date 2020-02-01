@@ -89,7 +89,7 @@ const QuarkNavi = props => {
         {showEditQuark() && func("Edit Quark", <EditIcon />, onEditQuarkClick)}
         {showEditQuark() && (
           <SubmitQuarkDelete
-            name={"hoge"}
+            name={props.current_quark.name}
             variables={{ id: props.current_quark.id, user_id }}
             withMenu={props.withMenu}
           />

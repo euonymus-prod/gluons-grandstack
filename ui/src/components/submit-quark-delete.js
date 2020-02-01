@@ -1,9 +1,12 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { withLastLocation } from "react-router-last-location";
 import { Mutation } from "react-apollo";
 import { QUARK_DELETE_MUTATION } from "../queries/mutation-quark-delete";
+import GraphOnQuark from "../queries/query-graph-on-quark";
+import QuarkList from "../queries/query-quark-list";
 // Material UI
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,21 +14,40 @@ import Badge from "@material-ui/core/Badge";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 // TODO
-const QUARKS_QUERY = "";
-
+const QUARKS_PER_PAGE = 100;
 class SubmitQuarkDelete extends Component {
-  updateAfterMutation = (store, { data: { CreateQuark } }) => {
-    // Note: you need try catch, so error doesn't happen even if QUARKS_QUERY is not yet provided.
+  updateAfterMutation = (store, { data: mutated }) => {
+    const queryClasses = [GraphOnQuark, QuarkList];
+    queryClasses.forEach((queryClass, index) => {
+      const [queryName, query] = new queryClass(this.props);
+      const variables = {};
+      let isList = true;
+      if (index === 0) {
+        variables.name = this.props.name;
+        isList = false;
+      } else {
+        variables.first = QUARKS_PER_PAGE;
+        isList = true;
+      }
+      this.updateCache(store, queryName, query, variables, isList);
+    });
+  };
+  updateCache = (store, queryName, query, variables, isList) => {
     try {
+      // TODO: store.readQuery がなぜか失敗する。
       const data = store.readQuery({
-        query: QUARKS_QUERY,
-        variables: {}
+        query,
+        variables
       });
-      data.quarks.unshift(CreateQuark);
+      if (isList) {
+        data[queryName] = _.reject(data[queryName], ["name", this.props.name]);
+      } else {
+        data[queryName] = null;
+      }
       store.writeQuery({
-        query: QUARKS_QUERY,
+        query,
         data,
-        variables: {}
+        variables
       });
     } catch (e) {} // eslint-disable-line
   };
@@ -100,6 +122,7 @@ class SubmitQuarkDelete extends Component {
   }
 }
 SubmitQuarkDelete.propTypes = {
+  name: PropTypes.string.isRequired,
   variables: PropTypes.object.isRequired,
   withMenu: PropTypes.bool.isRequired
 };

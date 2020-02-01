@@ -88,7 +88,7 @@ class QuarkForm extends Component {
         }
         margin="normal"
         variant="outlined"
-        value={this.state.formVariables[name]}
+        value={String(this.state.formVariables[name])}
         name={name}
         label={title}
         placeholder={`Type your ${name}`}

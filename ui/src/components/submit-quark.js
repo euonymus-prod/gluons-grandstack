@@ -3,34 +3,54 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { withLastLocation } from "react-router-last-location";
 import { Mutation } from "react-apollo";
+import { withAuthUser } from "../providers/session";
 import QuarkMutation from "../queries/mutation-quark";
+import GraphOnQuark from "../queries/query-graph-on-quark";
+import QuarkList from "../queries/query-quark-list";
+// constancts
 import * as QUERY_NAME from "../constants/query-names";
 import * as ROUTES from "../constants/routes";
 
 // Material UI
 import Button from "@material-ui/core/Button";
 
-const QUARKS_PER_PAGE = 20;
-// TODO
-const QUARKS_QUERY = "";
-
+const QUARKS_PER_PAGE = 100;
 class SubmitQuark extends Component {
-  updateAfterMutation = (store, { data: { CreateQuark } }) => {
-    const first = QUARKS_PER_PAGE;
-    const skip = 0;
-    const orderBy = "created";
+  updateAfterMutation = (store, { data: mutated }) => {
+    const newData = mutated[QUERY_NAME.CREATE_QUARK]
+      ? mutated[QUERY_NAME.CREATE_QUARK]
+      : mutated[QUERY_NAME.UPDATE_QUARK];
 
-    // Note: you need try catch, so error doesn't happen even if QUARKS_QUERY is not yet provided.
+    const queryClasses = [GraphOnQuark, QuarkList];
+    queryClasses.forEach((queryClass, index) => {
+      const [queryName, query] = new queryClass(this.props);
+      const variables = {};
+      let isList = true;
+      if (index === 0) {
+        variables.name = newData.name;
+        isList = false;
+      } else {
+        variables.first = QUARKS_PER_PAGE;
+        isList = true;
+      }
+      this.updateCache(store, queryName, query, variables, newData, isList);
+    });
+  };
+  updateCache = (store, queryName, query, variables, newData, isList) => {
     try {
       const data = store.readQuery({
-        query: QUARKS_QUERY,
-        variables: { first, skip, orderBy }
+        query,
+        variables
       });
-      data.quarks.unshift(CreateQuark);
+      if (isList) {
+        data[queryName].unshift(newData);
+      } else {
+        data[queryName] = { ...data[queryName], ...newData };
+      }
       store.writeQuery({
-        query: QUARKS_QUERY,
+        query,
         data,
-        variables: { first, skip, orderBy }
+        variables
       });
     } catch (e) {} // eslint-disable-line
   };
@@ -87,4 +107,4 @@ class SubmitQuark extends Component {
 SubmitQuark.propTypes = {
   formVariables: PropTypes.object.isRequired
 };
-export default withRouter(withLastLocation(SubmitQuark));
+export default withRouter(withLastLocation(withAuthUser(SubmitQuark)));
