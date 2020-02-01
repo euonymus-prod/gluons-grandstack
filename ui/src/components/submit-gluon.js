@@ -72,7 +72,15 @@ class SubmitGluon extends Component {
               color="primary"
               variant="contained"
               onClick={() => {
-                if (!formVariables.relation || !formVariables.passive_id) {
+                if (variables.gluon_type_id === 0) {
+                  alert("Please choose Gluon Type");
+                  return false;
+                }
+                if (!formVariables.passive_id && !formVariables.passive) {
+                  alert("You need to type connecting Quark");
+                  return false;
+                }
+                if (!formVariables.relation) {
                   alert("Relation is required");
                   return false;
                 }

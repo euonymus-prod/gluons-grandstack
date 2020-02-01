@@ -5,9 +5,6 @@ import { Query } from "react-apollo";
 import { withAuthUser } from "../providers/session";
 // GraphQL
 import QuarkListSearched from "../queries/query-quark-list-searched";
-import { querySelector } from "../utils/auth-util";
-// constancts
-import * as QUERY_NAME from "../constants/query-names";
 // Material UI
 import { withStyles } from "@material-ui/styles";
 import Menu from "@material-ui/core/Menu";
@@ -84,19 +81,12 @@ class InputGluedQuark extends Component {
 
   render() {
     const { classes } = this.props;
-    const { authUser } = this.props;
-    const [queryName, user_id] = querySelector(
-      authUser,
-      QUERY_NAME.READER_SEARCH_QUARKS,
-      QUERY_NAME.USER_SEARCH_QUARKS,
-      QUERY_NAME.ADMIN_SEARCH_QUARKS
-    );
+
+    const [queryName, GRAPHQL_QUERY] = new QuarkListSearched(this.props);
     const variables = {
       first: ROWS_PER_PAGE,
       keyword: this.state.searchKeyword
     };
-
-    const GRAPHQL_QUERY = new QuarkListSearched(queryName, user_id);
     const isMenuOpen = Boolean(this.state.anchorEl);
     return (
       <Fragment>
