@@ -129,7 +129,7 @@ class GluonForm extends Component {
     const { targetQuark, formVariables } = this.state;
     const { editingGluon } = this.props;
     return (
-      <div className="container">
+      <div>
         <fieldset>
           <legend>Gluon Form</legend>
           <div className="form-group">

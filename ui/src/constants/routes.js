@@ -15,6 +15,7 @@ export const EDIT_QUARK = `${EDIT_QUARK_BASE}:quark_id`;
 export const ADD_GLUON = `${ADD_GLUON_BASE}:quark_id`;
 export const EDIT_GLUON = `${EDIT_GLUON_BASE}:gluon_id`;
 
+export const CONTACT = "/contact";
 export const TERMS = "/terms";
 export const PRIVACY = "/privacy";
 export const SIGN_UP = "/signup";

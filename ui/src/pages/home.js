@@ -14,7 +14,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
         <div className="logo-top">
           <img src={logo} alt="gluons" />
         </div>

@@ -16,6 +16,7 @@ import AddQuark from "./pages/add-quark";
 import EditQuark from "./pages/edit-quark";
 import AddGluon from "./pages/add-gluon";
 import EditGluon from "./pages/edit-gluon";
+import Contact from "./pages/contact";
 import Terms from "./pages/terms";
 import Privacy from "./pages/privacy";
 // constants
@@ -36,6 +37,7 @@ class AppRoutes extends Component {
             <div className="main-content">
               <Switch>
                 <Route path={ROUTES.HOME} exact component={Home} />
+                <Route path={ROUTES.CONTACT} component={Contact} />
                 <Route path={ROUTES.TERMS} component={Terms} />
                 <Route path={ROUTES.PRIVACY} component={Privacy} />
 

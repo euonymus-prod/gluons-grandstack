@@ -18,6 +18,10 @@ a {
 .logo-top img {
   width: 100%;
 }
+.container {
+  margin: 20px;
+}
+
 .home {
   font-size: large;
   max-width: 900px;

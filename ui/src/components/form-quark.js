@@ -67,7 +67,7 @@ class QuarkForm extends Component {
   render() {
     const { formVariables } = this.state;
     return (
-      <div className="container">
+      <div>
         <fieldset>
           <legend>Quark Form</legend>
           <div className="form-group">
