@@ -32,17 +32,16 @@ const EditQuarkBase = props => {
         if (error) return `Error! ${error.message}`;
         const { editingQuark } = data;
         return (
-          <div className="EditQuark">
+          <div className="container form-container">
             <h1>Edit Quark</h1>
             <QuarkForm editingQuark={editingQuark} />
+            <br />
             <br />
             <Link
               to={`${ROUTES.GRAPH_BASE}${editingQuark.name}`}
               alt={editingQuark.name}
             >
-              <Button variant="contained" color="primary">
-                Back to Quark
-              </Button>
+              <Button variant="contained">Back to Quark</Button>
             </Link>
           </div>
         );

@@ -4,7 +4,7 @@ import LoggedinOnly from "../components/loggedin-only";
 
 const AddNewQuark = () => (
   <LoggedinOnly>
-    <div className="AddNewQuark">
+    <div className="container form-container">
       <h1>Add New Quark</h1>
       <QuarkForm />
     </div>

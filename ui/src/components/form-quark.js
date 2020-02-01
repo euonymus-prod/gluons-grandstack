@@ -1,10 +1,33 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import InputText from "./input-text";
+// import InputText from "./input-text";
 import InputCheckbox from "./input-checkbox";
 import InputQuarkLabels from "./input-quark-labels";
 import SubmitQuark from "./submit-quark";
 import Util from "../utils/common";
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+
+const styles = theme => ({
+  root: {},
+  each: {
+    display: "block"
+  },
+  input: {
+    width: "100%",
+    backgroundColor: "#fff"
+  },
+  short: {
+    width: "170px",
+    backgroundColor: "#fff"
+  },
+  medium: {
+    width: "100px",
+    backgroundColor: "#fff"
+  }
+});
 
 class QuarkForm extends Component {
   state = {
@@ -43,15 +66,47 @@ class QuarkForm extends Component {
   };
 
   inputText = (title, name, type = "text") => {
+    const { classes } = this.props;
+    const requireds = ["name"];
+    const medium = ["start_accuracy", "end_accuracy"];
+    const short = ["start", "end"];
+    let className = classes.input;
+    if (medium.includes(name)) {
+      className = classes.medium;
+    } else if (short.includes(name)) {
+      className = classes.short;
+    }
+    const InputLabelProps = type === "date" ? { shrink: true } : null;
+    const { required, color } = requireds.includes(name)
+      ? { required: true, color: "secondary" }
+      : { required: false, color: "primary" };
     return (
-      <InputText
-        title={title}
+      <TextField
+        className={className}
+        onChange={event =>
+          this.setFormVariables({ [event.target.name]: event.target.value })
+        }
+        margin="normal"
+        variant="outlined"
+        value={this.state[name]}
         name={name}
-        onChange={this.setFormVariables}
+        label={title}
+        placeholder={`Type your ${name}`}
         type={type}
-        defaultValue={this.state.formVariables[name]}
+        InputLabelProps={InputLabelProps}
+        required={required}
+        color={color}
       />
     );
+    // return (
+    //   <InputText TextField
+    //     title={title}
+    //     name={name}
+    //     onChange={this.setFormVariables}
+    //     type={type}
+    //     defaultValue={this.state.formVariables[name]}
+    //   />
+    // );
   };
   inputCheckbox = (title, name) => {
     return (
@@ -65,42 +120,54 @@ class QuarkForm extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     const { formVariables } = this.state;
     return (
-      <div>
-        <fieldset>
-          <legend>Quark Form</legend>
-          <div className="form-group">
+      <Fragment>
+        <div className="form-group">
+          <label>Quark Type</label>
+          <InputQuarkLabels
+            onChange={this.setFormVariables}
+            defaultValue={this.state.formVariables.quark_type_id}
+          />
+          <FormControl className={classes.each}>
             {this.inputText("Name", "name")}
+          </FormControl>
+          <FormControl className={classes.each}>
             {this.inputText("Image Path", "image_path")}
-          </div>
-          <div className="form-group">
-            <h4>optional</h4>
+          </FormControl>
+        </div>
+        <div className="form-group">
+          <FormControl className={classes.each}>
             {this.inputText("Description", "description")}
+          </FormControl>
+          <FormControl className={classes.each}>
             {this.inputText("Start", "start", "date")}
+            {this.inputText("Accuracy", "start_accuracy")}
+          </FormControl>
+          <FormControl className={classes.each}>
             {this.inputText("End", "end", "date")}
-            {this.inputText("Start Accuracy", "start_accuracy")}
-            {this.inputText("End Accuracy", "end_accuracy")}
-            {this.inputCheckbox("Is Momentary", "is_momentary")}
+            {this.inputText("Accuracy", "end_accuracy")}
+          </FormControl>
+          {this.inputCheckbox("Is Momentary", "is_momentary")}
 
+          <FormControl className={classes.each}>
             {this.inputText("URL", "url")}
+          </FormControl>
+          <FormControl className={classes.each}>
             {this.inputText("Affiliate URL", "affiliate")}
-            <br />
-            <label>Quark Type</label>
-            <InputQuarkLabels
-              onChange={this.setFormVariables}
-              defaultValue={this.state.formVariables.quark_type_id}
-            />
-            {this.inputCheckbox("Is Private", "is_private")}
-            {this.inputCheckbox("Is Exclusive", "is_exclusive")}
-          </div>
-        </fieldset>
+          </FormControl>
+          {this.inputCheckbox("Is Private", "is_private")}
+          {this.inputCheckbox("Is Exclusive", "is_exclusive")}
+          <br />
+        </div>
+
         <SubmitQuark formVariables={formVariables} />
-      </div>
+      </Fragment>
     );
   }
 }
 QuarkForm.propTypes = {
   editingQuark: PropTypes.object
 };
-export default QuarkForm;
+export default withStyles(styles)(QuarkForm);

@@ -19,7 +19,8 @@ const styles = theme => ({
     textAlign: "center"
   },
   input: {
-    width: "380px"
+    width: "380px",
+    backgroundColor: "#fff"
   },
   button: {
     width: "180px"
@@ -116,7 +117,7 @@ class Contact extends Component {
     const { classes } = this.props;
 
     return (
-      <div className="container contact">
+      <div className="container form-container">
         <h1>Contact Us</h1>
         <p>
           Leverage your knowledge by seeking relations among things, people,
@@ -138,6 +139,7 @@ class Contact extends Component {
                 value={this.state.topic}
                 name="topic"
                 onChange={this.onChange}
+                className={classes.input}
               >
                 <MenuItem value="">
                   <em>-- Select a topic --</em>
