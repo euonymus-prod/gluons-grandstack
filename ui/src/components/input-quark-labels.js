@@ -2,6 +2,18 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+
+const styles = theme => ({
+  input: {
+    width: "200px",
+    backgroundColor: "#fff"
+  }
+});
 
 export const QUARK_TYPES_QUERY = gql`
   query FeedQuery {
@@ -37,6 +49,7 @@ class InputQuarkLabels extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <Query query={QUARK_TYPES_QUERY} variables={{}}>
         {({ loading, error, data }) => {
@@ -46,13 +59,20 @@ class InputQuarkLabels extends Component {
             return "No Data for this Selectbox";
 
           return (
-            <select value={this.props.defaultValue} onChange={this.onChange}>
-              {data.quarkLabels.map((data, index) => (
-                <option key={data.id} value={data.id}>
-                  {data.id}: {data.label}
-                </option>
-              ))}
-            </select>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <label>Quark Type</label>
+              <Select
+                value={this.props.defaultValue}
+                onChange={this.onChange}
+                className={classes.input}
+              >
+                {data.quarkLabels.map((data, index) => (
+                  <MenuItem key={data.id} value={data.id}>
+                    {data.id}: {data.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           );
         }}
       </Query>
@@ -65,6 +85,6 @@ InputQuarkLabels.propTypes = {
   onChange: PropTypes.func.isRequired
 };
 InputQuarkLabels.defaultProps = {
-  defaultValue: 1
+  defaultValue: "1"
 };
-export default InputQuarkLabels;
+export default withStyles(styles)(InputQuarkLabels);

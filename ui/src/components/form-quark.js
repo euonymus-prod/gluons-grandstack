@@ -45,7 +45,7 @@ class QuarkForm extends Component {
       affiliate: "",
       is_private: false,
       is_exclusive: true,
-      quark_type_id: ""
+      quark_type_id: "1"
     }
   };
 
@@ -125,7 +125,6 @@ class QuarkForm extends Component {
     return (
       <Fragment>
         <div className="form-group">
-          <label>Quark Type</label>
           <InputQuarkLabels
             onChange={this.setFormVariables}
             defaultValue={this.state.formVariables.quark_type_id}
