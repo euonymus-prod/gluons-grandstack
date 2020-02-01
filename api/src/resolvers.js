@@ -209,13 +209,20 @@ const createGluon = async (params, context) => {
   // NOTE: You have to set gluon_type_id explicitly, even if gluon_type_id param doen't exist
   const gluon_type_id = neou.sanitizeGluonTypeId(params.gluon_type_id)
 
-  let existingParams = generateCypherSettingParams(params)
-
   let passive_id = params.passive_id
   if (!passive_id) {
-    // TODO passive stringから逆引きして passive の id を取得
-    passive_id = ''
+    if (!params.passive) {
+      throw Error("passive_id or passive name is required");
+    }
+    // Read passive_id by name
+    const readCypher = `MATCH (node:Quark { name: "${params.passive}" }) RETURN node`
+    const passiveNode = await neou.execCypherAndReadResponse(context.driver, readCypher)
+    if (Object.keys(passiveNode).length === 0) {
+      throw Error("No node found");
+    }
+    passive_id = passiveNode.id
   }
+  let existingParams = generateCypherSettingParams({ ...params, passive_id })
 
   const targetResource = 'relation'
   const cypher = `
@@ -231,7 +238,7 @@ const createGluon = async (params, context) => {
         ${targetResource}.modified = datetime()
     RETURN ${targetResource}`
 
-  return neou.execCypherAndReadResponse(context.driver, cypher, targetResource)
+  return neou.execCypherAndReadResponse(context.driver, cypher, null, targetResource)
 }
 const updateGluonResolver = async (parent, params, context, info) => {
   const user = await getUser(context)
@@ -241,7 +248,7 @@ const updateGluonResolver = async (parent, params, context, info) => {
   // Read current relation by id
   const targetResource = 'relation'
   const readCypher = `MATCH (active)-[${targetResource} {id: "${params.id}"}]->(passive) RETURN ${targetResource}`
-  const existingProps = await neou.execCypherAndReadResponse(context.driver, readCypher, targetResource)
+  const existingProps = await neou.execCypherAndReadResponse(context.driver, readCypher, null, targetResource)
   if (existingProps) {
     throw Error("No relation found");
   }
@@ -263,7 +270,7 @@ const updateGluonResolver = async (parent, params, context, info) => {
     const paramSetter = generateUpdatingParams({...params, last_modified_user}, true)
     const cypher = `MATCH (active)-[${targetResource} {id: "${params.id}"}]->(passive) SET ${targetResource} += { ${paramSetter} } RETURN ${targetResource}`
 
-    return neou.execCypherAndReadResponse(context.driver, cypher, targetResource)
+    return neou.execCypherAndReadResponse(context.driver, cypher, null, targetResource)
   }
 }
 
