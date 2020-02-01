@@ -1,10 +1,12 @@
-import _ from "lodash";
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 // Material UI
 import { withStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+
 import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
@@ -27,7 +29,8 @@ class Contact extends Component {
     organization: "",
     department: "",
     email: "",
-    message: ""
+    message: "",
+    topic: ""
   };
 
   componentDidMount() {
@@ -35,7 +38,15 @@ class Contact extends Component {
   }
 
   notValid = () => {
-    const hasEmpty = _.keys(this.state).some(state => {
+    const requireds = [
+      "name",
+      "organization",
+      "department",
+      "email",
+      "message",
+      "topic"
+    ];
+    const hasEmpty = requireds.some(state => {
       if (!this.state[state]) {
         alert(`${state} is required`);
         return true;
@@ -53,13 +64,14 @@ class Contact extends Component {
   };
 
   isValidEmail = () => {
-    const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const regEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
     return regEmail.test(this.state.email) === true;
   };
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
+
   onClick = event => {
     event.preventDefault();
     if (this.notValid()) {
@@ -67,6 +79,7 @@ class Contact extends Component {
     }
 
     console.log(2);
+    console.log(this.state);
   };
 
   inputText = (name, label, multilineRow = false) => {
@@ -90,6 +103,7 @@ class Contact extends Component {
   };
   render() {
     const { classes } = this.props;
+
     return (
       <div className="container contact">
         <h1>Contact Us</h1>
@@ -104,7 +118,29 @@ class Contact extends Component {
             {this.inputText("organization", "Organization")}
             {this.inputText("department", "Department")}
             {this.inputText("email", "Email")}
+            <br />
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="demo-simple-select-outlined-label">
+                Topic
+              </InputLabel>
+              <Select
+                value={this.state.topic}
+                name="topic"
+                onChange={this.onChange}
+              >
+                <MenuItem value="">
+                  <em>-- Select a topic --</em>
+                </MenuItem>
+                <MenuItem value="About Service">About Service</MenuItem>
+                <MenuItem value="Business Relationship">
+                  Business Relationship
+                </MenuItem>
+                <MenuItem value="Media Coverage">Media Coverage</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </Select>
+            </FormControl>
             {this.inputText("message", "Message", 5)}
+
             <br />
             <Button
               onClick={this.onClick}
