@@ -1,3 +1,5 @@
+// NOTE: This form uses Formspree to send a email
+//       https://formspree.io/
 import React, { Component } from "react";
 // Material UI
 import { withStyles } from "@material-ui/core/styles";
