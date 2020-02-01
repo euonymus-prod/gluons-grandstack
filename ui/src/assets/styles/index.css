@@ -29,6 +29,15 @@ a {
   text-align: center;
 }
 
+.contact {
+  font-size: large;
+  max-width: 900px;
+  margin: 20px auto 0 auto;
+  background-color: #eee;
+  border-radius: 6px;
+  padding: 20px;
+}
+
 #loader-bg {
   position: fixed;
   width: 100%;

@@ -1,16 +1,123 @@
-import React from "react";
+import _ from "lodash";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
-export default class Terms extends React.Component {
+const styles = theme => ({
+  root: {
+    margin: "0px",
+    marginTop: "15px",
+    display: "block",
+    textAlign: "center"
+  },
+  input: {
+    width: "380px"
+  },
+  button: {
+    width: "180px"
+  }
+});
+class Contact extends Component {
+  state = {
+    name: "",
+    organization: "",
+    department: "",
+    email: "",
+    message: ""
+  };
+
   componentDidMount() {
-    document.title = "Terms of Service -\nグルーオンズ";
+    document.title = "Contact Us -\nグルーオンズ";
   }
 
-  render() {
+  notValid = () => {
+    const hasEmpty = _.keys(this.state).some(state => {
+      if (!this.state[state]) {
+        alert(`${state} is required`);
+        return true;
+      }
+      return false;
+    });
+    if (hasEmpty) {
+      return true;
+    }
+    if (!this.isValidEmail()) {
+      alert(`Email address is not valid`);
+      return true;
+    }
+    return false;
+  };
+
+  isValidEmail = () => {
+    const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return regEmail.test(this.state.email) === true;
+  };
+
+  onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+  onClick = event => {
+    event.preventDefault();
+    if (this.notValid()) {
+      return false;
+    }
+
+    console.log(2);
+  };
+
+  inputText = (name, label, multilineRow = false) => {
+    const { classes } = this.props;
     return (
-      <div className="container">
+      <TextField
+        className={classes.input}
+        onChange={this.onChange}
+        margin="normal"
+        variant="outlined"
+        value={this.state[name]}
+        name={name}
+        label={label}
+        placeholder={`Type your ${name}`}
+        required
+        color="secondary"
+        multiline={!!multilineRow}
+        rows={multilineRow ? multilineRow : 1}
+      />
+    );
+  };
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className="container contact">
         <h1>Contact Us</h1>
+        <p>
+          Leverage your knowledge by seeking relations among things, people,
+          ETC. If you’d like to know more about how we can help you, put down
+          anything here.
+        </p>
+        <form className={classes.root} noValidate autoComplete="off">
+          <FormControl>
+            {this.inputText("name", "Name")}
+            {this.inputText("organization", "Organization")}
+            {this.inputText("department", "Department")}
+            {this.inputText("email", "Email")}
+            {this.inputText("message", "Message", 5)}
+            <br />
+            <Button
+              onClick={this.onClick}
+              className={classes.button}
+              variant="contained"
+              color="primary"
+            >
+              Contact Us
+            </Button>
+          </FormControl>
+        </form>
       </div>
     );
   }
 }
+export default withStyles(styles)(Contact);
