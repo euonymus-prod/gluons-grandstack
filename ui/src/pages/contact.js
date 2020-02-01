@@ -43,8 +43,8 @@ class Contact extends Component {
       "organization",
       "department",
       "email",
-      "message",
-      "topic"
+      "topic",
+      "message"
     ];
     const hasEmpty = requireds.some(state => {
       if (!this.state[state]) {
@@ -72,14 +72,23 @@ class Contact extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  onClick = event => {
+  onSubmit = async event => {
     event.preventDefault();
     if (this.notValid()) {
       return false;
     }
 
-    console.log(2);
-    console.log(this.state);
+    const axios = require("axios").default;
+    // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    const formspree = "https://formspree.io/mqkqedzn";
+    const params = new URLSearchParams(this.state);
+    const result = await axios.post(formspree, params);
+
+    if (result.status === 200) {
+      alert("Your message was sent successfully");
+    } else {
+      alert("Problem happened. Your message was not sent");
+    }
   };
 
   inputText = (name, label, multilineRow = false) => {
@@ -143,7 +152,7 @@ class Contact extends Component {
 
             <br />
             <Button
-              onClick={this.onClick}
+              onClick={this.onSubmit}
               className={classes.button}
               variant="contained"
               color="primary"
