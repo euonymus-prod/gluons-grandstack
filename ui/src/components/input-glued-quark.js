@@ -12,11 +12,18 @@ import * as QUERY_NAME from "../constants/query-names";
 import { withStyles } from "@material-ui/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
 
 const ROWS_PER_PAGE = 20;
 const styles = theme => ({
   menu: {
     paddingTop: "45px"
+  },
+  menuItem: {
+    minWidth: "180px"
+  },
+  input: {
+    backgroundColor: "#fee"
   }
 });
 
@@ -93,14 +100,19 @@ class InputGluedQuark extends Component {
     const isMenuOpen = Boolean(this.state.anchorEl);
     return (
       <Fragment>
-        <input
-          value={this.state.value}
-          name="value"
+        <TextField
+          className={classes.input}
           onChange={this.onChange}
           onKeyDown={this.onTabDown}
+          margin="normal"
+          variant="outlined"
+          value={this.state.value}
+          name="value"
+          label="Quark you glue"
+          placeholder={`Type Quark name to connect`}
           type="text"
-          placeholder="Input Quark Name"
-          className={`form-control`}
+          required
+          color="secondary"
         />
         {variables.keyword && (
           <Query query={GRAPHQL_QUERY} variables={variables}>
@@ -126,6 +138,7 @@ class InputGluedQuark extends Component {
                         onClick={this.onClick}
                         data-passive_id={quark.id}
                         data-passive={quark.name}
+                        className={classes.menuItem}
                       >
                         {quark.name}
                       </MenuItem>

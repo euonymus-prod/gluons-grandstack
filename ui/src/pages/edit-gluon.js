@@ -35,7 +35,7 @@ const EditGluonBase = props => {
         }
         const { editingGluon } = data;
         return (
-          <div className="EditGluon">
+          <div className="container form-container">
             {!editingGluon ? (
               <h1>No gluon found</h1>
             ) : (
@@ -46,13 +46,12 @@ const EditGluonBase = props => {
                 </h1>
                 <GluonForm editingGluon={editingGluon} />
                 <br />
+                <br />
                 <Link
                   to={`${ROUTES.GRAPH_BASE}${editingGluon.active.name}`}
                   alt={editingGluon.active.name}
                 >
-                  <Button variant="contained" color="primary">
-                    Back to Quark
-                  </Button>
+                  <Button variant="contained">Back to Quark</Button>
                 </Link>
               </Fragment>
             )}
