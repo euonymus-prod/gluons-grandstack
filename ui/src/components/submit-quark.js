@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
@@ -43,6 +44,7 @@ class SubmitQuark extends Component {
         variables
       });
       if (isList) {
+        data[queryName] = _.reject(data[queryName], ["name", newData.name]);
         data[queryName].unshift(newData);
       } else {
         data[queryName] = { ...data[queryName], ...newData };
