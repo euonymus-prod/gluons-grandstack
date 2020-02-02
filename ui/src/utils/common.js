@@ -65,3 +65,12 @@ class Util {
   }
 }
 export default Util;
+
+export const getObjectId = (subject_id, gluon) => {
+  if (subject_id === gluon.active_id) {
+    return gluon.passive_id;
+  } else if (subject_id === gluon.passive_id) {
+    return gluon.active_id;
+  }
+  return false;
+};

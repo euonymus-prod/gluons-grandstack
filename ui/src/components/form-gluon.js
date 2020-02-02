@@ -78,13 +78,7 @@ class GluonForm extends Component {
   };
 
   static generateInitialState = (nextProps, prevState) => {
-    const avoid2Edit = [
-      "active_id",
-      "passive_id",
-      "active",
-      "passive",
-      "object_id"
-    ];
+    const avoid2Edit = ["active_id", "passive_id", "active", "passive"];
     const { editingGluon } = nextProps;
     const targetQuark = GluonForm.getTargetQuark(nextProps);
     if (!targetQuark) {

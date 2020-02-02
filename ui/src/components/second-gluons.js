@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import SecondGluon from "./second-gluon";
+import { getObjectId } from "../utils/common";
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
@@ -26,8 +27,7 @@ const SecondGluons = props => {
   const { subject, objects, gluons } = props;
 
   const tileData = gluons.map(gluon => {
-    const object_id =
-      gluon.active_id === subject.id ? gluon.passive_id : gluon.active_id;
+    const object_id = getObjectId(subject.id, gluon);
     const object = objects
       .filter(data => {
         return data.id === object_id;

@@ -195,7 +195,7 @@ class Neo4jUtil {
     return quarkLabelObj
   }
   getTypeObj = (gluon_type_id) => {
-    if (!gluon_type_id || (gluon_type_id === "0") {
+    if (!gluon_type_id || (gluon_type_id === "0")) {
       return DEFAULT_RELATION_TYPE
     }
     const gluonLabelObj = gluonTypesData[gluon_type_id]

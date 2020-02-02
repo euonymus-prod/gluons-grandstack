@@ -15,4 +15,3 @@
   gluon_type_id: Int
   created: _Neo4jDateTime
   modified: _Neo4jDateTime
-  object_id: ID

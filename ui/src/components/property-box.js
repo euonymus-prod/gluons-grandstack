@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Gluon from "./gluon";
+import { getObjectId } from "../utils/common";
 // import './assets/styles/baryon.css'
 // Material UI
 import { makeStyles } from "@material-ui/styles";
@@ -24,9 +25,10 @@ const PropertyBox = props => {
   const { propertyResource, hasSecondLevel, objects, subject } = props;
   const classes = useStyles();
   const gluonsList = propertyResource.gluons.map((gluon, key) => {
+    const object_id = getObjectId(subject.id, gluon);
     const object = objects
       .filter(data => {
-        return data.id === gluon.object_id;
+        return data.id === object_id;
       })
       .shift();
 

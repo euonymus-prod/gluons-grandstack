@@ -352,11 +352,12 @@ export const resolvers = {
         return []
       }
       return parent.gluons.filter(gluon => {
-        if (parent.subject_id === gluon.active_id) {
-          gluon.object_id = gluon.passive_id
-        } else if (parent.subject_id === gluon.passive_id) {
-          gluon.object_id = gluon.active_id
-        }
+        // NOTE: You cannot set object_id here on GraphQL. This make it stateful, because object_id depends on subject.
+        // if (parent.subject_id === gluon.active_id) {
+        //   gluon.object_id = gluon.passive_id
+        // } else if (parent.subject_id === gluon.passive_id) {
+        //   gluon.object_id = gluon.active_id
+        // }
         let result = false
         if (parent.qpropertyGtypes === null) {
           result = true
