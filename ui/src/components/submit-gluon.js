@@ -20,10 +20,9 @@ class SubmitGluon extends Component {
       : QUERY_NAME.CREATE_GLUON;
   };
 
-  // updateAfterMutation = (store, { data: { CreateQuark } }) => {
-  updateAfterMutation = (store, result) => {
+  updateAfterMutation = (store, { data: mutated }) => {
     // const mutationName = this.getMutationName();
-    // console.log(result.data[mutationName]);
+    // const newData = mutated[mutationName];
     // const first = QUARKS_PER_PAGE;
     // const skip = 0;
     // const orderBy = "created";
