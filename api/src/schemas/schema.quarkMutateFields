@@ -1,6 +1,6 @@
     quark_type_id: Int!
-    name: String!
-    name_ja: String!
+    name: String
+    name_ja: String
     image_path: String
     description: String
     description_ja: String

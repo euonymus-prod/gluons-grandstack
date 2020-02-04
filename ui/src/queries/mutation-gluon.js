@@ -7,9 +7,12 @@ const gluonMutationCompiled = _.template(`
   mutation mutateGluon(
     <%= dynamicSchema %>
     $gluon_type_id: Int!
-    $relation: String!
+    $relation: String
     $suffix: String
     $prefix: String
+    $relation_ja: String
+    $suffix_ja: String
+    $prefix_ja: String
     $start: _Neo4jDateTimeInput
     $end: _Neo4jDateTimeInput
     $start_accuracy: String
@@ -23,6 +26,9 @@ const gluonMutationCompiled = _.template(`
       relation: $relation
       suffix: $suffix
       prefix: $prefix
+      relation_ja: $relation_ja
+      suffix_ja: $suffix_ja
+      prefix_ja: $prefix_ja
       start: $start
       end: $end
       start_accuracy: $start_accuracy

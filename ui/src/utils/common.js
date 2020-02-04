@@ -46,7 +46,7 @@ class Util {
     return [this.locale, locale_messages];
   };
 
-  isEnglish = (locale, strict = false) => {
+  isEnglish = (locale = this.locale, strict = false) => {
     if (strict && ![LOCALE_EN, LOCALE_JA].includes(locale)) {
       return false;
     }

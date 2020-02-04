@@ -7,9 +7,11 @@ const quarkMutationCompiled = _.template(`
   mutation mutateQuark(
     <%= idSchema %>
     $quark_type_id: Int!
-    $name: String!
+    $name: String
+    $name_ja: String
     $image_path: String
     $description: String
+    $description_ja: String
     $start: _Neo4jDateTimeInput
     $end: _Neo4jDateTimeInput
     $start_accuracy: String
@@ -24,8 +26,10 @@ const quarkMutationCompiled = _.template(`
       <%= idParam %>
       quark_type_id: $quark_type_id
       name: $name
+      name_ja: $name_ja
       image_path: $image_path
       description: $description
+      description_ja: $description_ja
       start: $start
       end: $end
       start_accuracy: $start_accuracy

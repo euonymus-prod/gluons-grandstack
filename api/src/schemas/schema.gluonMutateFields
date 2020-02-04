@@ -1,9 +1,9 @@
     gluon_type_id: Int!
     prefix: String
-    relation: String!
+    relation: String
     suffix: String
     prefix_ja: String
-    relation_ja: String!
+    relation_ja: String
     suffix_ja: String
     start: _Neo4jDateTimeInput
     end: _Neo4jDateTimeInput

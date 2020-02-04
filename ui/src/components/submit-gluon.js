@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
@@ -6,13 +7,14 @@ import { Mutation } from "react-apollo";
 import GluonMutation from "../queries/mutation-gluon";
 import * as QUERY_NAME from "../constants/query-names";
 import * as ROUTES from "../constants/routes";
-
+import Util from "../utils/common";
 // Material UI
 import Button from "@material-ui/core/Button";
 
 // const QUARKS_PER_PAGE = 20;
 // const QUARKS_QUERY = "";
 
+const util = new Util(false);
 class SubmitGluon extends Component {
   getMutationName = () => {
     return this.props.formVariables.id
@@ -44,12 +46,22 @@ class SubmitGluon extends Component {
 
   render() {
     const { targetQuark, formVariables } = this.props;
+    const avoid2Edit = ["relation", "prefix", "suffix"];
     const variables = {
-      ...formVariables,
+      ..._.omit(formVariables, avoid2Edit),
       start: { formatted: formVariables.start },
       end: { formatted: formVariables.end },
       gluon_type_id: Number(formVariables.gluon_type_id)
     };
+    if (util.isEnglish()) {
+      variables.relation = formVariables.relation;
+      variables.prefix = formVariables.prefix;
+      variables.suffix = formVariables.suffix;
+    } else {
+      variables.relation_ja = formVariables.relation;
+      variables.prefix_ja = formVariables.prefix;
+      variables.suffix_ja = formVariables.suffix;
+    }
 
     const mutationName = this.getMutationName();
     const mutation = new GluonMutation(mutationName);
