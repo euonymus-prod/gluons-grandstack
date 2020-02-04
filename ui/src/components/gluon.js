@@ -68,7 +68,7 @@ const useStyles = makeStyles({
 const relationTextBuilder = (subject, object, gluon) => {
   let glue_sentence_before_link = "";
   let glue_sentence_after_link = " ";
-  const langType = LANGTYPE_JP_LIKE;
+  const langType = util.isEnglish() ? LANGTYPE_ENG_LIKE : LANGTYPE_JP_LIKE;
 
   if (subject.id === gluon.active_id) {
     glue_sentence_before_link = subject.name;

@@ -2,9 +2,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
-
+import Util from "../utils/common";
 // component
 import QuarkInList from "./quark-in-list";
+
+const util = new Util(false);
 
 class Quarks extends Component {
   render() {
@@ -25,6 +27,8 @@ class Quarks extends Component {
             return (
               <div>
                 {quarks.map(quark => {
+                  quark.name = util.localedProp(quark, "name");
+                  quark.description = util.localedProp(quark, "description");
                   return <QuarkInList key={quark.id} data={quark} />;
                 })}
               </div>

@@ -19,9 +19,15 @@ class Util {
   }
 
   localedProp = (data, property) => {
-    return this.isEnglish(this.locale)
-      ? data[property]
-      : data[`${property}_${this.locale}`];
+    if (this.isEnglish(this.locale)) {
+      return data[property]
+        ? data[property]
+        : data[`${property}_${this.locale}`];
+    } else {
+      return data[`${property}_${this.locale}`]
+        ? data[`${property}_${this.locale}`]
+        : data[property];
+    }
   };
 
   setLocale = () => {
