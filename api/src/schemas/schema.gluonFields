@@ -4,6 +4,9 @@
   relation: String
   prefix: String
   suffix: String
+  relation_ja: String
+  prefix_ja: String
+  suffix_ja: String
   start: _Neo4jDateTime
   end: _Neo4jDateTime
   start_accuracy: String

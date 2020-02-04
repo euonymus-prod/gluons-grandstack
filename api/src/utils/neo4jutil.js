@@ -10,7 +10,7 @@ const DATETIME_PROPERTIES = ['start', 'end', 'modified', 'created'];
 
 const QUARK_BOOL_PROPERTIES = ['is_momentary', 'is_private', 'is_exclusive'];
 const QUARK_INT_PROPERTIES = ['quark_type_id'];
-const QUARK_STR_PROPERTIES = ['id', 'name', 'en_name', 'image_path', 'description', 'en_description',
+const QUARK_STR_PROPERTIES = ['id', 'name', 'name_ja', 'image_path', 'description', 'description_ja',
                               'start_accuracy', 'end_accuracy','url', 'affiliate', 'user_id', 'last_modified_user'];
 
 const GLUON_BOOL_PROPERTIES = ['is_momentary', 'is_exclusive'];

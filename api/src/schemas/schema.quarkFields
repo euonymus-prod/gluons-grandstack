@@ -1,9 +1,9 @@
   id: ID!
   name: String
-  en_name: String
+  name_ja: String
   image_path: String
   description: String
-  en_description: String
+  description_ja: String
   start: _Neo4jDateTime
   end: _Neo4jDateTime
   start_accuracy: String
