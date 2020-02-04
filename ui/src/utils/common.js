@@ -18,20 +18,16 @@ class Util {
     this.setLocale();
   }
 
+  localedProp = (data, property) => {
+    return this.isEnglish(this.locale)
+      ? data[property]
+      : data[`${property}_${this.locale}`];
+  };
+
   setLocale = () => {
     const domainString = document.domain;
     const domainFirstPart = domainString.split(".")[0];
     this.locale = this.isEnglish(domainFirstPart) ? LOCALE_EN : LOCALE_JA;
-  };
-
-  isEnglish = (locale, strict = false) => {
-    if (strict && ![LOCALE_EN, LOCALE_JA].includes(locale)) {
-      return false;
-    }
-    if (locale !== LOCALE_JA) {
-      locale = LOCALE_EN;
-    }
-    return locale === LOCALE_EN;
   };
 
   localeInitializer = () => {
@@ -42,6 +38,16 @@ class Util {
       localStorage.setItem(LOCALSTORAGE.LOCALE, JSON.stringify(this.locale));
     }
     return [this.locale, locale_messages];
+  };
+
+  isEnglish = (locale, strict = false) => {
+    if (strict && ![LOCALE_EN, LOCALE_JA].includes(locale)) {
+      return false;
+    }
+    if (locale !== LOCALE_JA) {
+      locale = LOCALE_EN;
+    }
+    return locale === LOCALE_EN;
   };
 
   period2str(data) {

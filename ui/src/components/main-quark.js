@@ -52,17 +52,17 @@ const MainQuark = props => {
           <CardMedia
             className={classes.media}
             image={subject.image_path}
-            title={subject.name}
+            title={util.localedProp(subject, "name")}
           />
         )}
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {subject.name}
+            {util.localedProp(subject, "name")}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {util.period2str(subject)}
             <br />
-            {subject.description}
+            {util.localedProp(subject, "description")}
           </Typography>
         </CardContent>
 
