@@ -1,5 +1,7 @@
 // react
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { injectIntl } from "react-intl";
 import { withAuthUser } from "../providers/session";
 // GraphQL
 import QuarkList from "../queries/query-quark-list";
@@ -9,7 +11,12 @@ import Quarks from "../components/quarks";
 const QUARKS_PER_PAGE = 100;
 class Search extends Component {
   componentDidMount() {
-    document.title = `Quark list -\ngluons`;
+    document.title =
+      "Quarks -\n" +
+      this.props.intl.formatMessage({
+        id: "noun_gluons",
+        defaultMessage: "gluons"
+      });
   }
 
   render() {
@@ -28,4 +35,7 @@ class Search extends Component {
     );
   }
 }
-export default withAuthUser(Search);
+Search.propTypes = {
+  intl: PropTypes.object.isRequired
+};
+export default withAuthUser(injectIntl(Search));

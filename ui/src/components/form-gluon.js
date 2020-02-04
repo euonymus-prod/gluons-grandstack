@@ -135,6 +135,9 @@ class GluonForm extends Component {
     const { required, color } = requireds.includes(name)
       ? { required: true, color: "secondary" }
       : { required: false, color: "primary" };
+    const value = this.state.formVariables[name]
+      ? String(this.state.formVariables[name])
+      : "";
     return (
       <TextField
         className={className}
@@ -143,7 +146,7 @@ class GluonForm extends Component {
         }
         margin="normal"
         variant="outlined"
-        value={this.state.formVariables[name]}
+        value={value}
         name={name}
         label={title}
         placeholder={`Type your ${name}`}

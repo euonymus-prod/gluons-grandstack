@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { withAuthUser } from "../providers/session";
+import { FormattedMessage } from "react-intl";
 import Util from "../utils/common";
 // Material UI
 import { makeStyles } from "@material-ui/styles";
@@ -83,7 +84,8 @@ const MainQuark = props => {
               variant="contained"
               onClick={() => onLinkClick(subject.affiliate, true)}
             >
-              Buy Now <ShoppingCart />
+              <FormattedMessage id="button_buy" defaultMessage={`Buy Now`} />{" "}
+              <ShoppingCart />
             </Button>
           )}
         </CardActions>

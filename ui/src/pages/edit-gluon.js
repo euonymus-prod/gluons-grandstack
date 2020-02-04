@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
 import { withAuthUser } from "../providers/session";
 import { Query } from "react-apollo";
 import EditingGluon from "../queries/query-editing-gluon";
@@ -41,8 +42,14 @@ const EditGluonBase = props => {
             ) : (
               <Fragment>
                 <h1>
-                  Edit Gluon between {editingGluon.active.name} and{" "}
-                  {editingGluon.passive.name}
+                  <FormattedMessage
+                    id="title_edit_gluon"
+                    defaultMessage={`Relation between { active_quark } and { passive_quark }`}
+                    values={{
+                      active_quark: <span>{editingGluon.active.name}</span>,
+                      passive_quark: <span>{editingGluon.passive.name}</span>
+                    }}
+                  />
                 </h1>
                 <GluonForm editingGluon={editingGluon} />
                 <br />
