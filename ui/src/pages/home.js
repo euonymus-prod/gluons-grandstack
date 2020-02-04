@@ -1,6 +1,8 @@
 // react
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import logo from "../assets/images/logo.gif";
+import { injectIntl, FormattedMessage } from "react-intl";
 
 // component
 import SearchBar from "../components/search-bar";
@@ -8,8 +10,13 @@ import TopPickups from "../components/top-pickups";
 
 class Home extends Component {
   componentDidMount() {
-    document.title =
-      "Search hidden relations on your favorite things, people, company... -\ngluons";
+    document.title = this.props.intl.formatMessage({
+      id: "title_home",
+      defaultMessage:
+        "Search hidden relations on your favorite things, people, company... -\ngluons"
+    });
+    // document.title =
+    //   "Search hidden relations on your favorite things, people, company... -\ngluons";
   }
 
   render() {
@@ -21,7 +28,10 @@ class Home extends Component {
 
         <div className="home">
           <p className="text-center">
-            Search hidden relations on your favorite things, people, company...
+            <FormattedMessage
+              id="message_home_main"
+              defaultMessage={`Search hidden relations on your favorite things, people, company...`}
+            />
           </p>
 
           <SearchBar type="home" />
@@ -31,4 +41,7 @@ class Home extends Component {
     );
   }
 }
-export default Home;
+Home.propTypes = {
+  intl: PropTypes.object.isRequired
+};
+export default injectIntl(Home);

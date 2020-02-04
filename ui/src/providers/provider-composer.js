@@ -2,6 +2,10 @@ import React, { Component } from "react";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
+// intls activities
+import { IntlProvider } from "react-intl";
+import ja_JP from "../locales/ja_JP";
+import en_US from "../locales/en_US";
 // apollo
 // import ApolloClient from "apollo-boost";
 import { createHttpLink } from "apollo-link-http";
@@ -13,6 +17,18 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { withFirebaseProvider } from "./firebase";
 // constancts
 import * as LOCALSTORAGE from "../constants/localstorage";
+
+const domainString = document.domain;
+const domainFirstPart = domainString.split(".")[0];
+
+let locale = "en";
+let locale_messages = en_US;
+if (domainFirstPart === "ja") {
+  locale = "ja";
+  locale_messages = ja_JP;
+  // This is required to manually differ the behavior depends on locale.
+  localStorage.setItem(LOCALSTORAGE.LOCALE, JSON.stringify(locale));
+}
 
 // const client = new ApolloClient({
 //   uri: process.env.REACT_APP_GRAPHQL_URI
@@ -44,14 +60,11 @@ class ProviderComposer extends Component {
   render() {
     return (
       <Provider store={store}>
-        <ApolloProvider client={client}>{this.props.children}</ApolloProvider>
+        <IntlProvider locale={locale} messages={locale_messages}>
+          <ApolloProvider client={client}>{this.props.children}</ApolloProvider>
+        </IntlProvider>
       </Provider>
     );
   }
 }
 export default withFirebaseProvider(ProviderComposer);
-//export default ProviderComposer
-
-// <Provider store={store}>
-//   {this.props.children}
-// </Provider>
