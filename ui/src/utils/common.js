@@ -1,4 +1,12 @@
 import moment from "moment";
+import ja_JP from "../locales/ja_JP";
+import en_US from "../locales/en_US";
+// constancts
+import * as LOCALSTORAGE from "../constants/localstorage";
+
+const LOCALE_JA = "ja";
+const LOCALE_EN = "en";
+
 class Util {
   constructor(isJavascriptMode = true) {
     // NOTE: isJavascriptMode is a flag if consumer uses javascript mode date object or not.
@@ -7,7 +15,34 @@ class Util {
     // ex2 [isJavascriptMode === false]   { year: 2020, month: 2, day: 20 }
     // * month of javascript mode start from 0 to 11
     this.isJavascriptMode = isJavascriptMode;
+    this.setLocale();
   }
+
+  setLocale = () => {
+    const domainString = document.domain;
+    const domainFirstPart = domainString.split(".")[0];
+    this.locale = this.isEnglish(domainFirstPart) ? LOCALE_EN : LOCALE_JA;
+  };
+
+  isEnglish = (locale, strict = false) => {
+    if (strict && ![LOCALE_EN, LOCALE_JA].includes(locale)) {
+      return false;
+    }
+    if (locale !== LOCALE_JA) {
+      locale = LOCALE_EN;
+    }
+    return locale === LOCALE_EN;
+  };
+
+  localeInitializer = () => {
+    let locale_messages = en_US;
+    if (!this.isEnglish(this.locale)) {
+      locale_messages = ja_JP;
+      // This is required to manually differ the behavior depends on locale.
+      localStorage.setItem(LOCALSTORAGE.LOCALE, JSON.stringify(this.locale));
+    }
+    return [this.locale, locale_messages];
+  };
 
   period2str(data) {
     if (!data || (!data.start && !data.end)) return "";

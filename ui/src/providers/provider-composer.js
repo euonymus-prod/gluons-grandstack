@@ -4,8 +4,6 @@ import { Provider } from "react-redux";
 import store from "./store";
 // intls activities
 import { IntlProvider } from "react-intl";
-import ja_JP from "../locales/ja_JP";
-import en_US from "../locales/en_US";
 // apollo
 // import ApolloClient from "apollo-boost";
 import { createHttpLink } from "apollo-link-http";
@@ -15,20 +13,13 @@ import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "@apollo/react-hooks";
 // Firebase
 import { withFirebaseProvider } from "./firebase";
+// Utils
+import Util from "../utils/common";
 // constancts
 import * as LOCALSTORAGE from "../constants/localstorage";
 
-const domainString = document.domain;
-const domainFirstPart = domainString.split(".")[0];
-
-let locale = "en";
-let locale_messages = en_US;
-if (domainFirstPart === "ja") {
-  locale = "ja";
-  locale_messages = ja_JP;
-  // This is required to manually differ the behavior depends on locale.
-  localStorage.setItem(LOCALSTORAGE.LOCALE, JSON.stringify(locale));
-}
+const util = new Util(false);
+const [locale, locale_messages] = util.localeInitializer();
 
 // const client = new ApolloClient({
 //   uri: process.env.REACT_APP_GRAPHQL_URI

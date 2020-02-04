@@ -4,6 +4,8 @@ export const quarkFields = `
   id
   name
   description
+  name_ja
+  description_ja
   image_path
   ${periodFields}
   url

@@ -5,6 +5,9 @@ export const gluonFields = `
   prefix
   relation
   suffix
+  prefix_ja
+  relation_ja
+  suffix_ja
   active_id
   passive_id
   ${periodFields}
