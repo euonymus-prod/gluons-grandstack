@@ -177,7 +177,7 @@ const Gluon = props => {
         {hasSecondLevel && object.gluons.length !== 0 && (
           <ListItem className={classes.secondGluons}>
             <SecondGluons
-              subject={object}
+              subject={{ ...object, name: util.localedProp(object, "name") }}
               objects={object.objects}
               gluons={object.gluons}
             />

@@ -1,12 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Gluon from "./gluon";
-import { getObjectId } from "../utils/common";
+import Util, { getObjectId } from "../utils/common";
 // import './assets/styles/baryon.css'
 // Material UI
 import { makeStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
+
+const util = new Util(false);
 
 const useStyles = makeStyles({
   card: {
@@ -31,6 +33,11 @@ const PropertyBox = props => {
         return data.id === object_id;
       })
       .shift();
+    object.name = util.localedProp(object, "name");
+    object.description = util.localedProp(object, "description");
+    gluon.relation = util.localedProp(gluon, "relation");
+    gluon.prefix = util.localedProp(gluon, "prefix");
+    gluon.suffix = util.localedProp(gluon, "suffix");
 
     return (
       <Gluon
@@ -49,7 +56,7 @@ const PropertyBox = props => {
   return (
     <div className="property-box">
       <Card className={classes.card}>
-        <h2>{propertyResource.caption_ja}</h2>
+        <h2>{util.localedProp(propertyResource, "caption")}</h2>
         <List className={classes.root}>{gluonsList}</List>
       </Card>
     </div>

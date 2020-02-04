@@ -20,7 +20,7 @@ export class CypherBuilder {
       "Koki",
     ]
     const snippet = candidates.map(candidate => {
-      return `node.name = \\\\\\"${candidate}\\\\\\"`
+      return `(node.name = \\\\\\"${candidate}\\\\\\" OR node.name_ja = \\\\\\"${candidate}\\\\\\")`
     }).join(" OR ")
     return `(${snippet})`
   }

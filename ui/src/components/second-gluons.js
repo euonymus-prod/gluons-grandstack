@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import SecondGluon from "./second-gluon";
-import { getObjectId } from "../utils/common";
+import Util, { getObjectId } from "../utils/common";
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
+
+const util = new Util(false);
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,11 +30,18 @@ const SecondGluons = props => {
 
   const tileData = gluons.map(gluon => {
     const object_id = getObjectId(subject.id, gluon);
+
     const object = objects
       .filter(data => {
         return data.id === object_id;
       })
       .shift();
+    object.name = util.localedProp(object, "name");
+    object.description = util.localedProp(object, "description");
+    gluon.relation = util.localedProp(gluon, "relation");
+    gluon.prefix = util.localedProp(gluon, "prefix");
+    gluon.suffix = util.localedProp(gluon, "suffix");
+
     return (
       <SecondGluon
         key={gluon.id}

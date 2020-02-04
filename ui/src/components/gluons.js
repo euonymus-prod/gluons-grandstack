@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Util from "../utils/common";
 import PropertyBox from "./property-box";
 
+const util = new Util(false);
 const Gluons = props => {
   const { parentQuark, hasSecondLevel } = props;
 
@@ -11,7 +13,7 @@ const Gluons = props => {
 
   const subject = {
     id: parentQuark.id,
-    name: parentQuark.name
+    name: util.localedProp(parentQuark, "name")
   };
 
   const propertyList = parentQuark.properties.map((propertyResource, key) => {

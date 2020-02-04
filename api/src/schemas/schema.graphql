@@ -98,15 +98,15 @@ enum Role {
 type Query {
   quark(name: String): PublicQuark
     @cypher(
-      statement: "MATCH (node {name: $name}) WHERE <%= cypherWherePublic %> RETURN node"
+      statement: "MATCH (node) WHERE (node.name = $name OR node.name_ja = $name) AND <%= cypherWherePublic %> RETURN node LIMIT 1"
     )
   loggedInQuark(name: String, user_id: String): LoggedInQuark @hasRole(roles:[admin, user])
     @cypher(
-      statement: "MATCH (node {name: $name}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
+      statement: "MATCH (node) WHERE (node.name = $name OR node.name_ja = $name) AND <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node LIMIT 1"
     )
   adminQuark(name: String): AdminQuark @hasRole(roles:[admin])
     @cypher(
-      statement: "MATCH (node {name: $name}) RETURN node"
+      statement: "MATCH (node) WHERE (node.name = $name OR node.name_ja = $name) RETURN node LIMIT 1"
     )
   quarks(first: Int = 100): [PublicQuark]
     @cypher(
