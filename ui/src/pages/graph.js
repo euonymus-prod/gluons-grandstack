@@ -1,5 +1,7 @@
 // react
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { injectIntl } from "react-intl";
 // redux
 import { connect } from "react-redux";
 import { setCurrentQuark } from "../actions/quark.js";
@@ -13,6 +15,16 @@ import Gluons from "../components/gluons";
 
 // GraphQL
 class Graph extends Component {
+  componentDidUpdate(prevProps) {
+    document.title =
+      this.props.match.params.quark_name +
+      " -\n" +
+      this.props.intl.formatMessage({
+        id: "noun_gluons",
+        defaultMessage: "gluons"
+      });
+  }
+
   render() {
     const [queryName, GRAPH_ON_QUARK] = new GraphOnQuark(this.props);
     const variables = {
@@ -36,6 +48,9 @@ class Graph extends Component {
     );
   }
 }
+Graph.propTypes = {
+  intl: PropTypes.object.isRequired
+};
 export default connect(state => state, { setCurrentQuark })(
-  withAuthUser(Graph)
+  withAuthUser(injectIntl(Graph))
 );

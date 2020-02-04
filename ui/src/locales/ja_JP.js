@@ -4,6 +4,7 @@ const ja_JP = {
   title_edit_gluon: "{ active_quark } と { passive_quark } の関係",
   title_sub_gluon_list: "{ quark } とは",
   title_quark_list: "Quark 一覧",
+  title_search_list: "{ keyword } の検索結果",
   menu_navbar_list: "一覧",
   menu_navbar_profile: "プロフィール",
   button_buy: "購入する",

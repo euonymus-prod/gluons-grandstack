@@ -9,7 +9,7 @@ import QuarkList from "../queries/query-quark-list";
 import Quarks from "../components/quarks";
 
 const QUARKS_PER_PAGE = 100;
-class Search extends Component {
+class List extends Component {
   componentDidMount() {
     document.title =
       "Quarks -\n" +
@@ -38,7 +38,7 @@ class Search extends Component {
     );
   }
 }
-Search.propTypes = {
+List.propTypes = {
   intl: PropTypes.object.isRequired
 };
-export default withAuthUser(injectIntl(Search));
+export default withAuthUser(injectIntl(List));

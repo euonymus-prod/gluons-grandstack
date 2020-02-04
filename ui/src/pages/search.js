@@ -1,5 +1,7 @@
 // react
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { injectIntl } from "react-intl";
 import { withAuthUser } from "../providers/session";
 // GraphQL
 import QuarkListSearched from "../queries/query-quark-list-searched";
@@ -9,7 +11,12 @@ import Quarks from "../components/quarks";
 const QUARKS_PER_PAGE = 100;
 class Search extends Component {
   componentDidMount() {
-    document.title = `Search Result of ${this.props.match.keyword} -\ngluons`;
+    document.title =
+      `Search Result of ${this.props.match.keyword} -\n` +
+      this.props.intl.formatMessage({
+        id: "noun_gluons",
+        defaultMessage: "gluons"
+      });
   }
 
   render() {
@@ -19,7 +26,13 @@ class Search extends Component {
       first: QUARKS_PER_PAGE,
       keyword
     };
-    const quark_property_caption = keyword;
+    const quark_property_caption = this.props.intl.formatMessage(
+      {
+        id: "title_search_list",
+        defaultMessage: `Search result of { keyword }`
+      },
+      { keyword }
+    );
     return (
       <Quarks
         quark_property_caption={quark_property_caption}
@@ -30,4 +43,7 @@ class Search extends Component {
     );
   }
 }
-export default withAuthUser(Search);
+Search.propTypes = {
+  intl: PropTypes.object.isRequired
+};
+export default withAuthUser(injectIntl(Search));
