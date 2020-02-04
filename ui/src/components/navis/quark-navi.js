@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { injectIntl } from "react-intl";
 // redux
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -73,12 +74,20 @@ const QuarkNavi = props => {
 
   const renderItems = func => {
     const user_id = authUser ? authUser.uid : null;
+    const list = props.intl.formatMessage({
+      id: "menu_navbar_list",
+      defaultMessage: "List"
+    });
+    const profile = props.intl.formatMessage({
+      id: "menu_navbar_profile",
+      defaultMessage: "Profile"
+    });
     if (!authUser) {
       // NOTE: Fragment is not allowed by Menu component
       return (
         <div>
-          {func("List", <ViewListIcon />, onListClick)}
-          {func("Profile", <AccountCircle />, props.handleProfileMenuOpen)}
+          {func(list, <ViewListIcon />, onListClick)}
+          {func(profile, <AccountCircle />, props.handleProfileMenuOpen)}
         </div>
       );
     }
@@ -95,8 +104,8 @@ const QuarkNavi = props => {
           />
         )}
 
-        {func("List", <ViewListIcon />, onListClick)}
-        {func("Profile", <AccountCircle />, props.handleProfileMenuOpen)}
+        {func(list, <ViewListIcon />, onListClick)}
+        {func(profile, <AccountCircle />, props.handleProfileMenuOpen)}
       </div>
     );
   };
@@ -121,6 +130,7 @@ const QuarkNavi = props => {
 };
 
 QuarkNavi.propTypes = {
+  intl: PropTypes.object.isRequired,
   anchorEl: PropTypes.object,
   handleMenuClose: PropTypes.func.isRequired,
   handleProfileMenuOpen: PropTypes.func.isRequired,
@@ -130,5 +140,5 @@ QuarkNavi.defaultProps = {
   withMenu: false
 };
 export default connect(state => state)(
-  withRouter(withAuthUser(withFirebase(QuarkNavi)))
+  withRouter(withAuthUser(withFirebase(injectIntl(QuarkNavi))))
 );

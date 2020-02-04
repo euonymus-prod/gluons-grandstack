@@ -24,7 +24,10 @@ class Search extends Component {
     const variables = {
       first: QUARKS_PER_PAGE
     };
-    const quark_property_caption = "Quark List";
+    const quark_property_caption = this.props.intl.formatMessage({
+      id: "title_quark_list",
+      defaultMessage: "Quark List"
+    });
     return (
       <Quarks
         quark_property_caption={quark_property_caption}
