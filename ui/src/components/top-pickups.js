@@ -1,13 +1,15 @@
-// general
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
 // react
 import React, { Component } from "react";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+// general
+import Util from "../utils/common";
 // component
 import TopPickupDetail from "./top-pickup-detail";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
+const util = new Util(false);
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -24,6 +26,7 @@ export const QUARKS_QUERY = gql`
     topQuarks {
       id
       name
+      name_ja
       image_path
     }
   }
@@ -44,11 +47,14 @@ class TopPickups extends Component {
           return (
             <div className={classes.root}>
               <Grid container spacing={3}>
-                {data.topQuarks.map((data, index) => (
-                  <Grid item xs={6} sm={3} key={data.id}>
-                    <TopPickupDetail quark={data} />
-                  </Grid>
-                ))}
+                {data.topQuarks.map((data, index) => {
+                  data.name = util.localedProp(data, "name");
+                  return (
+                    <Grid item xs={6} sm={3} key={data.id}>
+                      <TopPickupDetail quark={data} />
+                    </Grid>
+                  );
+                })}
               </Grid>
             </div>
           );

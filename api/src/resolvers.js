@@ -215,7 +215,7 @@ const createGluon = async (params, context) => {
       throw Error("passive_id or passive name is required");
     }
     // Read passive_id by name
-    const readCypher = `MATCH (node:Quark { name: "${params.passive}" }) RETURN node`
+    const readCypher = `MATCH (node:Quark) WHERE (node.name = "${params.passive}" OR node.name_ja = "${params.passive}") RETURN node`
     const passiveNode = await neou.execCypherAndReadResponse(context.driver, readCypher)
     if (Object.keys(passiveNode).length === 0) {
       throw Error("No node found");

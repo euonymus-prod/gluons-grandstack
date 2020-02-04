@@ -5,11 +5,14 @@ import { Query } from "react-apollo";
 import { withAuthUser } from "../providers/session";
 // GraphQL
 import QuarkListSearched from "../queries/query-quark-list-searched";
+import Util from "../utils/common";
 // Material UI
 import { withStyles } from "@material-ui/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
+
+const util = new Util(false);
 
 const ROWS_PER_PAGE = 20;
 const styles = theme => ({
@@ -127,10 +130,10 @@ class InputGluedQuark extends Component {
                         dense={true}
                         onClick={this.onClick}
                         data-passive_id={quark.id}
-                        data-passive={quark.name}
+                        data-passive={util.localedProp(quark, "name")}
                         className={classes.menuItem}
                       >
-                        {quark.name}
+                        {util.localedProp(quark, "name")}
                       </MenuItem>
                     );
                   })}
