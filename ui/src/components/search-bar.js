@@ -1,6 +1,8 @@
 // react
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import { injectIntl } from "react-intl";
 import * as ROUTES from "../constants/routes";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -44,6 +46,11 @@ class SearchBar extends Component {
 
   render() {
     const { classes } = this.props;
+    const inputPlaceHolder = this.props.intl.formatMessage({
+      id: "placeholder_home_searchbar",
+      defaultMessage: "Type people, organization, product and so on"
+    });
+
     return (
       <form
         className={classes.container}
@@ -55,7 +62,7 @@ class SearchBar extends Component {
           <TextField
             id="outlined-basic"
             className={classes.textField}
-            label="Type people, organization, product and so on"
+            label={inputPlaceHolder}
             variant="outlined"
             value={this.state.value}
             onChange={event => this.onInputChange(event.target.value)}
@@ -73,4 +80,7 @@ class SearchBar extends Component {
     );
   }
 }
-export default withRouter(withStyles(styles)(SearchBar));
+SearchBar.propTypes = {
+  intl: PropTypes.object.isRequired
+};
+export default withRouter(withStyles(styles)(injectIntl(SearchBar)));
