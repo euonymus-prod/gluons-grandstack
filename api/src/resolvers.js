@@ -152,7 +152,7 @@ const quarkPropertiesResolver= (parent, params, context, info) => {
 // Note: if you don't create resolver specifically, auto generated resolver will call cypher automatically, and generate node
 //       but, the problem is, it can't modify Label by param, and start datetime modification also needed
 const createQuarkResolver = async (parent, params, context, info) => {
-  if (!params.name) {
+  if ((!params.name) && (!params.name_ja)) {
     throw Error("name property is required");
   }
   const user = await getUser(context)

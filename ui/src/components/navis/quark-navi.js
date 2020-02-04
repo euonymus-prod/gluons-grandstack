@@ -8,6 +8,7 @@ import { withAuthUser } from "../../providers/session";
 import { withFirebase } from "../../providers/firebase";
 import * as ROUTES from "../../constants/routes";
 import SubmitQuarkDelete from "../submit-quark-delete";
+import Util from "../../utils/common";
 // import { convertTableForTemporallyUse } from "../../utils/auth-util";
 // Material UI
 import MenuItem from "@material-ui/core/MenuItem";
@@ -19,6 +20,8 @@ import EditIcon from "@material-ui/icons/Edit";
 // import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+
+const util = new Util(false);
 
 const QuarkNavi = props => {
   const { authUser } = props;
@@ -98,7 +101,7 @@ const QuarkNavi = props => {
         {showEditQuark() && func("Edit Quark", <EditIcon />, onEditQuarkClick)}
         {showEditQuark() && (
           <SubmitQuarkDelete
-            name={props.current_quark.name}
+            name={util.localedProp(props.current_quark, "name")}
             variables={{ id: props.current_quark.id, user_id }}
             withMenu={props.withMenu}
           />

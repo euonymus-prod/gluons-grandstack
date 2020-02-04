@@ -1,7 +1,9 @@
     quark_type_id: Int!
     name: String!
+    name_ja: String!
     image_path: String
     description: String
+    description_ja: String
     start: _Neo4jDateTimeInput
     end: _Neo4jDateTimeInput
     start_accuracy: String
