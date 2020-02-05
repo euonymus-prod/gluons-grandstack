@@ -226,7 +226,7 @@ const createGluon = async (params, context) => {
 
   const targetResource = 'relation'
   const cypher = `
-    MATCH (active {id: "${params.active_id}"}),(passive {id: "${passive_id}"})
+    MATCH (active:Quark {id: "${params.active_id}"}),(passive:Quark {id: "${passive_id}"})
     CREATE (active)-[ ${targetResource}${TypeInCypher}  ]->(passive)
     SET
         ${targetResource}.id = apoc.create.uuid(),
