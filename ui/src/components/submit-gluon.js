@@ -70,6 +70,7 @@ class SubmitGluon extends Component {
         mutation={mutation}
         variables={variables}
         onCompleted={data => {
+          const name = util.localedProp(targetQuark, "name");
           this.props.history.push(`${ROUTES.GRAPH_BASE}${targetQuark.name}`);
         }}
         onError={error => {

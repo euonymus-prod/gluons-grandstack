@@ -5,11 +5,14 @@ import { withAuthUser } from "../providers/session";
 import { Query } from "react-apollo";
 import EditingGluon from "../queries/query-editing-gluon";
 import GluonForm from "../components/form-gluon";
+import Util from "../utils/common";
 // import { convertTableForTemporallyUse } from "../utils/auth-util";
 import * as ROUTES from "../constants/routes";
 import LoggedinOnly from "../components/loggedin-only";
 // Material UI
 import Button from "@material-ui/core/Button";
+
+const util = new Util(false);
 
 const EditGluon = props => {
   return (
@@ -46,8 +49,16 @@ const EditGluonBase = props => {
                     id="title_edit_gluon"
                     defaultMessage={`Relation between { active_quark } and { passive_quark }`}
                     values={{
-                      active_quark: <span>{editingGluon.active.name}</span>,
-                      passive_quark: <span>{editingGluon.passive.name}</span>
+                      active_quark: (
+                        <span>
+                          {util.localedProp(editingGluon.active, "name")}
+                        </span>
+                      ),
+                      passive_quark: (
+                        <span>
+                          {util.localedProp(editingGluon.passive, "name")}
+                        </span>
+                      )
                     }}
                   />
                 </h1>

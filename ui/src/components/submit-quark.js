@@ -84,9 +84,8 @@ class SubmitQuark extends Component {
         mutation={mutation}
         variables={variables}
         onCompleted={data => {
-          this.props.history.push(
-            `${ROUTES.GRAPH_BASE}${data[mutationName].name}`
-          );
+          const name = util.localedProp(data[mutationName], "name");
+          this.props.history.push(`${ROUTES.GRAPH_BASE}${name}`);
         }}
         onError={error => {
           alert(error.message);

@@ -90,7 +90,17 @@ class GluonForm extends Component {
       const util = new Util(false);
       const start = util.date2str(editingGluon.start);
       const end = util.date2str(editingGluon.end);
-      newVariables = { ..._.omit(editingGluon, avoid2Edit), start, end };
+      const prefix = util.localedProp(editingGluon, "prefix");
+      const relation = util.localedProp(editingGluon, "relation");
+      const suffix = util.localedProp(editingGluon, "suffix");
+      newVariables = {
+        ..._.omit(editingGluon, avoid2Edit),
+        prefix,
+        relation,
+        suffix,
+        start,
+        end
+      };
     } else {
       const active_id = targetQuark.id;
       newVariables = { active_id };

@@ -55,7 +55,9 @@ class QuarkForm extends Component {
       const util = new Util(false);
       const start = util.date2str(editingQuark.start);
       const end = util.date2str(editingQuark.end);
-      this.setFormVariables({ ...editingQuark, start, end });
+      const name = util.localedProp(editingQuark, "name");
+      const description = util.localedProp(editingQuark, "description");
+      this.setFormVariables({ ...editingQuark, name, description, start, end });
     }
   }
 
