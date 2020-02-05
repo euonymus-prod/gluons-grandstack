@@ -20,12 +20,10 @@ class Util {
 
   localedProp = (data, property) => {
     if (this.isEnglish(this.locale)) {
-      return data[property]
-        ? data[property]
-        : data[`${property}_${this.locale}`];
+      return data[property] ? data[property] : data[`${property}_${LOCALE_JA}`];
     } else {
-      return data[`${property}_${this.locale}`]
-        ? data[`${property}_${this.locale}`]
+      return data[`${property}_${LOCALE_JA}`]
+        ? data[`${property}_${LOCALE_JA}`]
         : data[property];
     }
   };
