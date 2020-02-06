@@ -2,11 +2,19 @@ directive @isAuthenticated on OBJECT | FIELD_DEFINITION
 directive @hasRole(roles: [String]) on OBJECT | FIELD_DEFINITION
 
 interface Quark {
-<%= quarkFields %>
+<%= quarkFieldsAll %>
 }
-
+type PublicGluedQuark implements Quark {
+<%= quarkFieldsAll %>
+<%= gluonFields %>
+<%= gluedCommonFields %>
+gluon: Gluon
+    @cypher(
+      statement: "WITH {this} as this RETURN this.gluon"
+    )
+}
 type PublicQuark implements Quark {
-<%= quarkFields %>
+<%= quarkFieldsAll %>
   gluons: [Gluon]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE <%= cypherWherePublicObject %> RETURN gluon ORDER BY <%=cypherOrderByStartDesc %>"
@@ -15,10 +23,14 @@ type PublicQuark implements Quark {
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE <%= cypherWherePublicObject %> RETURN object ORDER BY <%=cypherOrderByStartDesc %>"
     )
+  gluons2: [PublicGluedQuark]
+    @cypher(
+      statement: "WITH {this} as this MATCH <%= cypherMatchNeighbor %> WHERE <%= cypherWherePublicObject %> RETURN object{.*, gluon: gluon } ORDER BY <%=cypherOrderByStartDesc %>"
+    )
 }
 
 type LoggedInQuark implements Quark {
-<%= quarkFields %>
+<%= quarkFieldsAll %>
   gluons(user_id: String): [Gluon]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE <%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %> RETURN gluon ORDER BY <%=cypherOrderByStartDesc %>"
@@ -30,7 +42,7 @@ type LoggedInQuark implements Quark {
 }
 
 type AdminQuark implements Quark {
-<%= quarkFields %>
+<%= quarkFieldsAll %>
   gluons(user_id: String): [Gluon]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> RETURN gluon ORDER BY <%=cypherOrderByStartDesc %>"
@@ -42,11 +54,11 @@ type AdminQuark implements Quark {
 }
 
 type Gluon {
-<%= gluonFields %>
+<%= gluonFieldsAll %>
 }
 
 type ExpandedGluon {
-<%= gluonFields %>
+<%= gluonFieldsAll %>
   active(user_id: String): LoggedInQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN active"

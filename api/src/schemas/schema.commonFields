@@ -1,0 +1,7 @@
+  id: ID!
+  is_private: Boolean
+  is_exclusive: Boolean
+  user_id: String
+  last_modified_user: String
+  created: _Neo4jDateTime
+  modified: _Neo4jDateTime

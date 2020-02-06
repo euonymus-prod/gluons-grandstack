@@ -1,4 +1,3 @@
-  id: ID!
   active_id: String
   passive_id: String
   relation: String
@@ -7,14 +6,4 @@
   relation_ja: String
   prefix_ja: String
   suffix_ja: String
-  start: _Neo4jDateTime
-  end: _Neo4jDateTime
-  start_accuracy: String
-  end_accuracy: String
-  is_momentary: Boolean
-  is_exclusive: Boolean
-  user_id: String
-  last_modified_user: String
   gluon_type_id: Int
-  created: _Neo4jDateTime
-  modified: _Neo4jDateTime

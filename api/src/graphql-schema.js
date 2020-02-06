@@ -22,6 +22,11 @@ const readText = (filename) => {
 // read graphql schema parts
 const quarkFields = readText('schema.quarkFields');
 const gluonFields = readText('schema.gluonFields');
+const periodFields = readText('schema.periodFields');
+const gluedCommonFields = readText('schema.gluedCommonFields');
+const commonFields = readText('schema.commonFields');
+const quarkFieldsAll = `${quarkFields}${periodFields}${commonFields}`
+const gluonFieldsAll = `${gluonFields}${periodFields}${commonFields}`
 const quarkMutateFields = readText('schema.quarkMutateFields');
 const gluonMutateFields = readText('schema.gluonMutateFields');
 // read cypher parts
@@ -44,6 +49,10 @@ const schemaCompiled = _.template(readText('schema.graphql'));
 export const typeDefs = schemaCompiled({
   quarkFields,
   gluonFields,
+  quarkFieldsAll,
+  gluonFieldsAll,
+  commonFields,
+  gluedCommonFields,
   quarkMutateFields,
   gluonMutateFields,
   cypherMatchNeighbor,

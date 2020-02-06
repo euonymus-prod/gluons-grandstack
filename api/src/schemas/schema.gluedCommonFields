@@ -1,0 +1,12 @@
+  id_g: ID!
+  is_private_g: Boolean
+  is_exclusive_g: Boolean
+  user_id_g: String
+  last_modified_user_g: String
+  created_g: _Neo4jDateTime
+  modified_g: _Neo4jDateTime
+  start_g: _Neo4jDateTime
+  end_g: _Neo4jDateTime
+  start_accuracy_g: String
+  end_accuracy_g: String
+  is_momentary_g: Boolean

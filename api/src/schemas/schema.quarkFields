@@ -1,22 +1,10 @@
-  id: ID!
   name: String
   name_ja: String
   image_path: String
   description: String
   description_ja: String
-  start: _Neo4jDateTime
-  end: _Neo4jDateTime
-  start_accuracy: String
-  end_accuracy: String
-  is_momentary: Boolean
   url: String
   affiliate: String
   gender: Int
-  is_private: Boolean
-  is_exclusive: Boolean
-  user_id: String
-  last_modified_user: String
   quark_type_id: Int
-  created: _Neo4jDateTime
-  modified: _Neo4jDateTime
   properties: [QuarkProperty] @neo4j_ignore
