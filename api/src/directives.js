@@ -77,15 +77,12 @@ async function getUser(context) {
   try {
     const idToken = getAuthorizationHeader(context);
     user = await firebaseInstance.getLoggedIn(idToken)
-console.log(99)
   } catch(error) {
-console.log(98)
     // Do nothing
   }
   return user
 }
 function hasAdminPermission(user) {
-console.log('user: ', user)
   return !!(user.is_admin)
 }
 function hasUserPermission(user, user_id) {
@@ -98,25 +95,25 @@ async function hasPermission2(result, context) {
   const user = await getUser(context)
 
   if (hasAdminPermission(user)) {
-console.log(1)
     return true
   }
   if (!result) {
-console.log(2)
     return true
   }
-  // TODO: is_private の存在チェックなければ exception
-console.log('result: ', result)
+  if (typeof result.is_private === "undefined") {
+    // MEMO: is_private is always required
+    return false
+  }
   if (!result.is_private) {
-console.log(3)
     return true
   }
-  // TODO: user_id の存在チェックなければ exception
+  if (typeof result.user_id === "undefined") {
+    // MEMO: user_id is always required, when checking user permission
+    return false
+  }
   if (hasUserPermission(user, result.user_id)) {
-console.log(4)
     return true
   }
-console.log(5)
   return false
 }
 
