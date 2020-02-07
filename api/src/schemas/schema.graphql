@@ -1,5 +1,5 @@
 directive @isAuthenticated on OBJECT | FIELD_DEFINITION
-directive @hasRole(roles: [String]) on OBJECT | FIELD_DEFINITION
+directive @isAuthorized on OBJECT | FIELD_DEFINITION
 
 interface Quark {
 <%= quarkFieldsAll %>
@@ -112,11 +112,11 @@ type Query {
     @cypher(
       statement: "MATCH (node:Quark) WHERE (node.name = $name OR node.name_ja = $name) AND <%= cypherWherePublic %> RETURN node LIMIT 1"
     )
-  loggedInQuark(name: String, user_id: String): LoggedInQuark @hasRole(roles:[admin, user])
+  loggedInQuark(name: String, user_id: String): LoggedInQuark @isAuthorized
     @cypher(
       statement: "MATCH (node:Quark) WHERE (node.name = $name OR node.name_ja = $name) AND <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node LIMIT 1"
     )
-  adminQuark(name: String): AdminQuark @hasRole(roles:[admin])
+  adminQuark(name: String): AdminQuark @isAuthorized
     @cypher(
       statement: "MATCH (node:Quark) WHERE (node.name = $name OR node.name_ja = $name) RETURN node LIMIT 1"
     )
@@ -124,11 +124,11 @@ type Query {
     @cypher(
       statement: "MATCH (node) WHERE <%= cypherWherePublic %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
-  loggedInQuarks(first: Int = 100, user_id: String): [LoggedInQuark] @hasRole(roles:[admin, user])
+  loggedInQuarks(first: Int = 100, user_id: String): [LoggedInQuark] @isAuthorized
     @cypher(
       statement: "MATCH (node) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
-  adminQuarks(first: Int = 100): [AdminQuark] @hasRole(roles:[admin])
+  adminQuarks(first: Int = 100): [AdminQuark] @isAuthorized
     @cypher(
       statement: "MATCH (node) RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
@@ -136,11 +136,11 @@ type Query {
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node WHERE <%= cypherWherePublic %> RETURN node"
     )
-  loggedInSearchQuarks(first: Int = 100, keyword: String, user_id: String): [LoggedInQuark] @hasRole(roles:[admin, user])
+  loggedInSearchQuarks(first: Int = 100, keyword: String, user_id: String): [LoggedInQuark] @isAuthorized
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
     )
-  adminSearchQuarks(first: Int = 100, keyword: String): [AdminQuark] @hasRole(roles:[admin])
+  adminSearchQuarks(first: Int = 100, keyword: String): [AdminQuark] @isAuthorized
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node RETURN node"
     )
@@ -148,7 +148,7 @@ type Query {
     @cypher(
       statement: "MATCH (node:Quark) WHERE <%= cypherWherePublic %> AND <%= cypherWhereTopNodes %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
-  editingQuark(id: ID, user_id: String): LoggedInQuark @hasRole(roles:[admin, user])
+  editingQuark(id: ID, user_id: String): LoggedInQuark @isAuthorized
     @cypher(
       statement: "MATCH (node:Quark {id: $id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
     )
@@ -169,15 +169,15 @@ type Query {
 type Mutation {
   CreateQuark(
     <%= quarkMutateFields %>
-  ): LoggedInQuark @hasRole(roles:[admin, user])
+  ): LoggedInQuark @isAuthorized
   UpdateQuark(
     id: ID!
     <%= quarkMutateFields %>
-  ): LoggedInQuark @hasRole(roles:[admin, user])
+  ): LoggedInQuark @isAuthorized
   DeleteQuark(
     id: ID!
     user_id: String
-  ): LoggedInQuark @hasRole(roles:[admin, user])
+  ): LoggedInQuark @isAuthorized
     @cypher(
       statement: "MATCH (node:Quark {id: $id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> DETACH DELETE node"
     )
@@ -187,15 +187,15 @@ type Mutation {
     passive_id: ID
     passive: String
     <%= gluonMutateFields %>
-  ): Gluon @hasRole(roles:[admin, user])
+  ): Gluon @isAuthorized
   UpdateGluon(
     id: ID!
     <%= gluonMutateFields %>
-  ): Gluon @hasRole(roles:[admin, user])
+  ): Gluon @isAuthorized
   DeleteGluon(
     id: ID!
     user_id: String
-  ): LoggedInQuark @hasRole(roles:[admin, user])
+  ): LoggedInQuark @isAuthorized
     @cypher(
       statement: "MATCH ()-[relation {id: $id}]-() WHERE <%= cypherWhereUsersRelation %> OR <%= cypherWherePublicRelation %> DELETE relation"
     )

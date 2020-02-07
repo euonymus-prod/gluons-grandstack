@@ -41,6 +41,85 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
   }
 }
 
+export class IsAuthorizedDirective extends SchemaDirectiveVisitor {
+  // Declare @isAuthorized schema directive
+  static getDirectiveDeclaration(directiveName, schema) {
+    return new GraphQLDirective({
+      name: "isAuthorized",
+      locations: [DirectiveLocation.FIELD_DEFINITION, DirectiveLocation.OBJECT]
+    });
+  }
+  
+  // Implementation for @isAuthorized when used on a field
+  visitObject(field) {
+    return this.visitorCondition(field)
+  }
+  visitFieldDefinition(field) {
+    return this.visitorCondition(field)
+  }
+  visitorCondition(field) {
+    const { resolve = defaultFieldResolver } = field;
+    field.resolve = async function(...args) {
+      const result = await resolve.apply(this, args);
+      if (await hasPermission2(result, args[2])) {
+        // result.objects = result.objects.filter( object => {
+        //   return hasPrivilege(object, userRoles, user.uid)
+        // })
+        return result
+      }
+      throw new AuthenticationError("You are not authorized for this resource")
+    };
+  }
+}
+
+async function getUser(context) {
+  let user = false // declare it outside of the try
+  try {
+    const idToken = getAuthorizationHeader(context);
+    user = await firebaseInstance.getLoggedIn(idToken)
+console.log(99)
+  } catch(error) {
+console.log(98)
+    // Do nothing
+  }
+  return user
+}
+function hasAdminPermission(user) {
+console.log('user: ', user)
+  return !!(user.is_admin)
+}
+function hasUserPermission(user, user_id) {
+  if (hasAdminPermission) {
+    return true
+  }
+  return (user.uid === user_id)
+}
+async function hasPermission2(result, context) {
+  const user = await getUser(context)
+
+  if (hasAdminPermission(user)) {
+console.log(1)
+    return true
+  }
+  if (!result) {
+console.log(2)
+    return true
+  }
+  // TODO: is_private の存在チェックなければ exception
+console.log('result: ', result)
+  if (!result.is_private) {
+console.log(3)
+    return true
+  }
+  // TODO: user_id の存在チェックなければ exception
+  if (hasUserPermission(user, result.user_id)) {
+console.log(4)
+    return true
+  }
+console.log(5)
+  return false
+}
+
 export class HasRoleDirective extends SchemaDirectiveVisitor {
 
   // Declare @isAuthenticated schema directive
