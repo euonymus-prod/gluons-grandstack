@@ -6,7 +6,7 @@ import { v1 as neo4j } from "neo4j-driver";
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 import dotenv from "dotenv";
 // import our custom directive classes
-import { IsAuthenticatedDirective, IsAuthorizedDirective, HasRoleDirective } from "./directives";
+import { IsAuthenticatedDirective, IsAuthorizedDirective } from "./directives";
 
 // set environment variables from ../.env
 dotenv.config();
@@ -33,7 +33,6 @@ const schema = makeAugmentedSchema({
   schemaDirectives: {
     isAuthenticated: IsAuthenticatedDirective,
     isAuthorized: IsAuthorizedDirective,
-    hasRole: HasRoleDirective,
   },
   resolvers,
   allowUndefinedInResolve: true

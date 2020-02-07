@@ -12,5 +12,7 @@ export const gluonFields = `
   passive_id
   ${periodFields}
   is_exclusive
+  is_private
+  user_id
   gluon_type_id
 `;

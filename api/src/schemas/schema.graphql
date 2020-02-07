@@ -114,7 +114,7 @@ type Query {
     )
   loggedInQuark(name: String, user_id: String): LoggedInQuark @isAuthorized
     @cypher(
-      statement: "MATCH (node:Quark) WHERE (node.name = $name OR node.name_ja = $name) AND <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node LIMIT 1"
+      statement: "MATCH (node:Quark) WHERE (node.name = $name OR node.name_ja = $name) AND (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) RETURN node LIMIT 1"
     )
   adminQuark(name: String): AdminQuark @isAuthorized
     @cypher(
@@ -126,7 +126,7 @@ type Query {
     )
   loggedInQuarks(first: Int = 100, user_id: String): [LoggedInQuark] @isAuthorized
     @cypher(
-      statement: "MATCH (node) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
+      statement: "MATCH (node) WHERE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
   adminQuarks(first: Int = 100): [AdminQuark] @isAuthorized
     @cypher(
@@ -138,7 +138,7 @@ type Query {
     )
   loggedInSearchQuarks(first: Int = 100, keyword: String, user_id: String): [LoggedInQuark] @isAuthorized
     @cypher(
-      statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
+      statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node WHERE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) RETURN node"
     )
   adminSearchQuarks(first: Int = 100, keyword: String): [AdminQuark] @isAuthorized
     @cypher(
@@ -150,7 +150,7 @@ type Query {
     )
   editingQuark(id: ID, user_id: String): LoggedInQuark @isAuthorized
     @cypher(
-      statement: "MATCH (node:Quark {id: $id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> RETURN node"
+      statement: "MATCH (node:Quark {id: $id}) WHERE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) RETURN node"
     )
   editingGluon(id: ID, user_id: String): ExpandedGluon @isAuthenticated
     @cypher(
