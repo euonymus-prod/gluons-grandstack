@@ -61,10 +61,15 @@ export class IsAuthorizedDirective extends SchemaDirectiveVisitor {
   visitorCondition(field) {
     const { resolve = defaultFieldResolver } = field;
     field.resolve = async function(...args) {
-      const result = await resolve.apply(this, args);
-
+      const params = args[1]
       const context = args[2]
       const user = await getUser(context)
+      if (!isAuthorizedParams(params, user)) {
+        throw new AuthenticationError("You are not authorized to use these parameters")
+      }
+
+      // Filter salvaged result
+      const result = await resolve.apply(this, args);
       const returnResult = authorizedResult(result, user)
       if (!returnResult) {
         throw new AuthenticationError("You are not authorized for this resource")
@@ -74,21 +79,6 @@ export class IsAuthorizedDirective extends SchemaDirectiveVisitor {
   }
 }
 
-/****************************************/
-/* Primitives                           */
-/****************************************/
-function isArray (data) {
-  return Object.prototype.toString.call(data) === '[object Array]';
-}
-function isObject (data) {
-  return typeof data === 'object' && data !== null && !isArray(data);
-}
-function hasParam(data, paramKey) {
-  if (!isObject(data)) {
-    return false
-  }
-  return (paramKey in data)
-}
 /****************************************/
 /* User                                 */
 /****************************************/
@@ -115,7 +105,19 @@ function hasUserPermission(user, user_id) {
 /****************************************/
 /* Authorization                        */
 /****************************************/
-function isAuthorized(result, user) {
+function isAuthorizedParams(params, user) {
+  if (hasAdminPermission(user)) {
+    return true
+  }
+  if (hasParam(params, "is_admin") && params.is_admin) {
+    return false
+  }
+  if (hasParam(params, "user_id") && !hasUserPermission(user, params.user_id)) {
+    return false
+  }
+  return true
+}
+function isAuthorizedResult(result, user) {
   if (!hasParam(result, "is_private")) {
     throw new AuthenticationError("is_private is required")
   }
@@ -138,12 +140,12 @@ function authorizedResult(result, user) {
     return null
   }
   if (isObject(result)) {
-    return isAuthorized(result, user) ? result : null
+    return isAuthorizedResult(result, user) ? result : null
   } else if (isArray(result)) {
     return _.filter(
       result.map(data => {
         try {
-          return isAuthorized(data, user) ? data : null
+          return isAuthorizedResult(data, user) ? data : null
         } catch(error) {
           return null
         }
@@ -152,6 +154,22 @@ function authorizedResult(result, user) {
     )
   }
   return null
+}
+
+/****************************************/
+/* Primitives                           */
+/****************************************/
+function isArray (data) {
+  return Object.prototype.toString.call(data) === '[object Array]';
+}
+function isObject (data) {
+  return typeof data === 'object' && data !== null && !isArray(data);
+}
+function hasParam(data, paramKey) {
+  if (!isObject(data)) {
+    return false
+  }
+  return (paramKey in data)
 }
 
 // export class HasRoleDirective extends SchemaDirectiveVisitor {
