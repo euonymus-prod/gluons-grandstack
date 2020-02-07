@@ -39,11 +39,11 @@ type Gluon {
 
 type ExpandedGluon {
 <%= gluonFieldsAll %>
-  active(user_id: String): PublicGluedQuark
+  active(user_id: String): PublicQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN active"
     )
-  passive(user_id: String): PublicGluedQuark
+  passive(user_id: String): PublicQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN passive"
     )
@@ -151,7 +151,7 @@ type Mutation {
   DeleteGluon(
     id: ID!
     user_id: String
-  ): PublicGluedQuark @isAuthorized
+  ): PublicQuark @isAuthorized
     @cypher(
       statement: "MATCH ()-[relation {id: $id}]-() WHERE <%= cypherWhereUsersRelation %> OR <%= cypherWherePublicRelation %> DELETE relation"
     )
