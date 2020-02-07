@@ -339,12 +339,12 @@ export const resolvers = {
   PublicQuark: {
     properties: quarkPropertiesResolver
   },
-  LoggedInQuark: {
-    properties: quarkPropertiesResolver
-  },
-  AdminQuark: {
-    properties: quarkPropertiesResolver
-  },
+  // LoggedInQuark: {
+  //   properties: quarkPropertiesResolver
+  // },
+  // AdminQuark: {
+  //   properties: quarkPropertiesResolver
+  // },
   QuarkProperty: {
     gluons: (parent, {subject}, context, info) => {
       if (!parent.gluons || parent.gluons.length === 0) {
