@@ -23,21 +23,13 @@ type PublicQuark implements Quark {
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object ORDER BY <%=cypherOrderByStartDesc %>"
     )
-  gluons2(user_id: String = "dummy", is_admin: Boolean = false): [PublicGluedQuark]
+  objects2(user_id: String = "dummy", is_admin: Boolean = false): [PublicQuark]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object{.*, gluon: gluon } ORDER BY <%=cypherOrderByStartDesc %>"
     )
-}
-
-type LoggedInQuark implements Quark {
-<%= quarkFieldsAll %>
-  gluons(user_id: String): [Gluon]
+  gluon: Gluon
     @cypher(
-      statement: "MATCH <%= cypherMatchNeighbor %> WHERE <%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %> RETURN gluon ORDER BY <%=cypherOrderByStartDesc %>"
-    )
-  objects(user_id: String): [LoggedInQuark]
-    @cypher(
-      statement: "MATCH <%= cypherMatchNeighbor %> WHERE <%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %> RETURN object ORDER BY <%=cypherOrderByStartDesc %>"
+      statement: "WITH {this} as this RETURN this.gluon"
     )
 }
 
@@ -47,11 +39,11 @@ type Gluon {
 
 type ExpandedGluon {
 <%= gluonFieldsAll %>
-  active(user_id: String): LoggedInQuark
+  active(user_id: String): PublicGluedQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN active"
     )
-  passive(user_id: String): LoggedInQuark
+  passive(user_id: String): PublicGluedQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN passive"
     )
@@ -159,7 +151,7 @@ type Mutation {
   DeleteGluon(
     id: ID!
     user_id: String
-  ): LoggedInQuark @isAuthorized
+  ): PublicGluedQuark @isAuthorized
     @cypher(
       statement: "MATCH ()-[relation {id: $id}]-() WHERE <%= cypherWhereUsersRelation %> OR <%= cypherWherePublicRelation %> DELETE relation"
     )
