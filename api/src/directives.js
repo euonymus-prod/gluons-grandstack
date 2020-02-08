@@ -169,7 +169,11 @@ function hasParam(data, paramKey) {
   if (!isObject(data)) {
     return false
   }
-  return (paramKey in data)
+  const hasParamKey = (paramKey in data)
+  if (hasParamKey) {
+    return (data[paramKey] === "dummy") ? false : true
+  }
+  return false
 }
 
 // export class HasRoleDirective extends SchemaDirectiveVisitor {

@@ -31,6 +31,10 @@ type PublicQuark implements Quark {
     @cypher(
       statement: "WITH {this} as this RETURN this.gluon"
     )
+  test: [PublicQuark]
+    @cypher(
+      statement: "WITH {this} as this MATCH (node {id: this.id})-[gluon]-(object) RETURN object{.*, gluon: gluon }"
+    )
 }
 
 type Gluon {
