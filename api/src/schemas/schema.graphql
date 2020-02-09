@@ -4,28 +4,28 @@ directive @isAuthorized on OBJECT | FIELD_DEFINITION
 interface Quark {
 <%= quarkFieldsAll %>
 }
-type PublicGluedQuark implements Quark {
+type GluedQuark implements Quark {
 <%= quarkFieldsAll %>
   gluon: Gluon
     @cypher(
       statement: "WITH {this} as this RETURN this.gluon"
     )
-  objects(user_id: String = "", is_admin: Boolean = false): [PublicGluedQuark]
+  objects(user_id: String = "", is_admin: Boolean = false): [GluedQuark]
     @cypher(
       statement: "MATCH (node:Quark {id: this.id})-[gluon]-(object) WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object{.*, gluon: gluon } ORDER BY <%=cypherOrderByStartDesc %>"
     )
 }
-type PublicQuark implements Quark {
+type TopQuark implements Quark {
 <%= quarkFieldsAll %>
   gluons(user_id: String = "", is_admin: Boolean = false): [Gluon]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN gluon ORDER BY <%=cypherOrderByStartDesc %>"
     )
-  objects(user_id: String = "", is_admin: Boolean = false): [PublicQuark]
+  objects(user_id: String = "", is_admin: Boolean = false): [TopQuark]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object ORDER BY <%=cypherOrderByStartDesc %>"
     )
-  objects2(user_id: String = "", is_admin: Boolean = false): [PublicGluedQuark]
+  objects2(user_id: String = "", is_admin: Boolean = false): [GluedQuark]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object{.*, gluon: gluon } ORDER BY <%=cypherOrderByStartDesc %>"
     )
@@ -37,11 +37,11 @@ type Gluon {
 
 type ExpandedGluon {
 <%= gluonFieldsAll %>
-  active(user_id: String): PublicQuark
+  active(user_id: String): TopQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN active"
     )
-  passive(user_id: String): PublicQuark
+  passive(user_id: String): TopQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN passive"
     )
@@ -86,23 +86,23 @@ enum Role {
 }
 
 type Query {
-  quark(name: String, user_id: String = "", is_admin: Boolean = false): PublicQuark @isAuthorized
+  quark(name: String, user_id: String = "", is_admin: Boolean = false): TopQuark @isAuthorized
     @cypher(
       statement: "MATCH (node:Quark) WHERE (node.name = $name OR node.name_ja = $name) AND CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublic %>) ELSE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) END END RETURN node LIMIT 1"
     )
-  quarks(first: Int = 100, user_id: String = "", is_admin: Boolean = false): [PublicQuark]
+  quarks(first: Int = 100, user_id: String = "", is_admin: Boolean = false): [TopQuark]
     @cypher(
       statement: "MATCH (node) WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublic %>) ELSE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) END END RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
-  searchQuarks(first: Int = 100, keyword: String, user_id: String = "", is_admin: Boolean = false): [PublicQuark]
+  searchQuarks(first: Int = 100, keyword: String, user_id: String = "", is_admin: Boolean = false): [TopQuark]
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublic %>) ELSE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) END END RETURN node"
     )
-  topQuarks: [PublicQuark]
+  topQuarks: [TopQuark]
     @cypher(
       statement: "MATCH (node:Quark) WHERE <%= cypherWherePublic %> AND <%= cypherWhereTopNodes %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
-  editingQuark(id: ID, user_id: String): PublicQuark @isAuthorized
+  editingQuark(id: ID, user_id: String): TopQuark @isAuthorized
     @cypher(
       statement: "MATCH (node:Quark {id: $id}) WHERE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) RETURN node"
     )
@@ -123,15 +123,15 @@ type Query {
 type Mutation {
   CreateQuark(
     <%= quarkMutateFields %>
-  ): PublicQuark @isAuthenticated
+  ): TopQuark @isAuthenticated
   UpdateQuark(
     id: ID!
     <%= quarkMutateFields %>
-  ): PublicQuark @isAuthenticated
+  ): TopQuark @isAuthenticated
   DeleteQuark(
     id: ID!
     user_id: String
-  ): PublicQuark @isAuthorized
+  ): TopQuark @isAuthorized
     @cypher(
       statement: "MATCH (node:Quark {id: $id}) WHERE <%= cypherWhereUsersNode %> OR <%= cypherWherePublic %> DETACH DELETE node"
     )
@@ -149,7 +149,7 @@ type Mutation {
   DeleteGluon(
     id: ID!
     user_id: String
-  ): PublicQuark @isAuthorized
+  ): TopQuark @isAuthorized
     @cypher(
       statement: "MATCH ()-[relation {id: $id}]-() WHERE <%= cypherWhereUsersRelation %> OR <%= cypherWherePublicRelation %> DELETE relation"
     )
