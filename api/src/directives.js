@@ -171,7 +171,7 @@ function hasParam(data, paramKey) {
   }
   const hasParamKey = (paramKey in data)
   if (hasParamKey) {
-    return (data[paramKey] === "dummy") ? false : true
+    return (data[paramKey] === "") ? false : true
   }
   return false
 }
