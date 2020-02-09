@@ -6,11 +6,13 @@ interface Quark {
 }
 type PublicGluedQuark implements Quark {
 <%= quarkFieldsAll %>
-<%= gluonFields %>
-<%= gluedCommonFields %>
-gluon: Gluon
+  gluon: Gluon
     @cypher(
       statement: "WITH {this} as this RETURN this.gluon"
+    )
+  objects(user_id: String = "", is_admin: Boolean = false): [PublicGluedQuark]
+    @cypher(
+      statement: "MATCH (node:Quark {id: this.id})-[gluon]-(object) WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object{.*, gluon: gluon } ORDER BY <%=cypherOrderByStartDesc %>"
     )
 }
 type PublicQuark implements Quark {
@@ -23,17 +25,9 @@ type PublicQuark implements Quark {
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object ORDER BY <%=cypherOrderByStartDesc %>"
     )
-  objects2(user_id: String = "", is_admin: Boolean = false): [PublicQuark]
+  objects2(user_id: String = "", is_admin: Boolean = false): [PublicGluedQuark]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object{.*, gluon: gluon } ORDER BY <%=cypherOrderByStartDesc %>"
-    )
-  gluon: Gluon
-    @cypher(
-      statement: "WITH {this} as this RETURN this.gluon"
-    )
-  test: [PublicQuark]
-    @cypher(
-      statement: "MATCH (node:Quark {id: this.id})-[gluon]-(object) RETURN object{.*, gluon: gluon }"
     )
 }
 

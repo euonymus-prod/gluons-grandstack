@@ -23,7 +23,6 @@ const readText = (filename) => {
 const quarkFields = readText('schema.quarkFields');
 const gluonFields = readText('schema.gluonFields');
 const periodFields = readText('schema.periodFields');
-const gluedCommonFields = readText('schema.gluedCommonFields');
 const commonFields = readText('schema.commonFields');
 const quarkFieldsAll = `${quarkFields}${periodFields}${commonFields}`
 const gluonFieldsAll = `${gluonFields}${periodFields}${commonFields}`
@@ -52,7 +51,6 @@ export const typeDefs = schemaCompiled({
   quarkFieldsAll,
   gluonFieldsAll,
   commonFields,
-  gluedCommonFields,
   quarkMutateFields,
   gluonMutateFields,
   cypherMatchNeighbor,
