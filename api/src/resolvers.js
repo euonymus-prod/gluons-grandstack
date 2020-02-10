@@ -354,6 +354,11 @@ export const resolvers = {
 
       // TODO: filterする時に、同じ２つのnode間に複数のrelationshipがある場合に、常に最初のrelationshipのみが抽出されるため、画面表示時に、同じgluonが表示されてしまうバグあり。filter方法を再検討が必要
       return parent.objects.filter(object => {
+if (object.id === "ee24a708-5bb7-466b-9979-81364dc482f3") {
+  console.log(object.id)
+  console.log(object.name_ja)
+  console.log(object.gluon)
+}
         // NOTE: You cannot set object_id here on GraphQL. This make it stateful, because object_id depends on subject.
         // if (parent.subject_id === gluon.active_id) {
         //   gluon.object_id = gluon.passive_id
