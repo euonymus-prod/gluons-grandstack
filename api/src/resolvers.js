@@ -351,6 +351,8 @@ export const resolvers = {
         // throw Error("QuarkProperty.gluons are required in the parent query");
         return []
       }
+
+      // TODO: filterする時に、同じ２つのnode間に複数のrelationshipがある場合に、常に最初のrelationshipのみが抽出されるため、画面表示時に、同じgluonが表示されてしまうバグあり。filter方法を再検討が必要
       return parent.objects.filter(object => {
         // NOTE: You cannot set object_id here on GraphQL. This make it stateful, because object_id depends on subject.
         // if (parent.subject_id === gluon.active_id) {
