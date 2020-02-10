@@ -26,23 +26,40 @@ const useStyles = makeStyles({
 const PropertyBox = props => {
   const { propertyResource, hasSecondLevel, objects, subject } = props;
   const classes = useStyles();
-  const gluonsList = propertyResource.gluons.map((gluon, key) => {
-    const object_id = getObjectId(subject.id, gluon);
-    const object = objects
-      .filter(data => {
-        return data.id === object_id;
-      })
-      .shift();
+  // const gluonsList = propertyResource.gluons.map((gluon, key) => {
+  //   const object_id = getObjectId(subject.id, gluon);
+  //   const object = objects
+  //     .filter(data => {
+  //       return data.id === object_id;
+  //     })
+  //     .shift();
+  //   object.name = util.localedProp(object, "name");
+  //   object.description = util.localedProp(object, "description");
+  //   gluon.relation = util.localedProp(gluon, "relation");
+  //   gluon.prefix = util.localedProp(gluon, "prefix");
+  //   gluon.suffix = util.localedProp(gluon, "suffix");
+  //
+  //   return (
+  //     <Gluon
+  //       key={key}
+  //       gluon={gluon}
+  //       subject={subject}
+  //       object={object}
+  //       hasSecondLevel={hasSecondLevel}
+  //       isTop={key === 0}
+  //     />
+  //   );
+  // });
+  const gluonsList = propertyResource.objects.map((object, key) => {
     object.name = util.localedProp(object, "name");
     object.description = util.localedProp(object, "description");
-    gluon.relation = util.localedProp(gluon, "relation");
-    gluon.prefix = util.localedProp(gluon, "prefix");
-    gluon.suffix = util.localedProp(gluon, "suffix");
+    object.gluon.relation = util.localedProp(object.gluon, "relation");
+    object.gluon.prefix = util.localedProp(object.gluon, "prefix");
+    object.gluon.suffix = util.localedProp(object.gluon, "suffix");
 
     return (
       <Gluon
         key={key}
-        gluon={gluon}
         subject={subject}
         object={object}
         hasSecondLevel={hasSecondLevel}

@@ -69,8 +69,7 @@ const SecondGluon = props => {
 
 SecondGluon.propTypes = {
   subject: PropTypes.object.isRequired,
-  object: PropTypes.object.isRequired,
-  gluon: PropTypes.object.isRequired
+  object: PropTypes.object.isRequired
 };
 
 export default withRouter(SecondGluon);

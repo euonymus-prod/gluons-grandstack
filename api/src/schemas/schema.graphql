@@ -17,15 +17,7 @@ type GluedQuark implements Quark {
 }
 type TopQuark implements Quark {
 <%= quarkFieldsAll %>
-  gluons(user_id: String = "", is_admin: Boolean = false): [Gluon]
-    @cypher(
-      statement: "MATCH <%= cypherMatchNeighbor %> WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN gluon ORDER BY <%=cypherOrderByStartDesc %>"
-    )
-  objects(user_id: String = "", is_admin: Boolean = false): [TopQuark]
-    @cypher(
-      statement: "MATCH <%= cypherMatchNeighbor %> WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object ORDER BY <%=cypherOrderByStartDesc %>"
-    )
-  objects2(user_id: String = "", is_admin: Boolean = false): [GluedQuark]
+  objects(user_id: String = "", is_admin: Boolean = false): [GluedQuark]
     @cypher(
       statement: "MATCH <%= cypherMatchNeighbor %> WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object{.*, gluon: gluon } ORDER BY <%=cypherOrderByStartDesc %>"
     )
@@ -66,10 +58,7 @@ type QuarkProperty {
   caption: String
   caption_ja: String
   qpropertyGtypes: [QpropertyGtype]
-  gluons(subject: String): [Gluon]
-    @cypher(
-      statement: "MATCH (subject:Quark { name: $subject })-[gluon]-(object) RETURN gluon, object ORDER BY <%=cypherOrderByStartDesc %>"
-    )
+  objects(subject: String): [GluedQuark]
 }
 
 type QpropertyGtype {

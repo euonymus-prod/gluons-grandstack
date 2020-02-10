@@ -139,12 +139,12 @@ const gluonTypes = (parent, {}, context, info) => {
 
 const quarkPropertiesResolver= (parent, params, context, info) => {
   if (parent.quark_type_id === null) {
-    return [{...getOtherQuarkProperties(), gluons: parent.gluons, subject_id: parent.id, qpropertyGtypes: null}]
+    return [{...getOtherQuarkProperties(), objects: parent.objects, subject_id: parent.id, qpropertyGtypes: null}]
   } else if (!parent.quark_type_id) {
     throw Error("Quark.quark_type_id are required in the parent query");
   }
   return getQuarkProperties(parent.quark_type_id).map(property => {
-    return {...property, gluons: parent.gluons, subject_id: parent.id}
+    return {...property, objects: parent.objects, subject_id: parent.id}
   })
   // return [{caption:'hoge'}]
 }
@@ -333,9 +333,9 @@ const getUser = async context => {
   return user
 }
 export const resolvers = {
-  Quark: {
-    properties: quarkPropertiesResolver
-  },
+  // Quark: {
+  //   properties: quarkPropertiesResolver
+  // },
   TopQuark: {
     properties: quarkPropertiesResolver
   },
@@ -346,12 +346,12 @@ export const resolvers = {
   //   properties: quarkPropertiesResolver
   // },
   QuarkProperty: {
-    gluons: (parent, {subject}, context, info) => {
-      if (!parent.gluons || parent.gluons.length === 0) {
+    objects: (parent, {subject}, context, info) => {
+      if (!parent.objects || parent.objects.length === 0) {
         // throw Error("QuarkProperty.gluons are required in the parent query");
         return []
       }
-      return parent.gluons.filter(gluon => {
+      return parent.objects.filter(object => {
         // NOTE: You cannot set object_id here on GraphQL. This make it stateful, because object_id depends on subject.
         // if (parent.subject_id === gluon.active_id) {
         //   gluon.object_id = gluon.passive_id
@@ -363,17 +363,17 @@ export const resolvers = {
           result = true
         } else {
           parent.qpropertyGtypes.some(gtype => {
-            if ( (parent.id === ID_TYPE.NONE) && (gluon.gluon_type_id === null) ) {
+            if ( (parent.id === ID_TYPE.NONE) && (object.gluon.gluon_type_id === null) ) {
               result = true
-            } else if (gluon.gluon_type_id !== gtype.gluon_type_id) {
+            } else if (object.gluon.gluon_type_id !== gtype.gluon_type_id) {
               return false
             }
             if (gtype.direction === DIRECTION.A2B) {
-              if (parent.subject_id === gluon.active_id) {
+              if (parent.subject_id === object.gluon.active_id) {
                 result = true
               }
             } else if (gtype.direction === DIRECTION.B2A) {
-              if (parent.subject_id === gluon.passive_id) {
+              if (parent.subject_id === object.gluon.passive_id) {
                 result = true
               }
             } else {

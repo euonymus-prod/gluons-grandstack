@@ -10,16 +10,16 @@ const queryQuarkCompiled = _.template(`
   query Quark($name: String) {
     <%= queryName %>(name: $name<%= addingUserIdParam %>) {
       ${quarkFields}
-      gluons<%= onlyUserIdParam %> {
-        ${gluonFields}
-      }
       objects<%= onlyUserIdParam %> {
         ${quarkFields}
-        gluons<%= onlyUserIdParam %> {
+        gluon {
           ${gluonFields}
         }
         objects<%= onlyUserIdParam %> {
           ${quarkFields}
+          gluon {
+            ${gluonFields}
+          }
         }
       }
       properties {
@@ -29,8 +29,17 @@ const queryQuarkCompiled = _.template(`
           caption
           caption_ja
         }
-        gluons {
-          ${gluonFields}
+        objects {
+          ${quarkFields}
+          gluon {
+            ${gluonFields}
+          }
+          objects<%= onlyUserIdParam %> {
+            ${quarkFields}
+            gluon {
+              ${gluonFields}
+            }
+          }
         }
       }
     }

@@ -26,29 +26,38 @@ const useStyles = makeStyles(theme => ({
 const SecondGluons = props => {
   const classes = useStyles();
 
-  const { subject, objects, gluons } = props;
+  const { subject, objects } = props;
 
-  const tileData = gluons.map(gluon => {
-    const object_id = getObjectId(subject.id, gluon);
-
-    const object = objects
-      .filter(data => {
-        return data.id === object_id;
-      })
-      .shift();
+  const tileData = objects.map(object => {
+    // const object_id = getObjectId(subject.id, gluon);
+    //
+    // const object = objects
+    //   .filter(data => {
+    //     return data.id === object_id;
+    //   })
+    //   .shift();
+    // object.name = util.localedProp(object, "name");
+    // object.description = util.localedProp(object, "description");
+    // gluon.relation = util.localedProp(gluon, "relation");
+    // gluon.prefix = util.localedProp(gluon, "prefix");
+    // gluon.suffix = util.localedProp(gluon, "suffix");
+    //
+    // return (
+    //   <SecondGluon
+    //     key={gluon.id}
+    //     subject={subject}
+    //     object={object}
+    //     gluon={gluon}
+    //   />
+    // );
     object.name = util.localedProp(object, "name");
     object.description = util.localedProp(object, "description");
-    gluon.relation = util.localedProp(gluon, "relation");
-    gluon.prefix = util.localedProp(gluon, "prefix");
-    gluon.suffix = util.localedProp(gluon, "suffix");
+    object.gluon.relation = util.localedProp(object.gluon, "relation");
+    object.gluon.prefix = util.localedProp(object.gluon, "prefix");
+    object.gluon.suffix = util.localedProp(object.gluon, "suffix");
 
     return (
-      <SecondGluon
-        key={gluon.id}
-        subject={subject}
-        object={object}
-        gluon={gluon}
-      />
+      <SecondGluon key={object.gluon.id} subject={subject} object={object} />
     );
   });
 
@@ -63,8 +72,7 @@ const SecondGluons = props => {
 
 SecondGluons.propTypes = {
   subject: PropTypes.object.isRequired,
-  objects: PropTypes.array.isRequired,
-  gluons: PropTypes.array.isRequired
+  objects: PropTypes.array.isRequired
 };
 
 export default SecondGluons;

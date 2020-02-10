@@ -65,33 +65,34 @@ const useStyles = makeStyles({
   // },
 });
 
-const relationTextBuilder = (subject, object, gluon) => {
+const relationTextBuilder = (subject, object) => {
   let glue_sentence_before_link = "";
   let glue_sentence_after_link = " ";
   const langType = util.isEnglish() ? LANGTYPE_ENG_LIKE : LANGTYPE_JP_LIKE;
 
-  if (subject.id === gluon.active_id) {
+  if (subject.id === object.gluon.active_id) {
     glue_sentence_before_link = subject.name;
     if (langType === LANGTYPE_ENG_LIKE) {
-      glue_sentence_before_link += " " + gluon.relation;
+      glue_sentence_before_link += " " + object.gluon.relation;
     } else {
       glue_sentence_before_link += "は";
-      glue_sentence_after_link += gluon.relation;
+      glue_sentence_after_link += object.gluon.relation;
     }
     glue_sentence_before_link += " ";
-    if (gluon.suffix) {
-      glue_sentence_after_link += gluon.suffix;
+    if (object.gluon.suffix) {
+      glue_sentence_after_link += object.gluon.suffix;
     }
-  } else if (subject.id === gluon.passive_id) {
+  } else if (subject.id === object.gluon.passive_id) {
     glue_sentence_before_link = "";
     if (langType === LANGTYPE_ENG_LIKE) {
-      glue_sentence_after_link += gluon.relation + " " + subject.name + " ";
+      glue_sentence_after_link +=
+        object.gluon.relation + " " + subject.name + " ";
     } else {
-      glue_sentence_after_link += "は" + subject.name + gluon.relation;
+      glue_sentence_after_link += "は" + subject.name + object.gluon.relation;
     }
     glue_sentence_before_link += " ";
-    if (gluon.suffix) {
-      glue_sentence_after_link += gluon.suffix;
+    if (object.gluon.suffix) {
+      glue_sentence_after_link += object.gluon.suffix;
     }
   } else {
     return "";
@@ -107,9 +108,9 @@ const relationTextBuilder = (subject, object, gluon) => {
 };
 
 const Gluon = props => {
-  const { authUser, subject, object, gluon, hasSecondLevel, isTop } = props;
+  const { authUser, subject, object, hasSecondLevel, isTop } = props;
   const classes = useStyles();
-  const relationText = relationTextBuilder(subject, object, gluon);
+  const relationText = relationTextBuilder(subject, object);
 
   const quarkImagePath = object.image_path ? object.image_path : no_image;
   const avatar = (
@@ -145,16 +146,16 @@ const Gluon = props => {
         <ListItem divider={true}>
           <ListItemText
             primary={relationText}
-            secondary={util.period2str(gluon)}
+            secondary={util.period2str(object.gluon)}
           />
           {isLoggedIn() && (
             <Fragment>
-              <Link to={`${ROUTES.EDIT_GLUON_BASE}${gluon.id}`}>
+              <Link to={`${ROUTES.EDIT_GLUON_BASE}${object.gluon.id}`}>
                 <IconButton>
                   <EditIcon />
                 </IconButton>
               </Link>
-              <SubmitGluonDelete variables={{ id: gluon.id, user_id }} />
+              <SubmitGluonDelete variables={{ id: object.gluon.id, user_id }} />
             </Fragment>
           )}
         </ListItem>
@@ -174,12 +175,11 @@ const Gluon = props => {
             </List>
           </ListItem>
         </CardActionArea>
-        {hasSecondLevel && object.gluons.length !== 0 && (
+        {hasSecondLevel && object.objects.length !== 0 && (
           <ListItem className={classes.secondGluons}>
             <SecondGluons
               subject={{ ...object, name: util.localedProp(object, "name") }}
               objects={object.objects}
-              gluons={object.gluons}
             />
           </ListItem>
         )}
@@ -195,9 +195,9 @@ Gluon.propTypes = {
   object: PropTypes.shape({
     name: PropTypes.string.isRequired
   }),
-  gluon: PropTypes.shape({
-    relation: PropTypes.string.isRequired
-  }),
+  // gluon: PropTypes.shape({
+  //   relation: PropTypes.string.isRequired
+  // }),
   hasSecondLevel: PropTypes.bool.isRequired,
   isTop: PropTypes.bool.isRequired
 };
