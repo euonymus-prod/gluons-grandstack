@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import SecondGluon from "./second-gluon";
-import Util, { getObjectId } from "../utils/common";
+// import Util, { getObjectId } from "../utils/common";
+import Util from "../utils/common";
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";

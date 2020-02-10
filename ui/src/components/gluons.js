@@ -22,7 +22,6 @@ const Gluons = props => {
         key={key}
         propertyResource={propertyResource}
         subject={subject}
-        objects={parentQuark.objects}
         hasSecondLevel={hasSecondLevel}
       />
     );

@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Gluon from "./gluon";
-import Util, { getObjectId } from "../utils/common";
+// import Util, { getObjectId } from "../utils/common";
+import Util from "../utils/common";
 // import './assets/styles/baryon.css'
 // Material UI
 import { makeStyles } from "@material-ui/styles";
@@ -24,7 +25,7 @@ const useStyles = makeStyles({
 });
 
 const PropertyBox = props => {
-  const { propertyResource, hasSecondLevel, objects, subject } = props;
+  const { propertyResource, hasSecondLevel, subject } = props;
   const classes = useStyles();
   // const gluonsList = propertyResource.gluons.map((gluon, key) => {
   //   const object_id = getObjectId(subject.id, gluon);
@@ -85,7 +86,6 @@ PropertyBox.propTypes = {
     caption: PropTypes.string.isRequired
   }),
   subject: PropTypes.object.isRequired,
-  objects: PropTypes.array.isRequired,
   hasSecondLevel: PropTypes.bool.isRequired
 };
 PropertyBox.defaultProps = {
