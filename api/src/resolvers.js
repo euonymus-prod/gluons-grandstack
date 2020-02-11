@@ -309,7 +309,7 @@ const generateDatetimeParams = params => {
   
   const paramsReady = { ...params, quark_type_id: neou.sanitizeQuarkTypeId(params.quark_type_id) }
   existingDatetimeParams.forEach(paramKey => {
-    paramsReady[paramKey] = neou.generateDatetimeParam(params[paramKey])
+    paramsReady[paramKey] = neou.generateFormattedDatetime(paramKey, params[paramKey])
   })
   paramsReady.image_path = neou.sanitizeImagePath(paramsReady)
   return {datetimeSetter, paramsReady}
