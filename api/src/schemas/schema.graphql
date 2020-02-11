@@ -10,9 +10,9 @@ type GluedQuark implements Quark {
     @cypher(
       statement: "WITH {this} as this RETURN this.gluon"
     )
-  objects(user_id: String = "", is_admin: Boolean = false): [GluedQuark]
+  objects(name: String = "", user_id: String = "", is_admin: Boolean = false): [GluedQuark]
     @cypher(
-      statement: "MATCH (node:Quark {id: this.id})-[gluon]-(object) WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object{.*, gluon: gluon } ORDER BY <%=cypherOrderByStartDesc %>"
+      statement: "MATCH (node:Quark {id: this.id})-[gluon]-(object) WHERE (((object.name_ja IS NULL) OR (object.name_ja <> $name)) AND ((object.name IS NULL) OR (object.name <> $name))) AND CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object{.*, gluon: gluon } ORDER BY <%=cypherOrderByStartDesc %>"
     )
 }
 type TopQuark implements Quark {

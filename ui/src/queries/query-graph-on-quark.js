@@ -14,7 +14,7 @@ const queryQuarkCompiled = _.template(`
         gluon {
           ${gluonFields}
         }
-        objects(first: 20, user_id: $user_id, is_admin: $is_admin) {
+        objects(first: 20, name: $name, user_id: $user_id, is_admin: $is_admin) {
           ${quarkFields}
           gluon {
             ${gluonFields}
