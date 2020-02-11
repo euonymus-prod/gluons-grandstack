@@ -1,38 +1,49 @@
-# NOTE: gluons.active_id, gluons.passive_id are required to get properties.gluons.object_id
-query{
-  Quark(name:"眞弓聡"){
-    id
-    name
-    start {
-      year
-    }
+query {
+  quark(name: "吉田茂", user_id: "1nlbladYQEgDTYN4ymn8d6T8YRw1") {
+    name_ja
     quark_type_id
-    objects {
-      id
-      name
-      gluons {
-        relation
-        active_id
-        passive_id
+    user_id
+    is_private
+    objects(user_id: "1nlbladYQEgDTYN4ymn8d6T8YRw1") {
+      name_ja
+      gluon {
+        id
+        relation_ja
+        gluon_type_id
       }
-      objects {
-        name
+      objects(user_id: "1nlbladYQEgDTYN4ymn8d6T8YRw1") {
+        name_ja
+        gluon {
+          id
+          relation_ja
+          gluon_type_id
+          start {
+            year
+          }
+        }
       }
-    }
-    gluons {
-      relation
-      active_id
-      passive_id
-      gluon_type_id
     }
     properties {
       caption_ja
       qpropertyGtypes {
-        caption_ja
+        gluon_type_id
       }
-      gluons {
-        object_id
-        relation
+      objects {
+        name_ja
+        gluon {
+          id
+          relation_ja
+        }
+        objects {
+          name_ja
+          gluon {
+            id
+            relation_ja
+            start {
+              year
+            }
+          }
+        }
       }
     }
   }
