@@ -8,7 +8,7 @@ type GluedQuark implements Quark {
 <%= quarkFieldsAll %>
   gluon: Gluon
     @cypher(
-      statement: "WITH {this} as this RETURN this.gluon"
+      statement: "WITH $this as this RETURN this.gluon"
     )
   objects(name: String = "", user_id: String = "", is_admin: Boolean = false): [GluedQuark]
     @cypher(
