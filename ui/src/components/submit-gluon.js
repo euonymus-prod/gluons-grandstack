@@ -88,7 +88,11 @@ class SubmitGluon extends Component {
                   alert("Please choose Gluon Type");
                   return false;
                 }
-                if (!formVariables.passive_id && !formVariables.passive) {
+                if (
+                  !formVariables.id &&
+                  !formVariables.passive_id &&
+                  !formVariables.passive
+                ) {
                   alert("You need to type connecting Quark");
                   return false;
                 }

@@ -88,12 +88,14 @@ class GluonForm extends Component {
     let newVariables = null;
     if (editingGluon) {
       const util = new Util(false);
+      const id = editingGluon.id;
       const start = util.date2str(editingGluon.start);
       const end = util.date2str(editingGluon.end);
       const prefix = util.localedProp(editingGluon, "prefix");
       const relation = util.localedProp(editingGluon, "relation");
       const suffix = util.localedProp(editingGluon, "suffix");
       newVariables = {
+        id,
         ..._.omit(editingGluon, avoid2Edit),
         prefix,
         relation,

@@ -249,7 +249,7 @@ const updateGluonResolver = async (parent, params, context, info) => {
   const targetResource = 'relation'
   const readCypher = `MATCH (active)-[${targetResource} {id: "${params.id}"}]->(passive) RETURN ${targetResource}`
   const existingProps = await neou.execCypherAndReadResponse(context.driver, readCypher, null, targetResource)
-  if (existingProps) {
+  if (!existingProps) {
     throw Error("No relation found");
   }
   // MEMO: You cannot change type, but you can recreate one
