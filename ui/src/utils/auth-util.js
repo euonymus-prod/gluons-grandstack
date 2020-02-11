@@ -1,18 +1,4 @@
 // export const convertTableForTemporallyUse = { qV183nzQ79MPRBidNFTCbUxCv1H2: 2 };
-export const querySelector = (authUser, readerQuery, userQuery, adminQuery) => {
-  let queryName = readerQuery;
-  let user_id = null;
-  if (authUser) {
-    if (authUser.is_admin) {
-      queryName = adminQuery;
-      user_id = authUser.uid;
-    } else {
-      queryName = userQuery;
-      user_id = authUser.uid;
-      // if (user_id === "qV183nzQ79MPRBidNFTCbUxCv1H2") {
-      //   user_id = 2;
-      // }
-    }
-  }
-  return [queryName, user_id];
+export const userId = authUser => {
+  return authUser ? authUser.uid : null;
 };
