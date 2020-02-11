@@ -3,18 +3,18 @@ import gql from "graphql-tag";
 import { quarkFields } from "./fields-quark";
 import { gluonFields } from "./fields-gluon";
 // constancts
-import * as QUERY_NAME from "../constants/query-names";
+import { QUARK as queryName } from "../constants/query-names";
 
 const queryQuarkCompiled = _.template(`
-  query Quark($name: String) {
-    <%= queryName %>(name: $name<%= addingUserIdParam %>) {
+  query Quark($name: String, $user_id: String, $is_admin: Boolean = false) {
+    <%= queryName %>(name: $name, user_id: $user_id, is_admin: $is_admin) {
       ${quarkFields}
-      objects<%= onlyUserIdParam %> {
+      objects(user_id: $user_id, is_admin: $is_admin) {
         ${quarkFields}
         gluon {
           ${gluonFields}
         }
-        objects(first: 20<%= addingUserIdParam %>) {
+        objects(first: 20, user_id: $user_id, is_admin: $is_admin) {
           ${quarkFields}
           gluon {
             ${gluonFields}
@@ -46,23 +46,8 @@ const queryQuarkCompiled = _.template(`
   }
 `);
 class GraphOnQuark {
-  constructor(props) {
-    // queryName, user_id = null
-    const { authUser } = props;
-    const queryName = QUERY_NAME.QUARK;
-    const user_id = authUser ? authUser.uid : null;
-
-    let onlyUserIdParam = "";
-    let addingUserIdParam = "";
-    if (user_id !== null) {
-      const userIdParam = `user_id: "${user_id}"`;
-      onlyUserIdParam = `(${userIdParam})`;
-      addingUserIdParam = `, ${userIdParam}`;
-    }
-    return [
-      queryName,
-      gql(queryQuarkCompiled({ queryName, onlyUserIdParam, addingUserIdParam }))
-    ];
+  constructor() {
+    return [queryName, gql(queryQuarkCompiled({ queryName }))];
   }
 }
 export default GraphOnQuark;

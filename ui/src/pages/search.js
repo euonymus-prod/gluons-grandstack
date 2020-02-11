@@ -20,11 +20,15 @@ class Search extends Component {
   }
 
   render() {
-    const [queryName, GRAPHQL_QUERY] = new QuarkListSearched(this.props);
+    const [queryName, GRAPHQL_QUERY] = new QuarkListSearched();
     const { keyword } = this.props.match.params;
+
+    const { authUser } = this.props;
     const variables = {
       first: QUARKS_PER_PAGE,
-      keyword
+      keyword,
+      user_id: authUser ? authUser.uid : "",
+      is_admin: authUser ? authUser.is_admin : false
     };
     const quark_property_caption = this.props.intl.formatMessage(
       {

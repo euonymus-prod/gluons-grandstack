@@ -2,30 +2,19 @@ import _ from "lodash";
 import gql from "graphql-tag";
 import { quarkFields } from "./fields-quark";
 // constancts
-import * as QUERY_NAME from "../constants/query-names";
+import { SEARCH_QUARKS as queryName } from "../constants/query-names";
 
 const quarkListCompiled = _.template(`
-  query searchQuarks($first: Int, $keyword: String) {
-    <%= queryName %>(first: $first, keyword: $keyword<%= addingUserIdParam %>) {
-    <%= quarkFields %>
+  query searchQuarks($first: Int, $keyword: String, $user_id: String, $is_admin: Boolean = false) {
+    <%= queryName %>(first: $first, keyword: $keyword, user_id: $user_id, is_admin: $is_admin) {
+      ${quarkFields}
     }
   }
 `);
-class QuarkListSearched {
-  constructor(props) {
-    const { authUser } = props;
-    const queryName = QUERY_NAME.SEARCH_QUARKS;
-    const user_id = authUser ? authUser.uid : null;
 
-    let addingUserIdParam = "";
-    if (user_id !== null) {
-      const userIdParam = `user_id: "${user_id}"`;
-      addingUserIdParam = `, ${userIdParam}`;
-    }
-    return [
-      queryName,
-      gql(quarkListCompiled({ queryName, addingUserIdParam, quarkFields }))
-    ];
+class QuarkListSearched {
+  constructor() {
+    return [queryName, gql(quarkListCompiled({ queryName }))];
   }
 }
 export default QuarkListSearched;

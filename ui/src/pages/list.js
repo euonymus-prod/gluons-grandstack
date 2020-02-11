@@ -20,9 +20,13 @@ class List extends Component {
   }
 
   render() {
-    const [queryName, GRAPHQL_QUERY] = new QuarkList(this.props);
+    const [queryName, GRAPHQL_QUERY] = new QuarkList();
+
+    const { authUser } = this.props;
     const variables = {
-      first: QUARKS_PER_PAGE
+      first: QUARKS_PER_PAGE,
+      user_id: authUser ? authUser.uid : "",
+      is_admin: authUser ? authUser.is_admin : false
     };
     const quark_property_caption = this.props.intl.formatMessage({
       id: "title_quark_list",

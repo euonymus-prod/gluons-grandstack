@@ -26,9 +26,13 @@ class Graph extends Component {
   }
 
   render() {
-    const [queryName, GRAPH_ON_QUARK] = new GraphOnQuark(this.props);
+    const [queryName, GRAPH_ON_QUARK] = new GraphOnQuark();
+
+    const { authUser } = this.props;
     const variables = {
-      name: this.props.match.params.quark_name
+      name: this.props.match.params.quark_name,
+      user_id: authUser ? authUser.uid : "",
+      is_admin: authUser ? authUser.is_admin : false
     };
     return (
       <Query query={GRAPH_ON_QUARK} variables={variables}>
