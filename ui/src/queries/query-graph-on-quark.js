@@ -35,7 +35,7 @@ const queryQuarkCompiled = _.template(`
           gluon {
             ${gluonFields}
           }
-          objects<%= onlyUserIdParam %> {
+          objects {
             ${quarkFields}
             gluon {
               ${gluonFields}

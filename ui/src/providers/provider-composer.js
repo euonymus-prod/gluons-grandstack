@@ -8,7 +8,7 @@ import { IntlProvider } from "react-intl";
 // import ApolloClient from "apollo-boost";
 import { createHttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
-import { InMemoryCache } from "apollo-cache-inmemory";
+import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "@apollo/react-hooks";
 // Firebase
@@ -41,10 +41,25 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-const client = new ApolloClient({
+const defaultOptions: DefaultOptions = {
+  watchQuery: {
+    // MEMO: 別 quark_property の second GluedQuark が Cacheされて間違った GluedQuark.gluon がセットされてしまうため、cacheは使わずに、fetchしたデータを利用する。
+    fetchPolicy: "no-cache",
+    // fetchPolicy: 'network-only',
+    errorPolicy: "ignore"
+  },
+  query: {
+    // fetchPolicy: 'no-cache',
+    fetchPolicy: "network-only",
+    errorPolicy: "all"
+  }
+};
+
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   // chain our Apollo Links together
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  defaultOptions: defaultOptions
 });
 
 class ProviderComposer extends Component {
