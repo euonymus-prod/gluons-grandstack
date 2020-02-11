@@ -25,10 +25,6 @@ type TopQuark implements Quark {
 
 type Gluon {
 <%= gluonFieldsAll %>
-}
-
-type ExpandedGluon {
-<%= gluonFieldsAll %>
   active(user_id: String): TopQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN active"
@@ -95,7 +91,7 @@ type Query {
     @cypher(
       statement: "MATCH (node:Quark {id: $id}) WHERE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) RETURN node"
     )
-  editingGluon(id: ID, user_id: String): ExpandedGluon @isAuthenticated
+  editingGluon(id: ID, user_id: String): Gluon @isAuthenticated
     @cypher(
       statement: "MATCH (active)-[relation {id: $id}]->(passive) RETURN relation"
     )
