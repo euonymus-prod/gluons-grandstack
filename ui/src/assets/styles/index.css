@@ -45,7 +45,7 @@ a {
   top: 0px;
   left: 0px;
   background: #fff;
-  z-index: 1;
+  z-index: -1;
 }
 #loader {
   position: fixed;

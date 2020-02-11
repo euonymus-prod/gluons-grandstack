@@ -13,6 +13,8 @@ import GraphOnQuark from "../queries/query-graph-on-quark";
 import MainQuark from "../components/main-quark";
 import Gluons from "../components/gluons";
 
+import loader from "../assets/images/loader.gif";
+
 // GraphQL
 class Graph extends Component {
   componentDidUpdate(prevProps) {
@@ -37,7 +39,21 @@ class Graph extends Component {
     return (
       <Query query={GRAPH_ON_QUARK} variables={variables}>
         {({ loading, error, data }) => {
-          if (loading) return "Loading...";
+          if (loading) {
+            return (
+              <div id="loader-bg">
+                <div id="loader">
+                  <img
+                    src={loader}
+                    width="80"
+                    height="80"
+                    alt="Now Loading..."
+                  />
+                  <p>Now Loading...</p>
+                </div>
+              </div>
+            );
+          }
           if (error) return `Error! ${error.message}`;
           if (!data || !data[queryName]) return "No Quark was found";
           this.props.setCurrentQuark(data[queryName]);
