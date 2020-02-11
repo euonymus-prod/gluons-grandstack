@@ -23,7 +23,7 @@ class QuarkList {
     );
 
     let addingUserIdParam = "";
-    if (queryName === QUERY_NAME.USER_QUARKS) {
+    if (user_id !== null) {
       const userIdParam = `user_id: "${user_id}"`;
       addingUserIdParam = `, ${userIdParam}`;
     }

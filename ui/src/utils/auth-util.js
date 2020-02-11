@@ -5,6 +5,7 @@ export const querySelector = (authUser, readerQuery, userQuery, adminQuery) => {
   if (authUser) {
     if (authUser.is_admin) {
       queryName = adminQuery;
+      user_id = authUser.uid;
     } else {
       queryName = userQuery;
       user_id = authUser.uid;
