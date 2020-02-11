@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
-const serviceAccount = require("../../SAKey4dev.json");
+// const serviceAccount = require("../../SAKey4dev.json");
+const serviceAccount = require("../../SAKey4prod.json");
 
 // const convertTableForTemporallyUse = {'qV183nzQ79MPRBidNFTCbUxCv1H2': 2}
 

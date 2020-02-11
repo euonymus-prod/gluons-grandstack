@@ -31,8 +31,8 @@ MATCH (node) SET node:Quark
 ## User replacement from MySQL version to firebase
 
 ```
-MATCH (node {user_id:1}) SET node += { user_id: "gNRXKhn591WlzLs7dsCVuOekONy1"} return count(node)
-MATCH (node {user_id:2}) SET node += { user_id: "1nlbladYQEgDTYN4ymn8d6T8YRw1"} return count(node)
+MATCH (node {user_id:1}) SET node += { user_id: "2uaxJWK5y2hPkZmxO3yOIi0euC72"} return count(node)
+MATCH (node {user_id:2}) SET node += { user_id: "XPe1TEMcFQSUNhy31AOvs2yflne2"} return count(node)
 ```
 
 
