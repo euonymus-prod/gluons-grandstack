@@ -15,7 +15,7 @@ const QUARK_STR_PROPERTIES = ['id', 'name', 'name_ja', 'image_path', 'descriptio
 
 const GLUON_BOOL_PROPERTIES = ['is_momentary', 'is_exclusive'];
 const GLUON_INT_PROPERTIES = ['gluon_type_id'];
-const GLUON_STR_PROPERTIES = ['id', 'active_id', 'passive_id', 'relation', 'prefix', 'suffix', 'start_accuracy', 'end_accuracy', 'user_id', 'last_modified_user'];
+const GLUON_STR_PROPERTIES = ['id', 'active_id', 'passive_id', 'relation', 'prefix', 'suffix', 'relation_ja', 'prefix_ja', 'suffix_ja', 'start_accuracy', 'end_accuracy', 'user_id', 'last_modified_user'];
 
 class Neo4jUtil {
   constructor(isJavascriptMode = true) {
