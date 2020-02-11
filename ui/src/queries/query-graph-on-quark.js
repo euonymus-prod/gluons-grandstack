@@ -28,6 +28,7 @@ const queryQuarkCompiled = _.template(`
         qpropertyGtypes {
           caption
           caption_ja
+          gluon_type_id
         }
         objects {
           ${quarkFields}
