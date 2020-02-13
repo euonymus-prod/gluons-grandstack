@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin';
+import dotenv from "dotenv";
 // const serviceAccount = require("../../SAKey4dev.json");
-const serviceAccount = require("../../SAKey4prod.json");
+// const serviceAccount = require("../../SAKey4prod.json");
 
 // const convertTableForTemporallyUse = {'qV183nzQ79MPRBidNFTCbUxCv1H2': 2}
 
@@ -11,8 +12,13 @@ class Firebase {
       isVelified: null,
       decoded: null
     };
+
+    // set environment variables from ../.env
+    const atob = require('atob');
+    dotenv.config();
+    const serviceAccount = atob(process.env.FIREBASE_PRIVATE_KEY);
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
+      credential: admin.credential.cert(JSON.parse(serviceAccount)),
       databaseURL: process.env.FIREBASE_DATABASE_URL
     });
     this.db = admin.firestore();
