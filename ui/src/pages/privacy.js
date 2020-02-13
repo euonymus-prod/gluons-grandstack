@@ -150,7 +150,7 @@ export default class Privacy extends React.Component {
           If you have any questions or comments about this Policy or the
           practices relating to this Site, or you wish to verify, correct or
           delete any personal information we have collected, please contact us
-          at the contact form <Link to="/contacts">here</Link>, and we will
+          at the contact form <Link to="/contact">here</Link>, and we will
           endeavor to respond to your inquiry or to correct, update or remove
           the personal information you have provided us as you indicate to the
           extent possible. You can correct certain information by logging into
