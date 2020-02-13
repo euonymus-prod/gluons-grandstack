@@ -3,12 +3,12 @@
   "name": "gluons",
   "icons": [
     {
-      "src": "/webclip.png",
+      "src": "/img/webclip.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/png"
     },
     {
-      "src": "/webclip.png",
+      "src": "/img/webclip.png",
       "sizes": "192x192 512x512",
       "type": "image/png"
     }
