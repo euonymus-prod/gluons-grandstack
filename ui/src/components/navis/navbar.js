@@ -1,4 +1,5 @@
 import React from "react";
+import { withReactGa } from "../../providers/react-ga";
 // redux
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
@@ -20,97 +21,100 @@ import { useStyles } from "../../assets/styles/navbar";
 
 export default connect(state => state)(
   withRouter(
-    withAuthUser(
-      withFirebase(props => {
-        const classes = useStyles();
-        const [anchorEl, setAnchorEl] = React.useState(null);
-        const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(
-          null
-        );
-        const [searchQuery, setSearchQuery] = React.useState("");
+    withReactGa(
+      withAuthUser(
+        withFirebase(props => {
+          props.GA.trackPage(props.location.pathname);
+          const classes = useStyles();
+          const [anchorEl, setAnchorEl] = React.useState(null);
+          const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(
+            null
+          );
+          const [searchQuery, setSearchQuery] = React.useState("");
 
-        const handleProfileMenuOpen = event => {
-          setAnchorEl(event.currentTarget);
-        };
+          const handleProfileMenuOpen = event => {
+            setAnchorEl(event.currentTarget);
+          };
 
-        const handleMobileMenuClose = () => {
-          setMobileMoreAnchorEl(null);
-        };
+          const handleMobileMenuClose = () => {
+            setMobileMoreAnchorEl(null);
+          };
 
-        const handleMenuClose = () => {
-          setAnchorEl(null);
-          handleMobileMenuClose();
-        };
+          const handleMenuClose = () => {
+            setAnchorEl(null);
+            handleMobileMenuClose();
+          };
 
-        const handleMobileMenuOpen = event => {
-          setMobileMoreAnchorEl(event.currentTarget);
-        };
+          const handleMobileMenuOpen = event => {
+            setMobileMoreAnchorEl(event.currentTarget);
+          };
 
-        const onSubmit = event => {
-          event.preventDefault();
-          props.history.push(`${ROUTES.SEARCH_BASE}${searchQuery}`);
-        };
+          const onSubmit = event => {
+            event.preventDefault();
+            props.history.push(`${ROUTES.SEARCH_BASE}${searchQuery}`);
+          };
 
-        const onInputChange = value => {
-          setSearchQuery(value);
-        };
+          const onInputChange = value => {
+            setSearchQuery(value);
+          };
 
-        return (
-          <div className={classes.grow}>
-            <AppBar position="static" className={classes.appBar}>
-              <Toolbar>
+          return (
+            <div className={classes.grow}>
+              <AppBar position="static" className={classes.appBar}>
                 <Toolbar>
-                  <Link to={ROUTES.HOME}>
-                    <img src={logo} className={classes.logo} alt="gluons" />
-                  </Link>
-                </Toolbar>
-                <div className={classes.search}>
-                  <form onSubmit={onSubmit}>
-                    <div className={classes.searchIcon}>
-                      <SearchIcon />
-                    </div>
-                    <InputBase
-                      placeholder="Search…"
-                      classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput
-                      }}
-                      inputProps={{ "aria-label": "search" }}
-                      value={searchQuery}
-                      onChange={event => onInputChange(event.target.value)}
+                  <Toolbar>
+                    <Link to={ROUTES.HOME}>
+                      <img src={logo} className={classes.logo} alt="gluons" />
+                    </Link>
+                  </Toolbar>
+                  <div className={classes.search}>
+                    <form onSubmit={onSubmit}>
+                      <div className={classes.searchIcon}>
+                        <SearchIcon />
+                      </div>
+                      <InputBase
+                        placeholder="Search…"
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput
+                        }}
+                        inputProps={{ "aria-label": "search" }}
+                        value={searchQuery}
+                        onChange={event => onInputChange(event.target.value)}
+                      />
+                    </form>
+                  </div>
+                  <div className={classes.grow} />
+                  <div className={classes.sectionDesktop}>
+                    <QuarkNavi
+                      anchorEl={mobileMoreAnchorEl}
+                      handleMenuClose={handleMenuClose}
+                      handleProfileMenuOpen={handleProfileMenuOpen}
                     />
-                  </form>
-                </div>
-                <div className={classes.grow} />
-                <div className={classes.sectionDesktop}>
-                  <QuarkNavi
-                    anchorEl={mobileMoreAnchorEl}
-                    handleMenuClose={handleMenuClose}
-                    handleProfileMenuOpen={handleProfileMenuOpen}
-                  />
-                </div>
-                <div className={classes.sectionMobile}>
-                  <IconButton
-                    aria-label="show more"
-                    aria-controls="primary-search-account-menu-mobile"
-                    aria-haspopup="true"
-                    onClick={handleMobileMenuOpen}
-                  >
-                    <MoreIcon />
-                  </IconButton>
-                </div>
-              </Toolbar>
-            </AppBar>
-            <QuarkNavi
-              anchorEl={mobileMoreAnchorEl}
-              handleMenuClose={handleMenuClose}
-              handleProfileMenuOpen={handleProfileMenuOpen}
-              withMenu={true}
-            />
-            <UserNavi anchorEl={anchorEl} handleMenuClose={handleMenuClose} />
-          </div>
-        );
-      })
+                  </div>
+                  <div className={classes.sectionMobile}>
+                    <IconButton
+                      aria-label="show more"
+                      aria-controls="primary-search-account-menu-mobile"
+                      aria-haspopup="true"
+                      onClick={handleMobileMenuOpen}
+                    >
+                      <MoreIcon />
+                    </IconButton>
+                  </div>
+                </Toolbar>
+              </AppBar>
+              <QuarkNavi
+                anchorEl={mobileMoreAnchorEl}
+                handleMenuClose={handleMenuClose}
+                handleProfileMenuOpen={handleProfileMenuOpen}
+                withMenu={true}
+              />
+              <UserNavi anchorEl={anchorEl} handleMenuClose={handleMenuClose} />
+            </div>
+          );
+        })
+      )
     )
   )
 );

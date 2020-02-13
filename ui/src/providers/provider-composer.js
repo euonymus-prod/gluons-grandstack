@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withReactGaProvider } from "./react-ga";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
@@ -73,4 +74,4 @@ class ProviderComposer extends Component {
     );
   }
 }
-export default withFirebaseProvider(ProviderComposer);
+export default withReactGaProvider(withFirebaseProvider(ProviderComposer));
