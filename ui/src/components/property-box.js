@@ -14,6 +14,7 @@ const util = new Util(false);
 const useStyles = makeStyles({
   card: {
     backgroundColor: "#e5f1f1",
+    color: "#878765",
     // backgroundColor: "#40c3c2",
     marginBottom: "35px"
   },

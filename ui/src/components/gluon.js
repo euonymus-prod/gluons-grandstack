@@ -44,6 +44,10 @@ const useStyles = makeStyles({
     height: IMAGE_HEIGHT,
     width: IMAGE_WIDTH
   },
+  gluonHeader: {
+    backgroundColor: "#a2a2a2",
+    color: "white"
+  },
   secondQuark: {
     padding: 0
   },
@@ -143,7 +147,7 @@ const Gluon = props => {
   return (
     <div className="baryon-gluon-body">
       <Card className={isTop ? classes.cardTop : classes.card}>
-        <ListItem divider={true}>
+        <ListItem divider={true} className={classes.gluonHeader}>
           <ListItemText
             primary={relationText}
             secondary={util.period2str(object.gluon)}
