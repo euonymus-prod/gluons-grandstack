@@ -45,7 +45,7 @@ const useStyles = makeStyles({
     width: IMAGE_WIDTH
   },
   gluonHeader: {
-    backgroundColor: "#a2a2a2",
+    backgroundColor: "#d9b9b9",
     color: "white"
   },
   secondQuark: {
