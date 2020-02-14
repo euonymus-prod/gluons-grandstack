@@ -5,7 +5,7 @@ import { withAuthUser } from "../providers/session";
 import { FormattedMessage } from "react-intl";
 import Util from "../utils/common";
 // Material UI
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 // import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -19,12 +19,12 @@ import ShoppingCart from "@material-ui/icons/ShoppingCart";
 import * as ROUTES from "../constants/routes";
 
 const util = new Util(false);
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   media: {
     height: 300,
     backgroundPosition: "50% 0%"
   }
-});
+}));
 
 const MainQuark = props => {
   const classes = useStyles();

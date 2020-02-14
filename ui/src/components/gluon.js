@@ -8,7 +8,7 @@ import { LANGTYPE_ENG_LIKE, LANGTYPE_JP_LIKE } from "../constants/langtypes";
 import * as ROUTES from "../constants/routes";
 import SubmitGluonDelete from "./submit-gluon-delete";
 // Material UI
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -27,7 +27,7 @@ const IMAGE_HEIGHT = "200px";
 const IMAGE_WIDTH = "200px";
 
 const util = new Util(false);
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   card: {
     margin: "0px",
     marginTop: "15px",
@@ -40,21 +40,33 @@ const useStyles = makeStyles({
   // avatarListItem: {
   //   width: IMAGE_WIDTH
   // },
+  mediaLink: {
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "auto"
+    }
+  },
   cover: {
     height: IMAGE_HEIGHT,
-    width: IMAGE_WIDTH
+    [theme.breakpoints.up("sm")]: {
+      width: IMAGE_WIDTH
+    }
   },
   gluonHeader: {
     backgroundColor: "#d9b9b9",
     color: "white"
   },
   secondQuark: {
-    padding: 0
+    flexDirection: "column",
+    padding: 0,
+    [theme.breakpoints.up("sm")]: {
+      flexDirection: "row"
+    }
   },
   secondQuarkItems: {
     padding: "20px",
-    flexDirection: "column",
-    alignItems: "start"
+    alignItems: "start",
+    width: "100%"
   },
   secondGluons: {
     height: 100,
@@ -67,7 +79,7 @@ const useStyles = makeStyles({
   //   width: 130,
   //   height: 130,
   // },
-});
+}));
 
 const relationTextBuilder = (subject, object) => {
   let glue_sentence_before_link = "";
@@ -165,7 +177,12 @@ const Gluon = props => {
         </ListItem>
         <CardActionArea onClick={onClick}>
           <ListItem divider={true} className={classes.secondQuark}>
-            <Link to={`${ROUTES.GRAPH_BASE}${object.name}`}>{avatar}</Link>
+            <Link
+              to={`${ROUTES.GRAPH_BASE}${object.name}`}
+              className={classes.mediaLink}
+            >
+              {avatar}
+            </Link>
             <List className={classes.secondQuarkItems}>
               <ListItem>
                 <Typography variant="h5" component="span">

@@ -5,13 +5,13 @@ import Gluon from "./gluon";
 import Util from "../utils/common";
 // import './assets/styles/baryon.css'
 // Material UI
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
 
 const util = new Util(false);
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   card: {
     backgroundColor: "#e5f1f1",
     color: "#878765",
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     // backgroundColor: '#e6e6f5'
     padding: "10px"
   }
-});
+}));
 
 const PropertyBox = props => {
   const { propertyResource, hasSecondLevel, subject } = props;
