@@ -351,7 +351,23 @@ export const resolvers = {
         // throw Error("QuarkProperty.gluons are required in the parent query");
         return []
       }
+      if (parent.qpropertyGtypes === null) {
+        return parent.objects
+      }
+      if (parent.qpropertyGtypes.length === 0) {
+        return []
+      }
+      if (!parent.subject_id) {
+        throw Error("QuarkProperty.subject_id is required in the parent query");
+      }
+
       return parent.objects.filter(object => {
+        if ( (parent.id === ID_TYPE.NONE) && (object.gluon.gluon_type_id === null) ) {
+          return true
+        }
+        if (!object.gluon.active_id || !object.gluon.passive_id) {
+          throw Error("gluons.active_id and gluons.passive_id are required in the parent query");
+        }
         // NOTE: You cannot set object_id here on GraphQL. This make it stateful, because object_id depends on subject.
         // if (parent.subject_id === gluon.active_id) {
         //   gluon.object_id = gluon.passive_id
@@ -359,31 +375,26 @@ export const resolvers = {
         //   gluon.object_id = gluon.active_id
         // }
         let result = false
-        if (parent.qpropertyGtypes === null) {
-          result = true
-        } else {
-          parent.qpropertyGtypes.some(gtype => {
-            if ( (parent.id === ID_TYPE.NONE) && (object.gluon.gluon_type_id === null) ) {
-              result = true
-            } else if (object.gluon.gluon_type_id !== gtype.gluon_type_id) {
-              return false
-            }
-            if (gtype.direction === DIRECTION.A2B) {
-              if (parent.subject_id === object.gluon.active_id) {
-                result = true
-              }
-            } else if (gtype.direction === DIRECTION.B2A) {
-              if (parent.subject_id === object.gluon.passive_id) {
-                result = true
-              }
-            } else {
+        parent.qpropertyGtypes.some(gtype => {
+          if (parseInt(object.gluon.gluon_type_id) !== parseInt(gtype.gluon_type_id)) {
+            return false
+          }
+          if (gtype.direction === DIRECTION.A2B) {
+            if (parent.subject_id === object.gluon.active_id) {
               result = true
             }
-            if (result) {
-              return true
+          } else if (gtype.direction === DIRECTION.B2A) {
+            if (parent.subject_id === object.gluon.passive_id) {
+              result = true
             }
-          })
-        }
+          } else {
+            result = true
+          }
+          if (result) {
+            return true
+          }
+        })
+
         return result
       })
       /*
@@ -391,7 +402,6 @@ CALL apoc.cypher.run('MATCH (subject {name:"眞弓聡"})-[gluon:SON_OF|DAUGHTER_
 RETURN value.subject as subject, value.object as object, value.gluon as gluon
       ORDER BY (CASE gluon.start WHEN null THEN {} ELSE gluon.start END) DESC, (CASE object.start WHEN null THEN {} ELSE object.start END) DESC
       */
-      return []
     }
   },
   Query: {
