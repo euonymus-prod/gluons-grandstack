@@ -53,8 +53,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   gluonHeader: {
-    backgroundColor: "#d9b9b9",
-    color: "white"
+    backgroundColor: "#e5f1f1"
   },
   secondQuark: {
     flexDirection: "column",

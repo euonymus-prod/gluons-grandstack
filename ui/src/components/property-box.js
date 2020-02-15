@@ -13,10 +13,10 @@ const util = new Util(false);
 
 const useStyles = makeStyles(theme => ({
   card: {
-    backgroundColor: "#e5f1f1",
-    color: "#878765",
+    backgroundColor: "#d9b9b9",
+    color: "white",
     // backgroundColor: "#40c3c2",
-    marginBottom: "35px"
+    marginBottom: "50px"
   },
   root: {
     // backgroundColor: theme.palette.background.paper,
