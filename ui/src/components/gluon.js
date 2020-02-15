@@ -68,6 +68,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: "start",
     width: "100%"
   },
+  secondQuarkTitle: {
+    paddingLeft: 0
+  },
   secondGluons: {
     height: 100,
     padding: 0
@@ -184,7 +187,7 @@ const Gluon = props => {
               {avatar}
             </Link>
             <List className={classes.secondQuarkItems}>
-              <ListItem>
+              <ListItem className={classes.secondQuarkTitle}>
                 <Typography variant="h5" component="span">
                   {object.name}
                 </Typography>
