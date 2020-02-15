@@ -48,6 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
   cover: {
     height: IMAGE_HEIGHT,
+    backgroundSize: "100% auto",
     [theme.breakpoints.up("sm")]: {
       width: IMAGE_WIDTH
     }

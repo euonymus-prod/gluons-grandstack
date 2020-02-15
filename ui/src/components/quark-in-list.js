@@ -27,7 +27,8 @@ const styles = theme => ({
   },
   cover: {
     height: 100,
-    backgroundPosition: "50% 0%",
+    backgroundSize: "100% auto",
+    // backgroundPosition: "50% 0%",
     width: 151,
     minWidth: 100
   }

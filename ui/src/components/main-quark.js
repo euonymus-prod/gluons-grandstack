@@ -22,7 +22,8 @@ const util = new Util(false);
 const useStyles = makeStyles(theme => ({
   media: {
     height: 300,
-    backgroundPosition: "50% 0%"
+    backgroundSize: "100% auto"
+    // backgroundPosition: "50% 0%"
   }
 }));
 
