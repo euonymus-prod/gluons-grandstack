@@ -150,7 +150,8 @@ const Gluon = props => {
   //   </Avatar>
   // </ListItemAvatar>
 
-  const user_id = authUser ? authUser.uid : null;
+  const user_id = authUser ? authUser.uid : "";
+  const is_admin = authUser ? authUser.is_admin : false;
 
   const isLoggedIn = () => {
     return !!authUser;
@@ -174,7 +175,9 @@ const Gluon = props => {
                   <EditIcon />
                 </IconButton>
               </Link>
-              <SubmitGluonDelete variables={{ id: object.gluon.id, user_id }} />
+              <SubmitGluonDelete
+                variables={{ id: object.gluon.id, user_id, is_admin }}
+              />
             </Fragment>
           )}
         </ListItem>

@@ -23,13 +23,16 @@ const EditQuarkBase = props => {
   const user_id = authUser ? authUser.uid : null;
   const EDITING_QUARK = new EditingQuark(user_id);
   const variables = {
-    id: props.match.params.quark_id
+    id: props.match.params.quark_id,
+    user_id: authUser ? authUser.uid : "",
+    is_admin: authUser ? authUser.is_admin : false
   };
   return (
     <Query query={EDITING_QUARK} variables={variables}>
       {({ loading, error, data }) => {
         if (loading) return "Loading...";
         if (error) return `Error! ${error.message}`;
+        if (!data || !data.editingQuark) return "No Quark was found";
         const { editingQuark } = data;
         return (
           <div className="container form-container">

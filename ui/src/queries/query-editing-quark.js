@@ -4,19 +4,15 @@ import { quarkFields } from "./fields-quark";
 
 // NOTE: This is a component to salvage a quark for editing purpose
 const queryQuarkCompiled = _.template(`
-  query editingQuark($id: ID) {
-    editingQuark(id: $id<%= addingUserIdParam %>) {
+  query editingQuark($id: ID, $user_id: String, $is_admin: Boolean = false) {
+    editingQuark(id: $id, user_id: $user_id, is_admin: $is_admin) {
       ${quarkFields}
     }
   }
 `);
 class EditingQuark {
-  constructor(user_id = null) {
-    let addingUserIdParam = "";
-
-    const userIdParam = `user_id: "${user_id}"`;
-    addingUserIdParam = `, ${userIdParam}`;
-    return gql(queryQuarkCompiled({ addingUserIdParam }));
+  constructor() {
+    return gql(queryQuarkCompiled({}));
   }
 }
 export default EditingQuark;

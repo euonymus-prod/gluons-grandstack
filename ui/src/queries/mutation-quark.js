@@ -5,6 +5,8 @@ import { quarkFields } from "./fields-quark";
 
 const quarkMutationCompiled = _.template(`
   mutation mutateQuark(
+    <%= isAdminSchema %>
+    <%= userIdSchema %>
     <%= idSchema %>
     $quark_type_id: Int!
     $name: String
@@ -23,6 +25,8 @@ const quarkMutationCompiled = _.template(`
     $is_exclusive: Boolean!
   ) {
     <%= mutationName %>(
+      <%= isAdminParam %>
+      <%= userIdParam %>
       <%= idParam %>
       quark_type_id: $quark_type_id
       name: $name
@@ -48,12 +52,30 @@ class QuarkMutation {
   constructor(mutationName) {
     let idSchema = "";
     let idParam = "";
+    let userIdSchema = "";
+    let userIdParam = "";
+    let isAdminSchema = "";
+    let isAdminParam = "";
     if (mutationName === QUERY_NAME.UPDATE_QUARK) {
       idSchema = "$id: ID!";
       idParam = "id: $id";
+      userIdSchema = "$user_id: String";
+      userIdParam = "user_id: $user_id";
+      isAdminSchema = "$is_admin: Boolean = false";
+      isAdminParam = "is_admin: $is_admin";
     }
 
-    return gql(quarkMutationCompiled({ mutationName, idSchema, idParam }));
+    return gql(
+      quarkMutationCompiled({
+        mutationName,
+        idSchema,
+        idParam,
+        userIdSchema,
+        userIdParam,
+        isAdminSchema,
+        isAdminParam
+      })
+    );
   }
 }
 export default QuarkMutation;

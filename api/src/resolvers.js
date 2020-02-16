@@ -277,10 +277,12 @@ const updateGluonResolver = async (parent, params, context, info) => {
 
 // { hoge: foo, hage: bar } will become cypher snippet of ", hoge: $hoge, hage: $hage"
 const generateCypherParams = params => {
-  return `, ${neou.cypherSnippetArgsFromParams(params)}`
+  const avoids = ['user_id', 'is_admin']
+  const targets = _.omit(params, avoids)
+  return `, ${neou.cypherSnippetArgsFromParams(targets)}`
 }
 const generateCypherSettingParams = params => {
-  const avoids = ['id', 'gluon_type_id', 'passive']
+  const avoids = ['user_id', 'is_admin', 'id', 'gluon_type_id', 'passive']
   const targets = _.omit(params, avoids)
   return neou.cypherSnippetFromParamsForGluon(targets, true, "relation")
 }
@@ -315,7 +317,7 @@ const generateDatetimeParams = params => {
   return {datetimeSetter, paramsReady}
 }
 const generateUpdatingParams = (params, forGluon = false) => {
-  const avoids = ['id', 'active_id', 'passive_id']
+  const avoids = ['user_id', 'is_admin', 'id', 'active_id', 'passive_id']
   const targets = _.omit(params, avoids)
   targets.modified = {formatted:''}
   targets.image_path = neou.sanitizeImagePath(targets)

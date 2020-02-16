@@ -76,7 +76,8 @@ const QuarkNavi = props => {
   };
 
   const renderItems = func => {
-    const user_id = authUser ? authUser.uid : null;
+    const user_id = authUser ? authUser.uid : "";
+    const is_admin = authUser ? authUser.is_admin : false;
     const list = props.intl.formatMessage({
       id: "menu_navbar_list",
       defaultMessage: "List"
@@ -102,7 +103,7 @@ const QuarkNavi = props => {
         {showEditQuark() && (
           <SubmitQuarkDelete
             name={util.localedProp(props.current_quark, "name")}
-            variables={{ id: props.current_quark.id, user_id }}
+            variables={{ id: props.current_quark.id, user_id, is_admin }}
             withMenu={props.withMenu}
           />
         )}

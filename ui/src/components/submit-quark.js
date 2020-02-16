@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { withLastLocation } from "react-router-last-location";
 import { Mutation } from "react-apollo";
+import { withAuthUser } from "../providers/session";
 import QuarkMutation from "../queries/mutation-quark";
 import GraphOnQuark from "../queries/query-graph-on-quark";
 import QuarkList from "../queries/query-quark-list";
@@ -77,6 +78,9 @@ class SubmitQuark extends Component {
     let mutationName = QUERY_NAME.CREATE_QUARK;
     if (variables.id) {
       mutationName = QUERY_NAME.UPDATE_QUARK;
+      const { authUser } = this.props;
+      variables.user_id = authUser ? authUser.uid : "";
+      variables.is_admin = authUser ? authUser.is_admin : false;
     }
     const mutation = new QuarkMutation(mutationName);
     return (
@@ -116,4 +120,4 @@ class SubmitQuark extends Component {
 SubmitQuark.propTypes = {
   formVariables: PropTypes.object.isRequired
 };
-export default withRouter(withLastLocation(SubmitQuark));
+export default withAuthUser(withRouter(withLastLocation(SubmitQuark)));
