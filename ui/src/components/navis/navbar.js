@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { withReactGa } from "../../providers/react-ga";
 // redux
 import { connect } from "react-redux";
@@ -24,7 +24,12 @@ export default connect(state => state)(
     withReactGa(
       withAuthUser(
         withFirebase(props => {
-          props.GA.trackPage(props.location.pathname);
+          const [prevLocation, setPrevLocation] = useState(null);
+          if (props.location.pathname !== prevLocation) {
+            props.GA.trackPage(props.location.pathname);
+            setPrevLocation(props.location.pathname);
+          }
+
           const classes = useStyles();
           const [anchorEl, setAnchorEl] = React.useState(null);
           const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(
