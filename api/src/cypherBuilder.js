@@ -10,14 +10,14 @@ export class CypherBuilder {
   }
   whereTopNodes() {
     const candidates = [
-      "岡田朋峰",
-      "守谷絢子",
-      "伊藤春香 (編集者)",
-      "阿部哲子",
-      "稲井大輝",
-      "高橋ユウ",
-      "上原多香子",
-      "Koki",
+      "吉田茂",
+      "東出昌大",
+      "鈴木杏樹",
+      "アルヴィン・エンゲル",
+      "団・野村",
+      "松下隆史",
+      "安倍晋三",
+      "アントニオ・シモーネ",
     ]
     const snippet = candidates.map(candidate => {
       return `(node.name = \\\\\\"${candidate}\\\\\\" OR node.name_ja = \\\\\\"${candidate}\\\\\\")`

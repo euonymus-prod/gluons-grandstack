@@ -1,4 +1,5 @@
 import firebaseInstance from './firebase-instance';
+import { AuthenticationError } from 'apollo-server';
 
 export { firebaseInstance }
 
