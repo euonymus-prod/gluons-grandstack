@@ -84,6 +84,9 @@ const useStyles = makeStyles(theme => ({
   // },
 }));
 
+const isEmpty = str => {
+  return !str || !str.trim();
+};
 const relationTextBuilder = (subject, object) => {
   let glue_sentence_before_link = "";
   let glue_sentence_after_link = " ";
@@ -93,8 +96,15 @@ const relationTextBuilder = (subject, object) => {
     glue_sentence_before_link = subject.name;
     if (langType === LANGTYPE_ENG_LIKE) {
       glue_sentence_before_link += " " + object.gluon.relation;
+      if (!isEmpty(object.gluon.prefix)) {
+        glue_sentence_before_link =
+          object.gluon.prefix + " " + glue_sentence_before_link;
+      }
     } else {
       glue_sentence_before_link += "は";
+      if (!isEmpty(object.gluon.prefix)) {
+        glue_sentence_before_link += object.gluon.prefix;
+      }
       glue_sentence_after_link += object.gluon.relation;
     }
     glue_sentence_before_link += " ";
@@ -106,8 +116,16 @@ const relationTextBuilder = (subject, object) => {
     if (langType === LANGTYPE_ENG_LIKE) {
       glue_sentence_after_link +=
         object.gluon.relation + " " + subject.name + " ";
+      if (!isEmpty(object.gluon.prefix)) {
+        glue_sentence_before_link = object.gluon.prefix;
+      }
     } else {
-      glue_sentence_after_link += "は" + subject.name + object.gluon.relation;
+      if (!isEmpty(object.gluon.prefix)) {
+        glue_sentence_after_link +=
+          "は" + object.gluon.prefix + subject.name + object.gluon.relation;
+      } else {
+        glue_sentence_after_link += "は" + subject.name + object.gluon.relation;
+      }
     }
     glue_sentence_before_link += " ";
     if (object.gluon.suffix) {
