@@ -89,7 +89,7 @@ async function getUser(context) {
     user = await firebaseInstance.getLoggedIn(idToken)
   } catch(error) {
     // Do nothing
-    console.log('Failed to get logged in user', error)
+    // console.log('Failed to get logged in user', error)
   }
   return user
 }
