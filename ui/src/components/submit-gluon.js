@@ -84,10 +84,11 @@ class SubmitGluon extends Component {
               color="primary"
               variant="contained"
               onClick={() => {
-                if (variables.gluon_type_id === 0) {
-                  alert("Please choose Gluon Type");
-                  return false;
-                }
+                // NOTE: probably not needed to check gluon_type_id
+                // if (variables.gluon_type_id === 0) {
+                //   alert("Please choose Gluon Type");
+                //   return false;
+                // }
                 if (
                   !formVariables.id &&
                   !formVariables.passive_id &&
