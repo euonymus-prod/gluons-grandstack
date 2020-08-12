@@ -15,7 +15,7 @@ type GluedQuark implements Quark {
       statement: "MATCH (node:Quark {id: this.id})-[gluon]-(object) WHERE (((object.name_ja IS NULL) OR (object.name_ja <> $name)) AND ((object.name IS NULL) OR (object.name <> $name))) AND CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublicObject %>) ELSE (<%= cypherWhereUsersObject %> OR <%= cypherWherePublicObject %>) END END RETURN object{.*, gluon: gluon } ORDER BY <%=cypherOrderByStartDesc %>"
     )
 }
-type TopQuark implements Quark {
+type HeadQuark implements Quark {
 <%= quarkFieldsAll %>
   objects(user_id: String = "", is_admin: Boolean = false): [GluedQuark]
     @cypher(
@@ -25,11 +25,11 @@ type TopQuark implements Quark {
 
 type Gluon {
 <%= gluonFieldsAll %>
-  active(user_id: String): TopQuark
+  active(user_id: String): HeadQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN active"
     )
-  passive(user_id: String): TopQuark
+  passive(user_id: String): HeadQuark
     @cypher(
       statement: "MATCH (active)-[this]->(passive) RETURN passive"
     )
@@ -71,23 +71,23 @@ enum Role {
 }
 
 type Query {
-  quark(name: String, user_id: String = "", is_admin: Boolean = false): TopQuark @isAuthorized
+  quark(name: String, user_id: String = "", is_admin: Boolean = false): HeadQuark @isAuthorized
     @cypher(
       statement: "MATCH (node:Quark) WHERE (node.name = $name OR node.name_ja = $name) AND CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublic %>) ELSE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) END END RETURN node LIMIT 1"
     )
-  quarks(first: Int = 100, user_id: String = "", is_admin: Boolean = false): [TopQuark]
+  quarks(first: Int = 100, user_id: String = "", is_admin: Boolean = false): [HeadQuark]
     @cypher(
       statement: "MATCH (node) WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublic %>) ELSE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) END END RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
-  searchQuarks(first: Int = 100, keyword: String, user_id: String = "", is_admin: Boolean = false): [TopQuark]
+  searchQuarks(first: Int = 100, keyword: String, user_id: String = "", is_admin: Boolean = false): [HeadQuark]
     @cypher(
       statement: "CALL db.index.fulltext.queryNodes(\\\"nameAndDescription\\\", $keyword) YIELD node WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE CASE WHEN $user_id is null THEN (<%= cypherWherePublic %>) ELSE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) END END RETURN node"
     )
-  topQuarks: [TopQuark]
+  topQuarks: [HeadQuark]
     @cypher(
       statement: "MATCH (node:Quark) WHERE <%= cypherWherePublic %> AND <%= cypherWhereTopNodes %> RETURN node ORDER BY <%= cypherOrderByCreatedDesc %>"
     )
-  editingQuark(id: ID, user_id: String = "", is_admin: Boolean = false): TopQuark @isAuthorized
+  editingQuark(id: ID, user_id: String = "", is_admin: Boolean = false): HeadQuark @isAuthorized
     @cypher(
       statement: "MATCH (node:Quark {id: $id}) WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) END RETURN node LIMIT 1"
   )
@@ -108,18 +108,18 @@ type Query {
 type Mutation {
   CreateQuark(
     <%= quarkMutateFields %>
-  ): TopQuark @isAuthenticated
+  ): HeadQuark @isAuthenticated
   UpdateQuark(
     id: ID!
     user_id: String = ""
     is_admin: Boolean = false
     <%= quarkMutateFields %>
-  ): TopQuark @isAuthorized
+  ): HeadQuark @isAuthorized
   DeleteQuark(
     id: ID!
     user_id: String = ""
     is_admin: Boolean = false
-  ): TopQuark @isAuthorized
+  ): HeadQuark @isAuthorized
     @cypher(
       statement: "MATCH (node:Quark {id: $id}) WHERE CASE WHEN $is_admin THEN (1 = 1) ELSE (<%= cypherWhereUsersNode %> OR <%= cypherWherePublic %>) END DETACH DELETE node"
   )
@@ -138,7 +138,7 @@ type Mutation {
     id: ID!
     user_id: String = ""
     is_admin: Boolean = false
-  ): TopQuark @isAuthenticated
+  ): HeadQuark @isAuthenticated
     @cypher(
       statement: "MATCH ()-[relation {id: $id}]-() WHERE <%= cypherWhereUsersRelation %> OR <%= cypherWherePublicRelation %> DELETE relation"
     )

@@ -338,7 +338,7 @@ export const resolvers = {
   // Quark: {
   //   properties: quarkPropertiesResolver
   // },
-  TopQuark: {
+  HeadQuark: {
     properties: quarkPropertiesResolver
   },
   // LoggedInQuark: {
