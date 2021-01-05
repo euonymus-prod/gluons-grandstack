@@ -11,7 +11,7 @@
     "apollo-boost": "^0.4.9",
     "apollo-client": "^2.6.10",
     "apollo-link-context": "^1.0.20",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "eslint-plugin-flowtype": "^3.13.0",
     "firebase-context": "^1.0.9",
