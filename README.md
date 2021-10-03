@@ -1,46 +1,7 @@
 [![Deploy to now](https://deploy.now.sh/static/button.svg)](https://deploy.now.sh/?repo=https://github.com/grand-stack/grand-stack-starter&env=NEO4J_USER&env=NEO4J_URI&env=NEO4J_PASSWORD)
 
-
-# About this branch
-This branch is bug_fix_try
-このブランチは、2020/8/11に急にAPI側（本番）にて障害が発生して、APIが502を返却し始めた事に起因。
-原因究明中にnpm packageのバージョンをあげてローカルで npm start した時に、 GraphQL のコールに失敗する事が判明したため調査するために作られた。
-
-Graphqのクエリ中の、quarks.objects の部分がうまく取得できなくなっている模様。
-Neo4j側の仕様変更か、それとも、neo4j-graphqlのツールの変更か。
-
-
-以下のクエリは通過する
-```
-query {
-  quark(name: "黒川敦彦") {
-    id
-    quark_type_id
-    is_private
-    properties {
-      id
-    }
-  }
-}
-```
-
-以下のクエリは失敗する
-```
-query {
-  quark(name: "黒川敦彦") {
-    id
-    quark_type_id
-    is_private
-    objects {
-      name_ja
-    }
-    properties {
-      id
-    }
-  }
-}
-```
-
+# Memo
+このバージョンの主な対応内容は、英語モードを止めたこと。
 
 # Gluons
 

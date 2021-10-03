@@ -45,13 +45,16 @@ class Util {
   };
 
   isEnglish = (locale = this.locale, strict = false) => {
-    if (strict && ![LOCALE_EN, LOCALE_JA].includes(locale)) {
-      return false;
-    }
-    if (locale !== LOCALE_JA) {
-      locale = LOCALE_EN;
-    }
-    return locale === LOCALE_EN;
+    // Stop English Mode. Now it's always not English mode
+    return false
+
+    // if (strict && ![LOCALE_EN, LOCALE_JA].includes(locale)) {
+    //   return false;
+    // }
+    // if (locale !== LOCALE_JA) {
+    //   locale = LOCALE_EN;
+    // }
+    // return locale === LOCALE_EN;
   };
 
   period2str(data) {
