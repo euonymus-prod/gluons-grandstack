@@ -1,5 +1,6 @@
 {
   "name": "grand-stack-starter-ui",
+  "homepage": ".",
   "version": "0.0.1",
   "description": "UI app for GRANDstack",
   "author": "euonymus",
