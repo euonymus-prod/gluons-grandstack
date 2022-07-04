@@ -1,6 +1,6 @@
 // react
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import { LastLocationProvider } from "react-router-last-location";
 import { withAuthentication } from "./providers/session";
 import ScrollToTop from "./components/scroll-to-top";
@@ -28,7 +28,7 @@ import { CssBaseline } from "@material-ui/core";
 class AppRoutes extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <LastLocationProvider>
           <ScrollToTop />
           <Navbar />
@@ -75,7 +75,7 @@ class AppRoutes extends Component {
           </Container>
           <Footer />
         </LastLocationProvider>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
