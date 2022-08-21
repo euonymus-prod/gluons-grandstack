@@ -13,11 +13,11 @@ export class CypherBuilder {
       "吉田茂",
       "東出昌大",
       "鈴木杏樹",
-      "アルヴィン・エンゲル",
-      "団・野村",
+      "ビル・ゲイツ",
+      "SARSコロナウイルス2",
       "松下隆史",
       "安倍晋三",
-      "アントニオ・シモーネ",
+      "世界平和統一家庭連合",
     ]
     const snippet = candidates.map(candidate => {
       return `(node.name = \\\\\\"${candidate}\\\\\\" OR node.name_ja = \\\\\\"${candidate}\\\\\\")`
