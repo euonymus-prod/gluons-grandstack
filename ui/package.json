@@ -1,6 +1,9 @@
 {
   "name": "grand-stack-starter-ui",
   "version": "0.0.1",
+  "engines": {
+    "node": "14.x"
+  },
   "description": "UI app for GRANDstack",
   "author": "euonymus",
   "license": "ISC",
