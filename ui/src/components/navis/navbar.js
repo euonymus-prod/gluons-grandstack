@@ -26,7 +26,7 @@ export default connect(state => state)(
         withFirebase(props => {
           const [prevLocation, setPrevLocation] = useState(null);
           if (props.location.pathname !== prevLocation) {
-            props.GA.trackPage(props.location.pathname);
+            props.GA.trackPage(props.location.pathname + props.location.search);
             setPrevLocation(props.location.pathname);
           }
 
