@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import * as ROUTES from "../constants/routes";
-import GridListTile from "@material-ui/core/GridListTile";
-import GridListTileBar from "@material-ui/core/GridListTileBar";
+import ImageListItem from "@material-ui/core/ImageListItem";
+import ImageListItemBar from "@material-ui/core/ImageListItemBar";
 import CardActionArea from "@material-ui/core/CardActionArea";
 
 // Material UI
@@ -46,7 +46,7 @@ const SecondGluon = props => {
 
   return (
     <CardActionArea onClick={() => onLinkClick(object.name)}>
-      <GridListTile
+      <ImageListItem
         classes={{ imgFullHeight: classes.imgFullHeight, tile: classes.tile }}
         style={{ width: IMAGE_WIDTH }}
       >
@@ -55,14 +55,14 @@ const SecondGluon = props => {
           alt={object.name}
           className={classes.quarkImage}
         />
-        <GridListTileBar
+        <ImageListItemBar
           title={object.name}
           classes={{
             root: classes.titleBar,
             title: classes.title
           }}
         />
-      </GridListTile>
+      </ImageListItem>
     </CardActionArea>
   );
 };

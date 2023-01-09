@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as ROUTES from "../constants/routes";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
-import GridListTileBar from "@material-ui/core/GridListTileBar";
+import ImageListItemBar from "@material-ui/core/ImageListItemBar";
 
 const useStyles = makeStyles(theme => ({
   media: {
@@ -38,7 +38,7 @@ const TopPickupDetail = props => {
         image={image_path}
         title={quark.name}
       />
-      <GridListTileBar
+      <ImageListItemBar
         title={quark.name}
         classes={{
           root: classes.titleBar,

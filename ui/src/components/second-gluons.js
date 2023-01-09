@@ -5,7 +5,7 @@ import SecondGluon from "./second-gluon";
 import Util from "../utils/common";
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
-import GridList from "@material-ui/core/GridList";
+import ImageList from "@material-ui/core/ImageList";
 
 const util = new Util(false);
 
@@ -64,9 +64,9 @@ const SecondGluons = props => {
 
   return (
     <div className={classes.root}>
-      <GridList className={classes.gridList} cols={2.5}>
+      <ImageList className={classes.gridList} cols={2.5}>
         {tileData}
-      </GridList>
+      </ImageList>
     </div>
   );
 };
