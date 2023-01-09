@@ -26,7 +26,7 @@
     "graphql-tag": "^2.11.0",
     "graphql-tools": "^5.0.0",
     "minimist": "^1.2.6",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "neo4j-driver": "^4.1.1",
     "neo4j-graphql-js": "^2.15.1",
     "node-fetch": "^2.6.7"
