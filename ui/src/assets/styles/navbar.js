@@ -1,5 +1,5 @@
 // Material UI
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { alpha, makeStyles } from "@material-ui/core/styles";
 
 const navbarColor = "#f8f8f8";
 export const useStyles = makeStyles(theme => ({
@@ -24,9 +24,9 @@ export const useStyles = makeStyles(theme => ({
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.9),
+    backgroundColor: alpha(theme.palette.common.white, 0.9),
     "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 1)
+      backgroundColor: alpha(theme.palette.common.white, 1)
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
